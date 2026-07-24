@@ -1,0 +1,1 @@
+export const ES_LOCAL = process.env.MODO_LOCAL === 'true';

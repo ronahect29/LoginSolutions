@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model aplicacion {
+  id_aplicacion                  Int     @id @default(autoincrement())
+  nombre                         String  @db.VarChar(100)
+  codigo                         String  @db.VarChar(10)
+  activo                         Boolean
+  descripcion                    String? @db.VarChar(150)
+  rol_rol_aplicacionToaplicacion rol[]   @relation("rol_aplicacionToaplicacion")
+}
+
+model configuracion_usuario_rol {
+  id_configuracion_usuario_rol                       Int     @id @default(autoincrement())
+  usuario                                            Int
+  rol                                                Int
+  activo                                             Boolean
+  por_defecto                                        Boolean
+  rol_configuracion_usuario_rol_rolTorol             rol     @relation("configuracion_usuario_rol_rolTorol", fields: [rol], references: [id_rol], onDelete: NoAction, onUpdate: NoAction, map: "fk_configuracion_usuario_rol_rol")
+  usuario_configuracion_usuario_rol_usuarioTousuario usuario @relation("configuracion_usuario_rol_usuarioTousuario", fields: [usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_configuracion_usuario_rol_usuario")
+
+  @@index([rol], map: "fk_configuracion_usuario_rol_rol")
+  @@index([usuario], map: "fk_configuracion_usuario_rol_usuario")
+}
+
+model rol {
+  id_rol                                                       Int                         @id @default(autoincrement())
+  nombre                                                       String                      @db.VarChar(50)
+  codigo                                                       String                      @db.VarChar(10)
+  descripcion                                                  String                      @db.VarChar(150)
+  activo                                                       Boolean
+  aplicacion                                                   Int
+  configuracion_usuario_rol_configuracion_usuario_rol_rolTorol configuracion_usuario_rol[] @relation("configuracion_usuario_rol_rolTorol")
+  aplicacion_rol_aplicacionToaplicacion                        aplicacion                  @relation("rol_aplicacionToaplicacion", fields: [aplicacion], references: [id_aplicacion], onDelete: NoAction, onUpdate: NoAction, map: "fk_rol_aplicacion")
+
+  @@index([aplicacion], map: "fk_rol_aplicacion")
+}
+
+model usuario {
+  id_usuario                                                           Int                         @id @default(autoincrement())
+  correo                                                               String                      @db.VarChar(150)
+  nombre                                                               String                      @db.VarChar(75)
+  username                                                             String                      @db.VarChar(50)
+  password                                                             String                      @db.VarChar(255)
+  direccion                                                            String?                     @db.VarChar(150)
+  telefono                                                             String                      @db.VarChar(15)
+  activo                                                               Boolean
+  reintentos                                                           Int?
+  bloqueado_hasta                                                      DateTime?                   @db.DateTime(0)
+  ultimo_inicio                                                        DateTime?                   @db.DateTime(0)
+  fecha_creacion                                                       DateTime?                   @default(now()) @db.DateTime(0)
+  fecha_modificacion                                                   DateTime?                   @db.DateTime(0)
+  creador                                                              Int?
+  modificador                                                          Int?
+  configuracion_usuario_rol_configuracion_usuario_rol_usuarioTousuario configuracion_usuario_rol[] @relation("configuracion_usuario_rol_usuarioTousuario")
+  usuario_usuario_creadorTousuario                                     usuario?                    @relation("usuario_creadorTousuario", fields: [creador], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_usuario_creador")
+  other_usuario_usuario_creadorTousuario                               usuario[]                   @relation("usuario_creadorTousuario")
+  usuario_usuario_modificadorTousuario                                 usuario?                    @relation("usuario_modificadorTousuario", fields: [modificador], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_usuario_modificador")
+  other_usuario_usuario_modificadorTousuario                           usuario[]                   @relation("usuario_modificadorTousuario")
+
+  @@index([creador], map: "fk_usuario_creador")
+  @@index([modificador], map: "fk_usuario_modificador")
+}

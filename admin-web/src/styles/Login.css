@@ -1,0 +1,107 @@
+/* ===== LOGIN PAGE ===== */
+.login-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #020617, #0f172a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+/* ===== CARD ===== */
+.login-card {
+    width: 100%;
+    max-width: 380px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* ===== TITLE ===== */
+.login-title {
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #020617;
+}
+
+/* ===== ERROR ===== */
+.login-error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    padding: 0.6rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+/* ===== INPUTS ===== */
+.login-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.login-field label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #334155;
+}
+
+.login-field input {
+    padding: 0.55rem 0.65rem;
+    border-radius: 6px;
+    border: 1px solid #cbd5f5;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-field input:focus {
+    border-color: #0f172a;
+    box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.15);
+}
+
+/* ===== BUTTON ===== */
+.login-button {
+    margin-top: 0.5rem;
+    background: #020617;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.65rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.login-button:hover {
+    background: #0f172a;
+}
+
+.login-button:active {
+    transform: scale(0.98);
+}
+
+.login-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 420px) {
+    .login-card {
+        padding: 1.5rem;
+    }
+
+    .login-title {
+        font-size: 1.1rem;
+    }
+}

@@ -1,0 +1,398 @@
+/* =========================================================
+   VARIABLES GLOBALES
+========================================================= */
+:root {
+    --primary: #ff7a00;
+    --primary-hover: #e86b00;
+    --bg-light: #fff7f0;
+    --text-dark: #2a2a2a;
+    --shadow: 0px 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+========================================================= */
+.marcajes-page {
+    padding: 24px;
+    animation: fadeInUp 0.6s ease;
+}
+
+.marcajes-page h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+}
+
+/* =========================================================
+   FILTROS (GRID CONTROLADO)
+========================================================= */
+.filtros-card {
+    background: white;
+    padding: 24px;
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 26px;
+
+    display: grid;
+    grid-template-columns: repeat(4, minmax(240px, 1fr));
+    gap: 22px;
+}
+
+/* Cada campo es una unidad sólida */
+.filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Labels */
+.filter-field label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #444;
+}
+
+/* Inputs, selects y dropdown */
+.filter-field input,
+.filter-field select,
+.dropdown-trigger {
+    height: 44px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1.8px solid #ddd;
+    font-size: 0.9rem;
+    background: white;
+    width: 100%;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+/* Corrección icono date */
+.filter-field input[type="date"] {
+    padding-right: 42px;
+}
+
+/* Focus */
+.filter-field input:focus,
+.filter-field select:focus,
+.dropdown-trigger:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.25);
+}
+
+/* =========================================================
+   DROPDOWN MULTISELECT
+========================================================= */
+.dropdown-multiselect {
+    position: relative;
+}
+
+.dropdown-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.arrow {
+    transition: transform 0.2s ease;
+}
+
+.arrow.open {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    z-index: 100;
+
+    background: white;
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    padding: 12px;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+/* =========================================================
+   PILLS
+========================================================= */
+.pill {
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 2px solid var(--primary);
+    background: white;
+    color: var(--primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.pill:hover {
+    background: #ffe5cc;
+}
+
+.pill.selected {
+    background: var(--primary);
+    color: white;
+}
+
+/* Pill con X */
+.pill.removable {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding-right: 8px;
+}
+
+.pill-remove {
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    line-height: 1;
+    border-radius: 50%;
+    padding: 0 4px;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.pill-remove:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1);
+}
+
+/* =========================================================
+   BARRA DE SELECCIONADOS
+========================================================= */
+.selected-sucursales-bar {
+    grid-column: 1 / -1;
+    margin-top: 6px;
+    padding: 14px 16px;
+    background: var(--bg-light);
+    border-radius: 14px;
+    border: 1px solid #ffd1a8;
+}
+
+.selected-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.selected-sucursales-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* =========================================================
+   BOTONES DE FILTRO
+========================================================= */
+.filtros-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.filtros-actions button {
+    height: 46px;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.filtros-actions .primary {
+    background: var(--primary);
+    color: white;
+}
+
+.filtros-actions .primary:hover {
+    background: var(--primary-hover);
+}
+
+.filtros-actions .secondary {
+    background: white;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+}
+
+.filtros-actions .secondary:hover {
+    background: #ffe5cc;
+}
+
+/* =========================================================
+   TABLA DE MARCAJES
+========================================================= */
+.marcajes-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    font-size: 0.85rem;
+}
+
+.marcajes-table thead {
+    background: var(--bg-light);
+}
+
+.marcajes-table th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 700;
+    color: var(--text-dark);
+    border-bottom: 1px solid #ffd1a8;
+}
+
+.marcajes-table td {
+    padding: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+
+.marcajes-table tbody tr:hover {
+    background: #fff3e6;
+}
+
+/* =========================================================
+   LINKS MAPA
+========================================================= */
+.repo-link {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.repo-link:hover {
+    text-decoration: underline;
+}
+
+/* =========================================================
+   ESTADOS
+========================================================= */
+.repo-empty,
+.repo-loading {
+    text-align: center;
+    padding: 24px;
+    color: #777;
+    font-weight: 600;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 1200px) {
+    .filtros-card {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .filtros-card {
+        grid-template-columns: 1fr;
+    }
+
+    .marcajes-page {
+        padding: 14px;
+    }
+
+    .marcajes-table {
+        font-size: 0.75rem;
+    }
+
+    .marcajes-table th,
+    .marcajes-table td {
+        padding: 8px;
+    }
+}
+
+/* =========================================================
+   ANIMACIÓN
+========================================================= */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===================
+   REPO ACTIONS   
+   =================== */
+
+.repo-action {
+    margin: 16px 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ===================
+   BOTÓN EXCEL
+   =================== */
+.btn-excel {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 10px 16px;
+    border-radius: 8px;
+
+    border: 1px solid #15803d;
+    background-color: #ecfdf5;
+
+    color: #065f46;
+    font-weight: 600;
+    font-size: 14px;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-excel img {
+    width: 20px;
+    height: 20px;
+}
+
+/* HOVER */
+.btn-excel:hover:not(:disabled) {
+    background-color: #d1fae5;
+    border-color: #166535;
+}
+
+/* ACTIVE */
+.btn-excel:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+/* DISABLED */
+.btn-excel:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}

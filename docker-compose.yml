@@ -1,0 +1,143 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootuser1234"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    networks:
+      - backend-net
+
+  user-service:
+    build:
+      context: ./user-service
+    container_name: user-service
+    command: npm run start
+    #command: npm run dev
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://user-service:4000/health" ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+    #volumes:
+      #- ./user-service:/usr/src/app
+      #- /usr/src/app/node_modules
+    env_file:
+      - ./user-service/.env
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "4000:4000"
+    networks:
+      - backend-net
+
+  marcajes-api:
+    build:
+      context: ./marcajes-api
+    container_name: marcajes-api
+    command: npm run start
+    #command: [ "sh", "-c", "npx prisma generate && npm run dev" ]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://marcajes-api:4100/health" ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+    #volumes:
+      #- ./marcajes-api:/usr/src/app
+      #- /usr/src/app/node_modules
+      #- /usr/src/prisma
+      #- /usr/src/app/prisma
+    env_file:
+      - ./marcajes-api/.env
+    depends_on:
+      mysql:
+        condition: service_healthy
+      user-service:
+        condition: service_healthy
+    ports:
+      - "4100:4100"
+    networks:
+      - backend-net
+
+  marcajes-web:
+    build:
+      context: ./marcajes-web
+    container_name: marcajes-web
+    command: npm run dev -- --host 0.0.0.0
+    volumes:
+      - ./marcajes-web:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - ./marcajes-web/.env
+    depends_on:
+      marcajes-api:
+        condition: service_healthy
+      user-service:
+        condition: service_healthy
+    ports:
+      - "5173:5173"
+    networks:
+      - backend-net
+
+  admin-web:
+    build:
+      context: ./admin-web
+    container_name: admin-web
+    command: npm run dev -- --host 0.0.0.0
+    volumes:
+      - ./admin-web:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - ./admin-web/.env
+    depends_on:
+      user-service:
+        condition: service_healthy
+    ports:
+      - "5174:5174"
+    networks:
+      - backend-net
+  
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./nginx/certs:/etc/ssl
+      - ./marcajes-web:/usr/src/app
+      - ./nginx/certs:/usr/src/app/nginx/certs
+    depends_on:
+      - marcajes-web
+      - admin-web
+      - marcajes-api
+      - user-service
+    networks:
+      - backend-net
+
+networks:
+  backend-net:
+
+
+volumes:
+  mysql_data:
+
+

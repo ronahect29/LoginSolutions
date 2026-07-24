@@ -1,0 +1,75 @@
+.app-header {
+    height: 60px;
+    background: #0f172a;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+}
+
+.menu-btn,
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.header-user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logout-btn {
+    background: #ef4444;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+/* Side Menu */
+.menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 100;
+}
+
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100%;
+    background: #020617;
+    padding: 1rem;
+    z-index: 200;
+}
+
+.menu-link {
+    display: block;
+    color: white;
+    padding: 0.75rem 0;
+    text-decoration: none;
+}
+
+.menu-link.active {
+    font-weight: bold;
+    color: #38bdf8;
+}
+
+.layout-content {
+    padding: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .app-title {
+        font-size: 1rem;
+    }
+}

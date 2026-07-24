@@ -1,0 +1,69 @@
+# ===============================
+# Variables de entorno / secretos
+# ===============================
+.env
+.env.*
+!.env.example
+
+# ===============================
+# Docker
+# ===============================
+docker-compose.override.yml
+
+# ===============================
+# Node / JS / TS
+# ===============================
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+dist/
+build/
+.out/
+.next/
+coverage/
+
+# ===============================
+# Prisma / ORM
+# ===============================
+prisma/migrations/*
+!prisma/migrations/.gitkeep
+
+# ===============================
+# Logs
+# ===============================
+logs/
+*.log
+
+# ===============================
+# Bases de datos (volúmenes locales)
+# ===============================
+mysql_data/
+postgres_data/
+data/
+
+# ===============================
+# IDEs / Editores
+# ===============================
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.iml
+
+# ===============================
+# Sistema operativo
+# ===============================
+.DS_Store
+Thumbs.db
+
+# ===============================
+# Certificados / claves
+# ===============================
+*.pem
+*.key
+*.crt
+
+**/src/generated/
+**/prisma/generated
+

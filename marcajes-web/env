@@ -1,0 +1,3 @@
+VITE_API_URL=/marcajes-api/api
+VITE_APP_NAME=PMW
+VITE_MODO_LOCAL=true

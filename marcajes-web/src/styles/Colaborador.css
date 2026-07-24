@@ -1,0 +1,135 @@
+:root {
+  --primary: #ff7a00;
+  --primary-hover: #e86b00;
+  --bg-light: #fff7f0;
+  --text-dark: #2a2a2a;
+  --shadow: 0px 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.colab-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 40px;
+  background: linear-gradient(
+    135deg,
+    #fff0e6 0%,
+    #ffe7d4 50%,
+    #ffd8b3 100%
+  );
+}
+
+.colab-card {
+  width: 100%;
+  max-width: 460px;
+  background: white;
+  padding: 32px;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  animation: fadeInUp 0.6s ease;
+}
+
+.colab-title {
+  font-size: 1.6rem;
+  text-align: center;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 20px;
+}
+
+.colab-subtitle {
+  font-size: 1rem;
+  margin-top: 20px;
+  font-weight: 600;
+}
+
+.colab-timebox {
+  margin-top: 10px;
+  padding: 14px;
+  background: var(--bg-light);
+  border-radius: 12px;
+  border: 1px solid #ffd1a8;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.colab-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 18px;
+  background: var(--primary);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.colab-btn:hover {
+  background: var(--primary-hover);
+}
+
+.colab-btn-secondary {
+  background: white;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+}
+
+.colab-btn-secondary:hover {
+  background: #ffe5cc;
+  border-color: var(--primary-hover);
+}
+
+/* ===== BOTÓN SECUNDARIO ===== */
+.colab-btn-secondary {
+  background: white;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+}
+
+.colab-btn-secondary:hover {
+  background: #ffe5cc;
+  border-color: var(--primary-hover);
+}
+
+/* ===== BOTÓN DESHABILITADO ===== */
+.colab-btn:disabled,
+.colab-btn-secondary:disabled {
+  background: #d1d1d1;
+  border-color: #d1d1d1;
+  color: #8a8a8a;
+  cursor: not-allowed;
+  opacity: 0.75;
+  box-shadow: none;
+}
+
+/* Desactivar hover cuando está disabled */
+.colab-btn:disabled:hover,
+.colab-btn-secondary:disabled:hover {
+  background: #d1d1d1;
+}
+
+
+
+.colab-divider {
+  border-top: 1px solid #eee;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

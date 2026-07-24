@@ -1,0 +1,155 @@
+/* ===== OVERLAY ===== */
+.uw-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+/* ===== CARD ===== */
+.uw-card {
+    background: white;
+    border-radius: 16px;
+    width: min(760px, 95%);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* ===== HEADER ===== */
+.uw-header {
+    padding: 1.2rem 1.4rem 0.8rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.uw-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #020617;
+    margin-bottom: 0.6rem;
+}
+
+/* ===== PROGRESS ===== */
+.uw-progress {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.uw-progress-step {
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.uw-progress-step.active {
+    background: #020617;
+    color: white;
+}
+
+.uw-progress-step.done {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+
+/* ===== BODY ===== */
+.uw-body {
+    padding: 1.4rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* ===== STEP ===== */
+.uw-step h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #020617;
+    margin-bottom: 1rem;
+}
+
+/* ===== FOOTER ===== */
+.uw-footer {
+    padding: 0.9rem 1.4rem;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.uw-footer-right {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* ===== BUTTONS ===== */
+.uw-btn {
+    border-radius: 8px;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.85rem;
+    border: 1px solid #e5e7eb;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.uw-btn:hover {
+    background: #e2e8f0;
+}
+
+.uw-btn:active {
+    transform: scale(0.97);
+}
+
+.uw-btn.primary {
+    background: #020617;
+    color: white;
+    border-color: #020617;
+}
+
+.uw-btn.primary:hover {
+    background: #0f172a;
+}
+
+.uw-btn.ghost {
+    background: transparent;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 640px) {
+    .uw-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .uw-footer-right {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+/* ===== DEFAULT ROLE ===== */
+.uf-pill {
+    position: relative;
+}
+
+.uf-pill.default {
+    box-shadow: 0 0 0 2px #020617 inset;
+}
+
+.uf-default-toggle {
+    margin-left: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    color: #facc15;
+}
+
+.uf-default-toggle:hover {
+    transform: scale(1.1);
+}

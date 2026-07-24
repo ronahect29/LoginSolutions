@@ -1,0 +1,186 @@
+/* ===== CARD ===== */
+.user-filters-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== HEADER ===== */
+.user-filters-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.user-filters-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #020617;
+}
+
+.user-filters-reset {
+    background: #f1f5f9;
+    color: #0f172a;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.45rem 0.8rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.user-filters-reset:hover {
+    background: #e2e8f0;
+}
+
+.user-filters-reset:active {
+    transform: scale(0.98);
+}
+
+/* ===== GRID ===== */
+.user-filters-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.9rem;
+}
+
+/* ===== FIELD ===== */
+.uf-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.uf-field label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #334155;
+}
+
+.uf-field input,
+.uf-field select {
+    padding: 0.55rem 0.65rem;
+    border-radius: 6px;
+    border: 1px solid #cbd5f5;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #ffffff;
+}
+
+.uf-field input:focus,
+.uf-field select:focus {
+    border-color: #0f172a;
+    box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.15);
+}
+
+/* ===== SECTIONS ===== */
+.user-filters-section {
+    margin-top: 1.1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+.user-filters-subtitle {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 0.75rem;
+}
+
+/* ===== DATES ===== */
+.user-filters-dates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.uf-date-group {
+    background: #f8fafc;
+    border: 1px solid #eef2ff;
+    border-radius: 10px;
+    padding: 0.85rem;
+}
+
+.uf-date-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 0.6rem;
+}
+
+.uf-date-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+/* ===== MULTISELECT PILLS ===== */
+.uf-multiselect {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.4rem 0;
+}
+
+.uf-multiselect.disabled {
+    opacity: 0.6;
+}
+
+.uf-pill {
+    border: 1px solid #e5e7eb;
+    background: #f8fafc;
+    color: #0f172a;
+    border-radius: 999px;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.uf-pill:hover {
+    background: #e2e8f0;
+}
+
+.uf-pill:active {
+    transform: scale(0.97);
+}
+
+.uf-pill.selected {
+    background: #020617;
+    color: white;
+    border-color: #020617;
+}
+
+.uf-pill:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* ===== HINTS ===== */
+.uf-hint {
+    font-size: 0.78rem;
+    color: #64748b;
+    margin-top: 0.25rem;
+}
+
+.uf-hint.warn {
+    color: #991b1b;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+    .user-filters-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .user-filters-dates {
+        grid-template-columns: 1fr;
+    }
+
+    .uf-date-row {
+        grid-template-columns: 1fr;
+    }
+}

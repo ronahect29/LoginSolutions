@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model empleado {
+  id_empleado                          Int        @id @default(autoincrement())
+  id_auth                              Int
+  correo                               String     @db.VarChar(150)
+  nombre                               String     @db.VarChar(75)
+  username                             String     @db.VarChar(50)
+  direccion                            String?    @db.VarChar(150)
+  telefono                             String?    @db.VarChar(15)
+  sucursal                             Int?
+  jefe                                 Int?
+  empleado                             empleado?  @relation("empleadoToempleado", fields: [jefe], references: [id_empleado], onDelete: NoAction, onUpdate: NoAction, map: "fk_empleado_jefe")
+  other_empleado                       empleado[] @relation("empleadoToempleado")
+  sucursal_empleado_sucursalTosucursal sucursal?  @relation("empleado_sucursalTosucursal", fields: [sucursal], references: [id_sucursal], onDelete: NoAction, onUpdate: NoAction, map: "fk_empleado_sucursal")
+  marcaje_marcaje_empleadoToempleado   marcaje[]  @relation("marcaje_empleadoToempleado")
+
+  @@index([jefe], map: "fk_empleado_jefe")
+  @@index([sucursal], map: "fk_empleado_sucursal")
+}
+
+model marcaje {
+  id_marcaje                          Int      @id @default(autoincrement())
+  fecha                               DateTime @db.DateTime(0)
+  hora                                String   @db.VarChar(8)
+  es_entrada                          Boolean
+  latitud                             Decimal? @db.Decimal(9, 6)
+  longitud                            Decimal? @db.Decimal(9, 6)
+  empleado                            Int
+  empleado_marcaje_empleadoToempleado empleado @relation("marcaje_empleadoToempleado", fields: [empleado], references: [id_empleado], onDelete: NoAction, onUpdate: NoAction, map: "fk_marcaje_empleado")
+
+  @@index([empleado], map: "fk_marcaje_empleado")
+}
+
+model sucursal {
+  id_sucursal                          Int        @id @default(autoincrement())
+  nombre                               String     @db.VarChar(150)
+  telefono                             String?    @db.VarChar(10)
+  direccion                            String     @db.VarChar(200)
+  latitud                              Decimal?   @db.Decimal(9, 6)
+  longitud                             Decimal?   @db.Decimal(9, 6)
+  activo                               Boolean?
+  fecha_creacion                       DateTime   @default(now()) @db.DateTime(0)
+  creador                              String     @db.VarChar(50)
+  fecha_modificacion                   DateTime?  @db.DateTime(0)
+  modificador                          String?    @db.VarChar(50)
+  empleado_empleado_sucursalTosucursal empleado[] @relation("empleado_sucursalTosucursal")
+}

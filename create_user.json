@@ -1,0 +1,9 @@
+﻿{
+  "nombre": "Supervisor Prueba",
+  "username": "SUP-TEST",
+  "correo": "sup_test@gmail.com",
+  "password": "123456",
+  "activo": true,
+  "roles": [3],
+  "aplicacion": "PMW"
+}
