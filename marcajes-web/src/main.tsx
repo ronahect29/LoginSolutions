@@ -1,13 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import App from './App.tsx';
-// import { AuthProvider } from './context/AuthContext';
-import { SessionProvider } from './context/SesionContext.tsx'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App.tsx";
+import "./index.css";
+import { SessionProvider } from "./context/SesionContext.tsx";
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+).render(
   <React.StrictMode>
-    <BrowserRouter basename='/marcajes'>
+    <BrowserRouter basename="/marcajes">
       <SessionProvider>
         <App />
       </SessionProvider>

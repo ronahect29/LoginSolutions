@@ -1,137 +1,286 @@
-import { Request, Response } from 'express';
-import { UsuarioService } from '../services/usuario.service';
-import { BuscarUsuariosDto } from '../models/Usuario';
-import { prisma } from '../prisma';
-import { AuthRequest } from '../types/AuthRequest';
-import { ES_LOCAL } from '../utils/constantes';
+import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
+
+import { UsuarioService } from "../services/usuario.service";
+import { MarcajesIntegrationService } from "../services/marcajesIntegration.service";
+
+import { BuscarUsuariosDto } from "../models/Usuario";
+import { prisma } from "../prisma";
+import { AuthRequest } from "../types/AuthRequest";
+import { ES_LOCAL } from "../utils/constantes";
 
 const SALT_ROUNDS = 10;
 
 export const UsuarioController = {
-    async getAll(req: Request, res: Response) {
+    async getAll(_req: Request, res: Response) {
         try {
             const data = await UsuarioService.findAll();
-            return res.json(data);
-        } catch (err) {
-            console.error("Error en getAll:", err);
-            return res.status(500).json({ message: "Error interno" });
+
+            return res.status(200).json(data);
+        } catch (error) {
+            console.error("UsuarioController.getAll:", error);
+
+            return res.status(500).json({
+                message: "Error interno"
+            });
         }
     },
 
     async findByUsuarioId(req: Request, res: Response) {
         try {
             const id = Number(req.params.id);
-            const data = await UsuarioService.findOne(id);
-            if (!data) {
-                return res.status(404).json({ message: "Usuario no encontrado" });
+
+            if (!Number.isInteger(id) || id <= 0) {
+                return res.status(400).json({
+                    message: "ID de usuario inválido"
+                });
             }
-            return res.json(data);
-        } catch (err) {
-            console.error("Error en findByUsuarioId:", err);
-            return res.status(500).json({ message: "Error interno" });
+
+            const data = await UsuarioService.findOne(id);
+
+            if (!data) {
+                return res.status(404).json({
+                    message: "Usuario no encontrado"
+                });
+            }
+
+            return res.status(200).json(data);
+        } catch (error) {
+            console.error("UsuarioController.findByUsuarioId:", error);
+
+            return res.status(500).json({
+                message: "Error interno"
+            });
         }
     },
+
     async findAllWithRolesAndApps(_req: Request, res: Response) {
         try {
             const data = await UsuarioService.findAllWithRolesAndApp();
-            return res.json(data);
-        } catch (err) {
-            console.log("Error al obtener los usuarios con codigos de roles y apps: ", err);
-            return res.status(500).json({ message: "Error interno" });
+
+            return res.status(200).json(data);
+        } catch (error) {
+            console.error(
+                "UsuarioController.findAllWithRolesAndApps:",
+                error
+            );
+
+            return res.status(500).json({
+                message: "Error interno"
+            });
         }
     },
-    async changeUsuarioActivoById(req: AuthRequest, res: Response) {
 
-        const id_usuario = Number(req.params.id);
+    async changeUsuarioActivoById(
+        req: AuthRequest,
+        res: Response
+    ) {
+        const idUsuario = Number(req.params.id);
         const { activo } = req.body;
-        if (isNaN(id_usuario)) {
-            return res.status(400).json({ message: "ID de usuario inválido." })
+
+        if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
+            return res.status(400).json({
+                message: "ID de usuario inválido"
+            });
         }
+
         if (typeof activo !== "boolean") {
-            return res.status(400).json({ message: "El campo 'activo' debe ser booleano." });
+            return res.status(400).json({
+                message: "El campo 'activo' debe ser booleano"
+            });
         }
+
         try {
             const usuario = await prisma.usuario.findFirst({
-                where: { id_usuario },
-                select: { id_usuario: true }
+                where: {
+                    id_usuario: idUsuario
+                },
+                select: {
+                    id_usuario: true
+                }
             });
+
             if (!usuario) {
-                return res.status(404).json({ message: "Usuario no encontrado." })
+                return res.status(404).json({
+                    message: "Usuario no encontrado"
+                });
             }
-            if (ES_LOCAL)
-                console.log(`usuario.controller changeUsuarioActivoById - MODIFICADOR: ${req.user?.id_usuario}`);
-            await UsuarioService.changeUsuarioActivoById(id_usuario, activo, req.user?.id_usuario || 0);
-            return res.json({ success: true })
-        } catch (err) {
-            console.error("usuario.controller Error en changeUsuarioActivoById: ", err);
-            return res.status(500).json({ message: "Error interno del servidor." });
+
+            if (ES_LOCAL) {
+                console.log(
+                    "UsuarioController.changeUsuarioActivoById - modificador:",
+                    req.user?.id_usuario
+                );
+            }
+
+            await UsuarioService.changeUsuarioActivoById(
+                idUsuario,
+                activo,
+                req.user?.id_usuario || 0
+            );
+
+            return res.status(200).json({
+                success: true
+            });
+        } catch (error) {
+            console.error(
+                "UsuarioController.changeUsuarioActivoById:",
+                error
+            );
+
+            return res.status(500).json({
+                message: "Error interno del servidor"
+            });
         }
     },
+
     async findByFilters(req: Request, res: Response) {
         try {
             const filtros = req.body as BuscarUsuariosDto;
-            console.log("usuario.controller findByFilters - body: ", JSON.stringify(filtros));
-            const usuarios = await UsuarioService.findByFilters(filtros);
-            return res.json(usuarios);
-        } catch (err) {
-            console.error("Error al obtener usuarios por filtros: ", err);
-            return res.status(500).json({ message: "Error interno" });
+
+            if (ES_LOCAL) {
+                console.log(
+                    "UsuarioController.findByFilters:",
+                    JSON.stringify(filtros)
+                );
+            }
+
+            const usuarios =
+                await UsuarioService.findByFilters(filtros);
+
+            return res.status(200).json(usuarios);
+        } catch (error) {
+            console.error(
+                "UsuarioController.findByFilters:",
+                error
+            );
+
+            return res.status(500).json({
+                message: "Error interno"
+            });
         }
     },
+
     async create(req: AuthRequest, res: Response) {
         try {
             const { user, roles } = req.body;
 
-            /* ================= VALIDACIONES ================= */
             if (!user) {
                 return res.status(400).json({
                     message: "Información del usuario requerida"
                 });
             }
 
-            if (!roles || roles.length === 0) {
+            if (!Array.isArray(roles) || roles.length === 0) {
                 return res.status(400).json({
                     message: "Debe asignarse al menos un rol"
                 });
             }
 
-            const hasDefault = roles.some((r: any) => r.default === true);
-            if (!hasDefault) {
+            const tieneRolPorDefecto = roles.some(
+                (rol: any) => rol.default === true
+            );
+
+            if (!tieneRolPorDefecto) {
                 return res.status(400).json({
                     message: "Debe existir un rol por defecto"
                 });
             }
 
-            if (!user.password || user.password.length < 6) {
+            if (
+                typeof user.password !== "string" ||
+                user.password.length < 6
+            ) {
                 return res.status(400).json({
-                    message: "La contraseña debe tener al menos 6 caracteres"
+                    message:
+                        "La contraseña debe tener al menos 6 caracteres"
                 });
             }
 
-            /* ================= CIFRAR PASSWORD ================= */
-            const hashedPassword = await bcrypt.hash(
+            const passwordCifrado = await bcrypt.hash(
                 user.password,
                 SALT_ROUNDS
             );
 
-            /* ================= DELEGAR AL SERVICE ================= */
-            const result = await UsuarioService.createUsuarioWithRolConfig(
-                {
-                    ...user,
-                    password: hashedPassword
-                },
-                roles,
-                req.user?.id_usuario || 0
+            const resultado =
+                await UsuarioService.createUsuarioWithRolConfig(
+                    {
+                        ...user,
+                        password: passwordCifrado
+                    },
+                    roles,
+                    req.user?.id_usuario || 0
+                );
+
+            const tieneAccesoMarcajes = roles.some(
+                (rol: any) =>
+                    typeof rol.codigo === "string" &&
+                    rol.codigo
+                        .trim()
+                        .toUpperCase()
+                        .endsWith("-PMW")
             );
 
-            return res.status(201).json(result);
+            if (!tieneAccesoMarcajes) {
+                return res.status(201).json(resultado);
+            }
 
+            const authorizationHeader =
+                req.headers.authorization;
+
+            if (!authorizationHeader) {
+                return res.status(201).json({
+                    ...resultado,
+                    sincronizacionMarcajes: false,
+                    advertencia:
+                        "El usuario fue creado, pero no se recibió el token para registrarlo en Marcajes"
+                });
+            }
+
+            try {
+                const respuestaMarcajes =
+                    await MarcajesIntegrationService.crearEmpleado(
+                        {
+                            id_auth: resultado.usuarioId,
+                            correo: user.correo,
+                            nombre: user.nombre,
+                            username: user.username,
+                            direccion: user.direccion || null,
+                            telefono: user.telefono || null
+                        },
+                        authorizationHeader
+                    );
+
+                return res.status(201).json({
+                    ...resultado,
+                    sincronizacionMarcajes: true,
+                    empleadoMarcajes:
+                        respuestaMarcajes.empleado
+                });
+            } catch (errorMarcajes) {
+                console.error(
+                    "UsuarioController.create - no se pudo crear el empleado en Marcajes:",
+                    errorMarcajes
+                );
+
+                return res.status(201).json({
+                    ...resultado,
+                    sincronizacionMarcajes: false,
+                    advertencia:
+                        "El usuario fue creado, pero no pudo registrarse automáticamente como empleado en Marcajes",
+                    detalle:
+                        errorMarcajes instanceof Error
+                            ? errorMarcajes.message
+                            : "Error desconocido"
+                });
+            }
         } catch (error: any) {
-            console.error("UsuarioController.create", error);
+            console.error("UsuarioController.create:", error);
 
-            // error de negocio controlado
-            if (error.message === "Correo o username ya registrados") {
+            if (
+                error.message ===
+                "Correo o username ya registrados"
+            ) {
                 return res.status(409).json({
                     message: error.message
                 });

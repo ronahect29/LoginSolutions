@@ -4,7 +4,7 @@ import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import router from './routes';
-import { fixTimeFields, runPrismaBootstrap } from './bootstrap/prisma';
+import { runPrismaBootstrap } from "./bootstrap/prisma";
 
 dotenv.config();
 
@@ -30,6 +30,5 @@ app.listen(PORT, "0.0.0.0", () => {
     console.log(`Marcajes API is running on port ${PORT}`);
     console.log("INICIO DE PROCESOS AUTOMÁTICOS...");
     runPrismaBootstrap();
-    //fixTimeFields();
     console.log("PROCESOS AUTOMÁTICOS FINALIZADOS.");
 });

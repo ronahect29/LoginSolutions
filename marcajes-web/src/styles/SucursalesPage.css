@@ -1,0 +1,919 @@
+.sucursales-page {
+    width: 100%;
+    min-height: calc(100vh - 78px);
+    padding: 32px;
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(249, 115, 22, 0.07),
+            transparent 32%
+        ),
+        #f5f7fb;
+}
+
+/* =========================================================
+   ENCABEZADO
+========================================================= */
+
+.sucursales-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+    max-width: 1500px;
+    margin: 0 auto 24px;
+    padding: 28px 30px;
+
+    background: linear-gradient(
+        135deg,
+        #ffffff 0%,
+        #fff8f1 100%
+    );
+
+    border: 1px solid #e6e9ef;
+    border-radius: 18px;
+
+    box-shadow:
+        0 10px 30px rgba(16, 24, 40, 0.07);
+}
+
+.sucursales-header h1 {
+    margin: 0 0 9px;
+
+    color: #172033;
+    font-size: clamp(1.7rem, 3vw, 2.15rem);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.sucursales-header p {
+    max-width: 720px;
+    margin: 0;
+
+    color: #667085;
+    font-size: 0.94rem;
+    line-height: 1.7;
+}
+
+.sucursales-eyebrow {
+    display: inline-block;
+    margin-bottom: 8px;
+
+    color: #e56800;
+
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* =========================================================
+   BOTONES PRINCIPALES
+========================================================= */
+
+.sucursales-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 43px;
+    padding: 0 17px;
+
+    color: #ffffff;
+    background: #f97316;
+    border: 1px solid #f97316;
+    border-radius: 9px;
+
+    font-family: inherit;
+    font-size: 0.86rem;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 16px rgba(249, 115, 22, 0.22);
+
+    transition:
+        background-color 160ms ease,
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        transform 160ms ease;
+}
+
+.sucursales-btn-primary:hover:not(:disabled) {
+    background: #ea580c;
+    border-color: #ea580c;
+
+    box-shadow:
+        0 9px 20px rgba(234, 88, 12, 0.27);
+
+    transform: translateY(-1px);
+}
+
+.sucursales-btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.sucursales-btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* =========================================================
+   RESUMEN
+========================================================= */
+
+.sucursales-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(190px, 1fr));
+    gap: 18px;
+
+    max-width: 1500px;
+    margin: 0 auto 22px;
+}
+
+.sucursales-summary-card {
+    position: relative;
+    overflow: hidden;
+
+    min-height: 108px;
+    padding: 22px 24px;
+
+    background: #ffffff;
+    border: 1px solid #e5e8ef;
+    border-radius: 14px;
+
+    box-shadow:
+        0 7px 20px rgba(16, 24, 40, 0.055);
+}
+
+.sucursales-summary-card::after {
+    content: "";
+
+    position: absolute;
+    right: -28px;
+    bottom: -35px;
+
+    width: 100px;
+    height: 100px;
+
+    background: rgba(249, 115, 22, 0.07);
+    border-radius: 50%;
+}
+
+.sucursales-summary-card span {
+    position: relative;
+    z-index: 1;
+
+    display: block;
+    margin-bottom: 8px;
+
+    color: #667085;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.sucursales-summary-card strong {
+    position: relative;
+    z-index: 1;
+
+    display: block;
+
+    color: #172033;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+/* =========================================================
+   MENSAJES
+========================================================= */
+
+.sucursales-alert {
+    max-width: 1500px;
+    margin: 0 auto 18px;
+    padding: 13px 16px;
+
+    border: 1px solid transparent;
+    border-radius: 10px;
+
+    font-size: 0.86rem;
+    font-weight: 550;
+}
+
+.sucursales-alert-success {
+    color: #166534;
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+.sucursales-alert-error {
+    color: #b42318;
+    background: #fff1f0;
+    border-color: #fecdca;
+}
+
+/* =========================================================
+   CONTENIDO PRINCIPAL
+========================================================= */
+
+.sucursales-content {
+    max-width: 1500px;
+    margin: 0 auto;
+
+    overflow: hidden;
+
+    background: #ffffff;
+    border: 1px solid #e5e8ef;
+    border-radius: 16px;
+
+    box-shadow:
+        0 10px 30px rgba(16, 24, 40, 0.07);
+}
+
+.sucursales-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+
+    padding: 19px 22px;
+
+    border-bottom: 1px solid #eaecf0;
+}
+
+.sucursales-search {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    width: min(100%, 480px);
+    height: 43px;
+    padding: 0 13px;
+
+    background: #ffffff;
+    border: 1px solid #d0d5dd;
+    border-radius: 9px;
+
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.sucursales-search:focus-within {
+    border-color: #f97316;
+
+    box-shadow:
+        0 0 0 3px rgba(249, 115, 22, 0.14);
+}
+
+.sucursales-search span {
+    flex-shrink: 0;
+
+    color: #667085;
+    font-size: 1.2rem;
+}
+
+.sucursales-search input {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+
+    color: #344054;
+    background: transparent;
+    border: 0;
+    outline: 0;
+
+    font-family: inherit;
+    font-size: 0.84rem;
+}
+
+.sucursales-search input::placeholder {
+    color: #98a2b3;
+}
+
+.sucursales-results {
+    color: #667085;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   TABLA
+========================================================= */
+
+.sucursales-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.sucursales-table {
+    width: 100%;
+    min-width: 1150px;
+
+    border-collapse: collapse;
+
+    color: #344054;
+    font-size: 0.8rem;
+}
+
+.sucursales-table thead {
+    background: #f8fafc;
+}
+
+.sucursales-table th {
+    padding: 13px 16px;
+
+    color: #475467;
+    border-bottom: 1px solid #e4e7ec;
+
+    font-size: 0.73rem;
+    font-weight: 700;
+    letter-spacing: 0.025em;
+    text-align: left;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.sucursales-table td {
+    padding: 15px 16px;
+
+    border-bottom: 1px solid #f0f1f3;
+
+    line-height: 1.55;
+    vertical-align: middle;
+}
+
+.sucursales-table tbody tr {
+    transition: background-color 150ms ease;
+}
+
+.sucursales-table tbody tr:hover {
+    background: #fffaf5;
+}
+
+.sucursales-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.sucursales-name {
+    display: flex;
+    min-width: 180px;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.sucursales-name strong {
+    color: #1d2939;
+    font-size: 0.83rem;
+    font-weight: 650;
+}
+
+.sucursales-name small {
+    color: #98a2b3;
+    font-size: 0.7rem;
+}
+
+.sucursales-empty {
+    padding: 45px 20px !important;
+
+    color: #667085;
+    text-align: center;
+}
+
+/* =========================================================
+   MAPA Y ESTADOS
+========================================================= */
+
+.sucursales-map-link {
+    display: inline-flex;
+    align-items: center;
+
+    color: #e56800;
+
+    font-size: 0.78rem;
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.sucursales-map-link:hover {
+    color: #c2410c;
+    text-decoration: underline;
+}
+
+.sucursales-pending {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 5px 9px;
+
+    color: #92400e;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 999px;
+
+    font-size: 0.7rem;
+    font-weight: 650;
+}
+
+.sucursales-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 74px;
+    padding: 5px 10px;
+
+    border: 1px solid transparent;
+    border-radius: 999px;
+
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.sucursales-status-active {
+    color: #166534;
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+.sucursales-status-inactive {
+    color: #475467;
+    background: #f2f4f7;
+    border-color: #d0d5dd;
+}
+
+/* =========================================================
+   ACCIONES
+========================================================= */
+
+.sucursales-actions {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.sucursales-actions button {
+    min-height: 34px;
+    padding: 0 10px;
+
+    background: #ffffff;
+    border: 1px solid #d0d5dd;
+    border-radius: 7px;
+
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+        color 150ms ease,
+        background-color 150ms ease,
+        border-color 150ms ease;
+}
+
+.sucursales-btn-edit {
+    color: #344054;
+}
+
+.sucursales-btn-edit:hover {
+    color: #c2410c;
+    background: #fff7ed;
+    border-color: #fdba74;
+}
+
+.sucursales-btn-disable {
+    color: #b42318;
+}
+
+.sucursales-btn-disable:hover {
+    color: #ffffff;
+    background: #dc2626;
+    border-color: #dc2626;
+}
+
+.sucursales-btn-enable {
+    color: #166534;
+}
+
+.sucursales-btn-enable:hover {
+    color: #ffffff;
+    background: #15803d;
+    border-color: #15803d;
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.sucursales-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background: rgba(15, 23, 42, 0.62);
+    backdrop-filter: blur(3px);
+}
+
+.sucursales-modal {
+    width: min(100%, 680px);
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+
+    background: #ffffff;
+    border: 1px solid #e4e7ec;
+    border-radius: 17px;
+
+    box-shadow:
+        0 24px 70px rgba(15, 23, 42, 0.28);
+
+    animation: sucursalesModalIn 180ms ease-out;
+}
+
+.sucursales-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 22px 24px;
+
+    border-bottom: 1px solid #eaecf0;
+}
+
+.sucursales-modal-header span {
+    display: block;
+    margin-bottom: 4px;
+
+    color: #e56800;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.sucursales-modal-header h2 {
+    margin: 0;
+
+    color: #172033;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.sucursales-modal-close {
+    display: flex;
+    flex: 0 0 36px;
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+    padding: 0;
+
+    color: #667085;
+    background: #ffffff;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 1.35rem;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        color 150ms ease,
+        background-color 150ms ease,
+        border-color 150ms ease;
+}
+
+.sucursales-modal-close:hover {
+    color: #b42318;
+    background: #fff1f0;
+    border-color: #fda29b;
+}
+
+/* =========================================================
+   FORMULARIO
+========================================================= */
+
+.sucursales-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+
+    padding: 24px;
+}
+
+.sucursales-field {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.sucursales-field-full {
+    grid-column: 1 / -1;
+}
+
+.sucursales-field label {
+    color: #344054;
+    font-size: 0.78rem;
+    font-weight: 650;
+}
+
+.sucursales-field input,
+.sucursales-field textarea {
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 12px;
+
+    color: #344054;
+    background: #ffffff;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    outline: none;
+
+    font-family: inherit;
+    font-size: 0.82rem;
+
+    transition:
+        border-color 150ms ease,
+        box-shadow 150ms ease;
+}
+
+.sucursales-field textarea {
+    min-height: 88px;
+    resize: vertical;
+    line-height: 1.55;
+}
+
+.sucursales-field input:focus,
+.sucursales-field textarea:focus {
+    border-color: #f97316;
+
+    box-shadow:
+        0 0 0 3px rgba(249, 115, 22, 0.14);
+}
+
+.sucursales-input-suffix {
+    position: relative;
+}
+
+.sucursales-input-suffix input {
+    padding-right: 70px;
+}
+
+.sucursales-input-suffix > span {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+
+    color: #667085;
+    font-size: 0.72rem;
+    font-weight: 600;
+
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* =========================================================
+   INTERRUPTOR
+========================================================= */
+
+.sucursales-switch-row {
+    grid-column: 1 / -1;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 14px;
+
+    background: #f8fafc;
+    border: 1px solid #e4e7ec;
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+.sucursales-switch-row > input {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sucursales-switch {
+    position: relative;
+
+    flex: 0 0 40px;
+
+    width: 40px;
+    height: 22px;
+
+    background: #98a2b3;
+    border-radius: 999px;
+
+    transition: background-color 160ms ease;
+}
+
+.sucursales-switch::after {
+    content: "";
+
+    position: absolute;
+    top: 3px;
+    left: 3px;
+
+    width: 16px;
+    height: 16px;
+
+    background: #ffffff;
+    border-radius: 50%;
+
+    box-shadow:
+        0 1px 4px rgba(16, 24, 40, 0.25);
+
+    transition: transform 160ms ease;
+}
+
+.sucursales-switch-row
+    > input:checked
+    + .sucursales-switch {
+    background: #f97316;
+}
+
+.sucursales-switch-row
+    > input:checked
+    + .sucursales-switch::after {
+    transform: translateX(18px);
+}
+
+.sucursales-switch-row > span:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    color: #344054;
+    font-size: 0.8rem;
+    font-weight: 650;
+}
+
+.sucursales-switch-row small {
+    color: #667085;
+    font-size: 0.7rem;
+    font-weight: 400;
+}
+
+/* =========================================================
+   ACCIONES DEL FORMULARIO
+========================================================= */
+
+.sucursales-form-actions {
+    grid-column: 1 / -1;
+
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    padding-top: 6px;
+}
+
+.sucursales-btn-secondary {
+    min-height: 43px;
+    padding: 0 17px;
+
+    color: #344054;
+    background: #ffffff;
+    border: 1px solid #d0d5dd;
+    border-radius: 9px;
+
+    font-family: inherit;
+    font-size: 0.84rem;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+        background-color 150ms ease,
+        border-color 150ms ease;
+}
+
+.sucursales-btn-secondary:hover:not(:disabled) {
+    background: #f8fafc;
+    border-color: #98a2b3;
+}
+
+.sucursales-btn-secondary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* =========================================================
+   ANIMACIÓN
+========================================================= */
+
+@keyframes sucursalesModalIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.985);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+    .sucursales-page {
+        padding: 22px 18px;
+    }
+
+    .sucursales-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .sucursales-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .sucursales-summary-card {
+        min-height: 90px;
+    }
+}
+
+@media (max-width: 650px) {
+    .sucursales-page {
+        padding: 16px 12px;
+    }
+
+    .sucursales-header {
+        padding: 22px 20px;
+    }
+
+    .sucursales-header .sucursales-btn-primary {
+        width: 100%;
+    }
+
+    .sucursales-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .sucursales-search {
+        width: 100%;
+    }
+
+    .sucursales-results {
+        text-align: right;
+    }
+
+    .sucursales-modal-backdrop {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .sucursales-modal {
+        width: 100%;
+        max-height: 94vh;
+
+        border-radius: 18px 18px 0 0;
+    }
+
+    .sucursales-form {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .sucursales-field-full,
+    .sucursales-switch-row,
+    .sucursales-form-actions {
+        grid-column: auto;
+    }
+
+    .sucursales-form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .sucursales-form-actions button {
+        width: 100%;
+    }
+}

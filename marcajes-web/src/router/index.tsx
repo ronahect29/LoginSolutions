@@ -1,15 +1,22 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
+
 import { LoginPage } from "../pages/Auth/LoginPage";
-import { GeneralLayout } from "../components/layout/GeneralLayout";
 import { ColaboradorPage } from "../pages/Colaborador";
-import { SupervisorHome, RepositorioMarcajes } from "../pages/Supervisor";
+
+import {
+    EquipoPage,
+    RepositorioMarcajes,
+    SucursalesPage,
+    SupervisorHome
+} from "../pages/Supervisor";
+
+import { GeneralLayout } from "../components/layout/GeneralLayout";
 import { PublicRoute } from "./PublicRoute";
 import { RoleRoute } from "./RoleRoute";
 
 export function AppRouter() {
     return (
         <Routes>
-            {/* Login */}
             <Route
                 path="/login"
                 element={
@@ -19,7 +26,6 @@ export function AppRouter() {
                 }
             />
 
-            {/* Colaborador */}
             <Route
                 path="/colaborador"
                 element={
@@ -31,7 +37,6 @@ export function AppRouter() {
                 }
             />
 
-            {/* Supervisor Home */}
             <Route
                 path="/supervisor-home"
                 element={
@@ -43,7 +48,17 @@ export function AppRouter() {
                 }
             />
 
-            {/* Repositorio Marcajes */}
+            <Route
+                path="/supervisor/equipo"
+                element={
+                    <RoleRoute allowedRoles={["SUP-PMW"]}>
+                        <GeneralLayout>
+                            <EquipoPage />
+                        </GeneralLayout>
+                    </RoleRoute>
+                }
+            />
+
             <Route
                 path="/supervisor/repositorio-marcajes"
                 element={
@@ -55,90 +70,21 @@ export function AppRouter() {
                 }
             />
 
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/login" replace />} />
+            <Route
+                path="/supervisor/sucursales"
+                element={
+                    <RoleRoute allowedRoles={["SUP-PMW"]}>
+                        <GeneralLayout>
+                            <SucursalesPage />
+                        </GeneralLayout>
+                    </RoleRoute>
+                }
+            />
+
+            <Route
+                path="*"
+                element={<Navigate to="/login" replace />}
+            />
         </Routes>
     );
 }
-
-
-
-
-
-
-// import { Routes, Route, Navigate } from "react-router-dom";
-// import { LoginPage } from "../pages/Auth/LoginPage.tsx";
-// // import { useAuth } from "../hooks/useAuth.ts";
-// import type { JSX } from "react";
-// import { GeneralLayout } from "../components/layout/GeneralLayout.tsx";
-// import { ColaboradorPage } from "../pages/Colaborador/index.tsx";
-// import { useSession } from "../hooks/useSession.ts";
-// import { PublicRoute } from "./PublicRoute.tsx";
-// import { SupervisorHome } from "../pages/Colaborador/SupervisorHome.tsx";
-// import { RepositorioMarcajes } from "../pages/Colaborador/RepositorioMarcajes.tsx";
-
-// function PrivateRoute({ children }: { children: JSX.Element }) {
-//     // const { user, loading } = useAuth();
-//     const ROLES_PERMITIDOS = ["COL-PMW"];
-//     const { empleado, loading } = useSession();
-
-//     if (loading) {
-//         return (
-//             <div className="min-h-screen flex items-center justify-center">
-//                 <span>Cargando...</span>
-//             </div>
-//         );
-//     }
-
-//     if (!empleado) {
-//         console.log("no hay empleado")
-//         return <Navigate to="/login" replace />;
-//     }
-//     // if (!empleado.roles.includes("COL-PMW")) {
-//     if (!empleado.roles.some(r => ROLES_PERMITIDOS.includes(r.codigo))) {
-//         console.log("User roles no válidos:", JSON.stringify(empleado.roles));
-//         return <Navigate to="/login" replace />;
-//     }
-
-//     return children;
-// }
-
-// export function AppRouter() {
-//     return (
-//         <Routes>
-//             <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
-
-//             <Route
-//                 path="/colaborador"
-//                 element={
-//                     <PrivateRoute>
-//                         <GeneralLayout>
-//                             <ColaboradorPage />
-//                         </GeneralLayout>
-//                     </PrivateRoute>
-//                 }
-//             />
-//             <Route path="/supervisor-home"
-//                 element={
-//                     <PrivateRoute>
-//                         <GeneralLayout>
-//                             <SupervisorHome />
-//                         </GeneralLayout>
-//                     </PrivateRoute>
-//                 }
-//             />
-//             <Route
-//                 path="/supervisor/repositorio-marcajes"
-//                 element={
-//                     <PrivateRoute>
-//                         <GeneralLayout>
-//                             <RepositorioMarcajes />
-//                         </GeneralLayout>
-//                     </PrivateRoute>
-//                 }
-//             />
-
-//             <Route path="*" element={<Navigate to="/login" replace />} />
-//         </Routes>
-//     );
-// }

@@ -1,0 +1,230 @@
+.supervisor-home {
+    width: 100%;
+    min-height: calc(100vh - 110px);
+    padding: 32px;
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(255, 122, 0, 0.08),
+            transparent 32%
+        ),
+        #f7f8fc;
+    box-sizing: border-box;
+}
+
+.supervisor-welcome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto 28px;
+    padding: 32px 36px;
+    border: 1px solid #e8eaf0;
+    border-radius: 20px;
+    background: linear-gradient(
+        135deg,
+        #ffffff 0%,
+        #fff8f1 100%
+    );
+    box-shadow: 0 12px 35px rgba(28, 35, 55, 0.08);
+}
+
+.supervisor-eyebrow {
+    display: inline-block;
+    margin-bottom: 10px;
+    color: #e56800;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.supervisor-welcome h1 {
+    margin: 0 0 12px;
+    color: #172033;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 750;
+    line-height: 1.15;
+}
+
+.supervisor-welcome p {
+    max-width: 720px;
+    margin: 0;
+    color: #667085;
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.supervisor-options {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.supervisor-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.supervisor-section-header h2 {
+    margin: 0 0 5px;
+    color: #1d2939;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.supervisor-section-header p {
+    margin: 0;
+    color: #7a8496;
+    font-size: 0.92rem;
+}
+
+.supervisor-card-grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(280px, 380px)
+    );
+    gap: 22px;
+}
+
+.supervisor-card {
+    position: relative;
+    display: flex;
+    min-height: 190px;
+    padding: 26px;
+    overflow: hidden;
+    border: 1px solid #e5e8ef;
+    border-radius: 18px;
+    background: #ffffff;
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 8px 25px rgba(31, 42, 68, 0.07);
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease,
+        border-color 180ms ease;
+}
+
+.supervisor-card::after {
+    content: "";
+    position: absolute;
+    right: -55px;
+    bottom: -65px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: rgba(255, 122, 0, 0.08);
+    transition: transform 180ms ease;
+}
+
+.supervisor-card:hover {
+    border-color: rgba(255, 122, 0, 0.45);
+    box-shadow: 0 16px 35px rgba(31, 42, 68, 0.13);
+    transform: translateY(-4px);
+}
+
+.supervisor-card:hover::after {
+    transform: scale(1.15);
+}
+
+.supervisor-card:focus-visible {
+    outline: 3px solid rgba(255, 122, 0, 0.3);
+    outline-offset: 3px;
+}
+
+.supervisor-card-icon {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex: 0 0 58px;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    margin-right: 18px;
+    border-radius: 16px;
+    background: #fff1e5;
+    color: #f06d00;
+}
+
+.supervisor-card-icon svg {
+    width: 30px;
+    height: 30px;
+}
+
+.supervisor-card-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.supervisor-card-content h3 {
+    margin: 2px 0 10px;
+    color: #1b2437;
+    font-size: 1.13rem;
+    font-weight: 700;
+}
+
+.supervisor-card-content p {
+    margin: 0 0 24px;
+    color: #6b7485;
+    font-size: 0.93rem;
+    line-height: 1.6;
+}
+
+.supervisor-card-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    color: #e56800;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.supervisor-card-action span {
+    font-size: 1.15rem;
+    transition: transform 180ms ease;
+}
+
+.supervisor-card:hover .supervisor-card-action span {
+    transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+    .supervisor-home {
+        padding: 20px 16px;
+    }
+
+    .supervisor-welcome {
+        padding: 25px 22px;
+        border-radius: 16px;
+    }
+
+    .supervisor-card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .supervisor-card {
+        min-height: 175px;
+        padding: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .supervisor-welcome h1 {
+        font-size: 1.65rem;
+    }
+
+    .supervisor-card {
+        flex-direction: column;
+    }
+
+    .supervisor-card-icon {
+        margin: 0 0 18px;
+    }
+}

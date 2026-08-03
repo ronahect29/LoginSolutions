@@ -45,6 +45,7 @@ model sucursal {
   direccion                            String     @db.VarChar(200)
   latitud                              Decimal?   @db.Decimal(9, 6)
   longitud                             Decimal?   @db.Decimal(9, 6)
+  radio_marcaje_metros                 Int        @default(150)
   activo                               Boolean?
   fecha_creacion                       DateTime   @default(now()) @db.DateTime(0)
   creador                              String     @db.VarChar(50)
