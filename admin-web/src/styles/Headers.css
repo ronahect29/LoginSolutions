@@ -1,75 +1,616 @@
+/* ======================================================
+   HEADER
+   ====================================================== */
+
 .app-header {
-    height: 60px;
-    background: #0f172a;
-    color: white;
-    display: flex;
+    position: sticky;
+
+    top: 0;
+
+    z-index: 50;
+
+    width: 100%;
+    min-height: 88px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(190px, 1fr)
+        minmax(340px, auto)
+        minmax(190px, 1fr);
+
     align-items: center;
-    justify-content: space-between;
-    padding: 0 1rem;
+
+    padding:
+        10px
+        26px;
+
+    color: #ffffff;
+
+    background:
+        var(--admin-navy);
+
+    border-bottom:
+        3px solid
+        var(--admin-orange);
+
+    box-shadow:
+        0 8px 22px
+        rgba(17, 24, 39, 0.12);
 }
 
-.menu-btn,
-.close-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
+/* ======================================================
+   LADO IZQUIERDO
+   ====================================================== */
+
+.header-left {
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-start;
 }
+
+.menu-btn {
+    width: 44px;
+    height: 44px;
+
+    display: grid;
+    place-items: center;
+
+    padding: 0;
+
+    color: #ffffff;
+    background: transparent;
+
+    border:
+        1px solid
+        #313a4c;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.menu-btn:hover {
+    background: #1d2637;
+
+    border-color: #485368;
+}
+
+.menu-btn:active {
+    transform: scale(0.96);
+}
+
+/* ======================================================
+   CENTRO
+   ====================================================== */
+
+.header-center {
+    min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 11px;
+}
+
+.header-brand-icon {
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    color: #ffffff;
+
+    background:
+        var(--admin-orange);
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 8px 20px
+        rgba(255, 115, 0, 0.23);
+}
+
+.header-brand-text {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    text-align: left;
+}
+
+.header-brand-text strong {
+    overflow: hidden;
+
+    color: #ffffff;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+}
+
+.header-brand-text span {
+    margin-top: 2px;
+
+    color: #98a3b7;
+
+    font-size: 11px;
+    font-weight: 400;
+}
+
+/* ======================================================
+   LADO DERECHO
+   ====================================================== */
+
+.header-right {
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-end;
+    justify-content: center;
+
+    gap: 5px;
+}
+
+/* ======================================================
+   USUARIO
+   ====================================================== */
 
 .header-user {
     display: flex;
+
     align-items: center;
-    gap: 1rem;
+
+    gap: 7px;
+
+    padding-right: 2px;
 }
+
+.header-user-avatar {
+    width: 31px;
+    height: 31px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    color: #9a3f00;
+
+    background: #ffe5cd;
+
+    border-radius: 50%;
+
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.header-user-text {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    text-align: left;
+}
+
+.header-user-text strong {
+    max-width: 155px;
+
+    overflow: hidden;
+
+    color: #ffffff;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    line-height: 1.25;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+}
+
+.header-user-text span {
+    margin-top: 1px;
+
+    color: #9da7ba;
+
+    font-size: 9px;
+    font-weight: 400;
+
+    line-height: 1.2;
+}
+
+/* ======================================================
+   CERRAR SESIÓN
+   ====================================================== */
 
 .logout-btn {
-    background: #ef4444;
-    border: none;
-    padding: 0.4rem 0.8rem;
-    border-radius: 4px;
-    color: white;
+    min-height: 31px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    padding:
+        0
+        10px;
+
+    color: #f6d8d8;
+
+    background:
+        var(--admin-red-soft);
+
+    border:
+        1px solid
+        rgba(230, 91, 91, 0.25);
+
+    border-radius: 8px;
+
     cursor: pointer;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
 }
 
-/* Side Menu */
+.logout-btn:hover {
+    background:
+        rgba(166, 50, 50, 0.28);
+
+    border-color:
+        rgba(230, 91, 91, 0.4);
+}
+
+.logout-btn:active {
+    transform: scale(0.97);
+}
+
+.menu-btn:focus-visible,
+.logout-btn:focus-visible,
+.close-btn:focus-visible {
+    outline:
+        3px solid
+        rgba(255, 115, 0, 0.32);
+
+    outline-offset: 2px;
+}
+
+/* ======================================================
+   OVERLAY
+   ====================================================== */
+
 .menu-overlay {
     position: fixed;
+
     inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 100;
+
+    z-index: 90;
+
+    background:
+        rgba(8, 15, 28, 0.52);
+
+    backdrop-filter:
+        blur(2px);
 }
+
+/* ======================================================
+   MENÚ LATERAL
+   ====================================================== */
 
 .side-menu {
     position: fixed;
+
     top: 0;
     left: 0;
-    width: 260px;
-    height: 100%;
-    background: #020617;
-    padding: 1rem;
-    z-index: 200;
+
+    z-index: 100;
+
+    width:
+        min(300px, 88vw);
+
+    height: 100dvh;
+
+    padding: 20px;
+
+    overflow-y: auto;
+
+    color: #ffffff;
+
+    background:
+        var(--admin-navy);
+
+    box-shadow:
+        16px 0 42px
+        rgba(7, 15, 28, 0.25);
+}
+
+/* ======================================================
+   CABECERA MENÚ
+   ====================================================== */
+
+.side-menu-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding-bottom: 20px;
+
+    border-bottom:
+        1px solid
+        #253044;
+}
+
+.side-menu-brand {
+    min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.side-menu-logo {
+    width: 40px;
+    height: 40px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    color: #ffffff;
+
+    background:
+        var(--admin-orange);
+
+    border-radius: 11px;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.side-menu-brand-text {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.side-menu-brand-text strong {
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.side-menu-brand-text span {
+    margin-top: 2px;
+
+    color: #929daf;
+
+    font-size: 10px;
+}
+
+.close-btn {
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    padding: 0;
+
+    color: #d6dce7;
+    background: transparent;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease;
+}
+
+.close-btn:hover {
+    background: #1c2739;
+}
+
+/* ======================================================
+   NAVEGACIÓN
+   ====================================================== */
+
+.side-menu-nav {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+
+    margin-top: 18px;
 }
 
 .menu-link {
-    display: block;
-    color: white;
-    padding: 0.75rem 0;
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+        12px
+        13px;
+
+    color: #c4ccd9;
+
+    border:
+        1px solid
+        transparent;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 500;
+
     text-decoration: none;
+
+    transition:
+        color 0.18s ease,
+        background 0.18s ease,
+        border-color 0.18s ease;
+}
+
+.menu-link:hover {
+    color: #ffffff;
+
+    background: #1b2536;
 }
 
 .menu-link.active {
-    font-weight: bold;
-    color: #38bdf8;
+    color: #ffffff;
+
+    background:
+        rgba(255, 115, 0, 0.14);
+
+    border-color:
+        rgba(255, 115, 0, 0.3);
 }
 
-.layout-content {
-    padding: 1rem;
+.menu-link-icon {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .app-title {
-        font-size: 1rem;
+/* ======================================================
+   TABLET
+   ====================================================== */
+
+@media (max-width: 950px) {
+    .app-header {
+        grid-template-columns:
+            minmax(120px, 1fr)
+            minmax(280px, auto)
+            minmax(120px, 1fr);
+
+        gap: 12px;
+
+        padding:
+            10px
+            16px;
+    }
+
+    .header-brand-text span {
+        display: none;
+    }
+
+    .header-user-text strong {
+        max-width: 100px;
+    }
+}
+
+/* ======================================================
+   CELULAR
+   ====================================================== */
+
+@media (max-width: 650px) {
+    .app-header {
+        min-height: 68px;
+
+        grid-template-columns:
+            40px
+            minmax(0, 1fr)
+            40px;
+
+        gap: 8px;
+
+        padding:
+            9px
+            11px;
+    }
+
+    .menu-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .header-brand-icon {
+        display: none;
+    }
+
+    .header-brand-text {
+        width: 100%;
+
+        text-align: center;
+    }
+
+    .header-brand-text strong {
+        font-size: 13px;
+    }
+
+    .header-user {
+        display: none;
+    }
+
+    .header-right {
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logout-btn {
+        width: 40px;
+        height: 40px;
+        min-height: 40px;
+
+        padding: 0;
+
+        border-radius: 10px;
+    }
+
+    .logout-btn span {
+        display: none;
+    }
+}
+
+/* ======================================================
+   CELULAR PEQUEÑO
+   ====================================================== */
+
+@media (max-width: 380px) {
+    .header-brand-text strong {
+        font-size: 11px;
     }
 }

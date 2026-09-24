@@ -1,0 +1,119 @@
+/* ======================================================
+   VARIABLES GLOBALES
+   ====================================================== */
+
+:root {
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+
+    --admin-navy: #111827;
+    --admin-navy-light: #172033;
+
+    --admin-orange: #ff7300;
+    --admin-orange-hover: #e96700;
+    --admin-orange-soft: #fff0e3;
+
+    --admin-background: #f5f7fc;
+    --admin-surface: #ffffff;
+    --admin-surface-warm: #fffdf9;
+
+    --admin-text: #1c263b;
+    --admin-text-soft: #6f778a;
+
+    --admin-border: #e6e9f0;
+
+    --admin-green: #15803d;
+    --admin-green-soft: #ecfdf3;
+
+    --admin-red-soft:
+        rgba(142, 38, 38, 0.18);
+
+    --admin-shadow:
+        0 14px 36px
+        rgba(17, 24, 39, 0.08);
+}
+
+/* ======================================================
+   RESET
+   ====================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    min-width: 320px;
+
+    background:
+        var(--admin-background);
+}
+
+body {
+    min-width: 320px;
+    min-height: 100vh;
+
+    margin: 0;
+
+    overflow-x: hidden;
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    color:
+        var(--admin-text);
+
+    background:
+        var(--admin-background);
+}
+
+#root {
+    min-height: 100vh;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    border: 0;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color:
+        transparent;
+}
+
+a {
+    color: inherit;
+
+    text-decoration: none;
+}
+
+/* ======================================================
+   LAYOUT
+   ====================================================== */
+
+.layout {
+    width: 100%;
+    min-height: 100vh;
+
+    overflow-x: hidden;
+
+    background:
+        var(--admin-background);
+}
+
+.layout-content {
+    width: 100%;
+}

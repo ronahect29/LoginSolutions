@@ -1,45 +1,525 @@
-/* ===== DASHBOARD GRID ===== */
+/* ======================================================
+   DASHBOARD
+   ====================================================== */
+
+.dashboard-page {
+    width:
+        min(
+            1080px,
+            calc(100% - 42px)
+        );
+
+    margin: 0 auto;
+
+    padding:
+        30px
+        0
+        70px;
+}
+
+/* ======================================================
+   HERO
+   ====================================================== */
+
+.dashboard-hero {
+    padding:
+        34px
+        32px;
+
+    color:
+        var(--admin-text);
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff 0%,
+            #fffaf5 100%
+        );
+
+    border:
+        1px solid
+        #f1ebe5;
+
+    border-radius: 20px;
+
+    box-shadow:
+        var(--admin-shadow);
+}
+
+.dashboard-hero-kicker {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color:
+        var(--admin-orange);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+}
+
+.dashboard-hero h1 {
+    margin: 0;
+
+    color:
+        var(--admin-text);
+
+    font-size:
+        clamp(
+            28px,
+            4vw,
+            38px
+        );
+
+    font-weight: 700;
+
+    line-height: 1.15;
+
+    letter-spacing: -0.035em;
+}
+
+.dashboard-hero p {
+    max-width: 700px;
+
+    margin:
+        14px
+        0
+        0;
+
+    color:
+        var(--admin-text-soft);
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+/* ======================================================
+   HERRAMIENTAS
+   ====================================================== */
+
+.dashboard-tools {
+    margin-top: 28px;
+}
+
+.dashboard-section-heading {
+    margin-bottom: 16px;
+}
+
+.dashboard-section-heading h2 {
+    margin: 0;
+
+    color:
+        var(--admin-text);
+
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.dashboard-section-heading p {
+    margin:
+        5px
+        0
+        0;
+
+    color:
+        var(--admin-text-soft);
+
+    font-size: 13px;
+}
+
+/* ======================================================
+   ERROR
+   ====================================================== */
+
+.dashboard-error {
+    margin-bottom: 16px;
+
+    padding:
+        12px
+        14px;
+
+    color: #991b1b;
+
+    background: #fff1f2;
+
+    border:
+        1px solid
+        #fecdd3;
+
+    border-radius: 12px;
+
+    font-size: 12px;
+
+    line-height: 1.55;
+}
+
+/* ======================================================
+   GRID
+   ====================================================== */
+
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
+
+    gap: 18px;
 }
 
-/* ===== CARD ===== */
+/* ======================================================
+   TARJETAS
+   ====================================================== */
+
 .dashboard-card {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 1.25rem;
-    box-shadow:
-        0 8px 20px rgba(0, 0, 0, 0.12);
+    min-width: 0;
+    min-height: 250px;
+
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+
+    padding: 22px;
+
+    background:
+        var(--admin-surface);
+
+    border:
+        1px solid
+        var(--admin-border);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 10px 25px
+        rgba(17, 24, 39, 0.055);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
 }
 
-/* ===== TITLE ===== */
-.dashboard-card-title {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #64748b;
+.dashboard-card:hover {
+    transform:
+        translateY(-4px);
+
+    border-color:
+        #d9dde7;
+
+    box-shadow:
+        0 18px 34px
+        rgba(17, 24, 39, 0.09);
 }
 
-/* ===== VALUE ===== */
-.dashboard-card-value {
-    font-size: 2rem;
+.dashboard-card-top {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 14px;
+}
+
+.dashboard-card-icon {
+    width: 50px;
+    height: 50px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    color:
+        var(--admin-orange);
+
+    background:
+        var(--admin-orange-soft);
+
+    border-radius: 14px;
+}
+
+.dashboard-card-status {
+    padding:
+        5px
+        9px;
+
+    color:
+        var(--admin-green);
+
+    background:
+        var(--admin-green-soft);
+
+    border:
+        1px solid
+        #d6f5e1;
+
+    border-radius: 999px;
+
+    font-size: 9px;
     font-weight: 700;
-    color: #020617;
+
+    letter-spacing: 0.05em;
+
+    text-transform: uppercase;
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 900px) {
-    .dashboard-grid {
-        grid-template-columns: repeat(2, 1fr);
+/* ======================================================
+   CONTENIDO TARJETA
+   ====================================================== */
+
+.dashboard-card-content {
+    margin-top: 22px;
+}
+
+.dashboard-card-label {
+    display: block;
+
+    color:
+        var(--admin-text-soft);
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.dashboard-card-value {
+    display: block;
+
+    margin-top: 3px;
+
+    color:
+        var(--admin-text);
+
+    font-size: 37px;
+    font-weight: 700;
+
+    line-height: 1.15;
+}
+
+.dashboard-card-content p {
+    margin:
+        10px
+        0
+        0;
+
+    color:
+        var(--admin-text-soft);
+
+    font-size: 12px;
+
+    line-height: 1.55;
+}
+
+/* ======================================================
+   ACCIÓN TARJETA
+   ====================================================== */
+
+.dashboard-card-action {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: auto;
+
+    padding:
+        16px
+        0
+        0;
+
+    color:
+        var(--admin-orange);
+
+    background: transparent;
+
+    border-top:
+        1px solid
+        #edf0f4;
+
+    cursor: pointer;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-align: left;
+}
+
+.dashboard-card-action:focus-visible {
+    outline:
+        3px solid
+        rgba(255, 115, 0, 0.2);
+
+    outline-offset: 5px;
+}
+
+.dashboard-card-arrow {
+    flex-shrink: 0;
+
+    transition:
+        transform 0.2s ease;
+}
+
+.dashboard-card:hover
+.dashboard-card-arrow {
+    transform:
+        translateX(4px);
+}
+
+/* ======================================================
+   LOADING
+   ====================================================== */
+
+.dashboard-loading {
+    min-height: 300px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+}
+
+.dashboard-loading > div:last-child {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.dashboard-loading strong {
+    color:
+        var(--admin-text);
+
+    font-size: 14px;
+}
+
+.dashboard-loading span {
+    color:
+        var(--admin-text-soft);
+
+    font-size: 11px;
+}
+
+.dashboard-spinner {
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+
+    border:
+        4px solid
+        var(--admin-orange-soft);
+
+    border-top-color:
+        var(--admin-orange);
+
+    border-radius: 50%;
+
+    animation:
+        dashboard-spin
+        0.8s linear
+        infinite;
+}
+
+@keyframes dashboard-spin {
+    to {
+        transform:
+            rotate(360deg);
     }
 }
 
-@media (max-width: 520px) {
+/* ======================================================
+   TABLET
+   ====================================================== */
+
+@media (max-width: 950px) {
     .dashboard-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+    }
+
+    .dashboard-card:last-child {
+        grid-column:
+            1 / -1;
+    }
+}
+
+/* ======================================================
+   CELULAR
+   ====================================================== */
+
+@media (max-width: 650px) {
+    .dashboard-page {
+        width:
+            calc(100% - 28px);
+
+        padding:
+            22px
+            0
+            45px;
+    }
+
+    .dashboard-hero {
+        padding:
+            24px
+            21px;
+
+        border-radius: 17px;
+    }
+
+    .dashboard-hero h1 {
+        font-size: 27px;
+    }
+
+    .dashboard-hero p {
+        font-size: 13px;
+    }
+
+    .dashboard-tools {
+        margin-top: 24px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns:
+            1fr;
+
+        gap: 14px;
+    }
+
+    .dashboard-card:last-child {
+        grid-column: auto;
+    }
+
+    .dashboard-card {
+        min-height: 230px;
+
+        padding: 20px;
+    }
+}
+
+/* ======================================================
+   CELULAR PEQUEÑO
+   ====================================================== */
+
+@media (max-width: 380px) {
+    .dashboard-hero h1 {
+        font-size: 24px;
+    }
+
+    .dashboard-page {
+        width:
+            calc(100% - 22px);
     }
 }
