@@ -148,7 +148,7 @@ export function DashboardPage() {
                             className="dashboard-card-action"
                             onClick={() =>
                                 navigate(
-                                    "/admin/users"
+                                    "/admin/usuarios"
                                 )
                             }
                         >

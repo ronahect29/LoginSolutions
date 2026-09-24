@@ -13,7 +13,7 @@ export function AppsPage() {
     return (
         <div className="bg-white rounded-xl shadow p-4 flex flex-col gap-4">
             <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold">Roles</h2>
+                <h2 className="text-lg font-semibold">Aplicaciones</h2>
                 <button
                     onClick={() => {
                         setEditingId(null);

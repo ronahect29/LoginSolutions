@@ -1,16 +1,25 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import { LoginPage } from "../pages/Auth/LoginPage";
-import { PublicRoute } from "./PublicRoute";
-import { RoleRoute } from "./RoleRouter";
+import {
+    Navigate,
+    Route,
+    Routes,
+} from "react-router-dom";
+
 import { AdminLayout } from "../components/layout/AdminLayout";
+import { AppsPage } from "../pages/Apps";
+import { LoginPage } from "../pages/Auth/LoginPage";
 import { DashboardPage } from "../pages/Dashboard";
 import { RolesPage } from "../pages/Roles";
 import { UsersPage } from "../pages/Users";
+import { PublicRoute } from "./PublicRoute";
+import { RoleRoute } from "./RoleRouter";
 
 export function AppRouter() {
     return (
         <Routes>
-            {/* Login */}
+            {/* ======================================================
+                LOGIN
+                ====================================================== */}
+
             <Route
                 path="/admin/login"
                 element={
@@ -20,68 +29,104 @@ export function AppRouter() {
                 }
             />
 
-            {/* Dashboard */}
+            {/* ======================================================
+                DASHBOARD
+                ====================================================== */}
+
             <Route
                 element={
-                    <RoleRoute allowedRoles={["SA-PAW"]}>
+                    <RoleRoute
+                        allowedRoles={[
+                            "SA-PAW",
+                        ]}
+                    >
                         <AdminLayout />
                     </RoleRoute>
                 }
             >
-                <Route path="/admin/home-admin" element={<DashboardPage />} />
+                <Route
+                    path="/admin/home-admin"
+                    element={<DashboardPage />}
+                />
             </Route>
 
-            {/* Usuarios */}
+            {/* ======================================================
+                USUARIOS
+                ====================================================== */}
+
             <Route
                 element={
-                    <RoleRoute allowedRoles={["SA-PAW", "SUP"]}>
+                    <RoleRoute
+                        allowedRoles={[
+                            "SA-PAW",
+                            "SUP",
+                        ]}
+                    >
                         <AdminLayout />
                     </RoleRoute>
                 }
             >
-                <Route path="/admin/usuarios" element={<UsersPage />} />
+                <Route
+                    path="/admin/usuarios"
+                    element={<UsersPage />}
+                />
             </Route>
 
-            {/* Roles */}
+            {/* ======================================================
+                ROLES
+                ====================================================== */}
+
             <Route
                 element={
-                    <RoleRoute allowedRoles={["SA-PAW"]}>
+                    <RoleRoute
+                        allowedRoles={[
+                            "SA-PAW",
+                        ]}
+                    >
                         <AdminLayout />
                     </RoleRoute>
                 }
             >
-                <Route path="/admin/roles" element={<RolesPage />} />
+                <Route
+                    path="/admin/roles"
+                    element={<RolesPage />}
+                />
             </Route>
 
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/admin/login" replace />} />
+            {/* ======================================================
+                APLICACIONES
+                ====================================================== */}
+
+            <Route
+                element={
+                    <RoleRoute
+                        allowedRoles={[
+                            "SA-PAW",
+                        ]}
+                    >
+                        <AdminLayout />
+                    </RoleRoute>
+                }
+            >
+                <Route
+                    path="/admin/apps"
+                    element={<AppsPage />}
+                />
+            </Route>
+
+            {/* ======================================================
+                FALLBACK
+                ====================================================== */}
+
+            <Route
+                path="*"
+                element={
+                    <Navigate
+                        to="/admin/login"
+                        replace
+                    />
+                }
+            />
         </Routes>
-        // <Routes>
-        //     {/* Login */}
-        //     <Route
-        //         path="/admin/login"
-        //         element={
-        //             <PublicRoute>
-        //                 <LoginPage />
-        //             </PublicRoute>
-        //         }
-        //     />
-
-        //     {/* Super Admin */}
-        //     <Route
-        //         element={
-        //             <RoleRoute allowedRoles={["SA-PAW"]}>
-        //                 <AdminLayout />
-        //             </RoleRoute>
-        //         }
-        //     >
-        //         <Route path="/admin/home-admin" element={<DashboardPage />} />
-        //         <Route path="/admin/usuarios" element={<UsersPage />} />
-        //         <Route path="/admin/roles" element={<RolesPage />} />
-        //     </Route>
-
-        //     {/* Fallback */}
-        //     <Route path="*" element={<Navigate to="/admin/login" replace />} />
-        // </Routes>
     );
 }
