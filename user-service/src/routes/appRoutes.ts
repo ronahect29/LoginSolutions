@@ -1,32 +1,68 @@
-import { Router } from "express";
-import { requireAuth } from "../middlewares/authMiddleware";
-import { requireRole } from "../middlewares/roleMiddleware";
+import {
+    Router,
+} from "express";
+
 import * as appController from "../controllers/appController";
+import {
+    requireAuth,
+} from "../middlewares/authMiddleware";
+import {
+    requireRole,
+} from "../middlewares/roleMiddleware";
 
-const router = Router();
+const router =
+    Router();
 
-// Listar todas las apps
+// ======================================================
+// LISTADO
+// ======================================================
+
 router.get(
-  "/",
-  requireAuth,
-  requireRole(["SA-PAW"]),
-  appController.getApps
+    "/",
+    requireAuth,
+    requireRole([
+        "SA-PAW",
+    ]),
+    appController.getApps
 );
 
-// Crear app
+// ======================================================
+// CREACIÓN
+// ======================================================
+
 router.post(
-  "/",
-  requireAuth,
-  requireRole(["SA-PAW"]),
-  appController.createApp
+    "/",
+    requireAuth,
+    requireRole([
+        "SA-PAW",
+    ]),
+    appController.createApp
 );
 
-// Eliminar app
-router.delete(
-  "/:id",
-  requireAuth,
-  requireRole(["SA-PAW"]),
-  appController.deleteApp
+// ======================================================
+// ACTUALIZACIÓN
+// ======================================================
+
+router.put(
+    "/:id",
+    requireAuth,
+    requireRole([
+        "SA-PAW",
+    ]),
+    appController.updateApp
+);
+
+// ======================================================
+// CAMBIO DE ESTADO
+// ======================================================
+
+router.patch(
+    "/:id/activo",
+    requireAuth,
+    requireRole([
+        "SA-PAW",
+    ]),
+    appController.changeAppActivo
 );
 
 export default router;

@@ -1,186 +1,449 @@
-/* ===== CARD ===== */
-.user-filters-card {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 1.25rem;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+/* ======================================================
+   CONTENEDOR DE FILTROS
+   ====================================================== */
+
+.users-filter-card {
+    padding: 23px;
+
+    background:
+        var(--admin-surface);
+
+    border:
+        1px solid
+        var(--admin-border);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 12px 30px
+        rgba(17, 24, 39, 0.07);
 }
 
-/* ===== HEADER ===== */
-.user-filters-header {
+/* ======================================================
+   CABECERA
+   ====================================================== */
+
+.users-filter-header {
+    margin-bottom: 18px;
+}
+
+.users-filter-header h2 {
+    margin: 0;
+
+    color:
+        var(--admin-text);
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.users-filter-header p {
+    margin:
+        4px
+        0
+        0;
+
+    color:
+        var(--admin-text-soft);
+
+    font-size: 12px;
+}
+
+/* ======================================================
+   GRID PRINCIPAL
+   ====================================================== */
+
+.users-filter-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
+
+    gap: 16px;
+}
+
+/* ======================================================
+   CAMPOS
+   ====================================================== */
+
+.users-filter-field {
+    min-width: 0;
+}
+
+.users-filter-field label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #40495b;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.users-filter-field input,
+.users-filter-field select {
+    width: 100%;
+    height: 42px;
+
+    padding:
+        0
+        12px;
+
+    color:
+        var(--admin-text);
+
+    background: #ffffff;
+
+    border:
+        1px solid
+        #dce1e8;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    font-size: 12px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.users-filter-field input::placeholder {
+    color: #a0a6b2;
+}
+
+.users-filter-field input:focus,
+.users-filter-field select:focus {
+    border-color:
+        var(--admin-orange);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(255, 115, 0, 0.08);
+}
+
+/* ======================================================
+   FILTROS AVANZADOS
+   ====================================================== */
+
+.users-advanced-filters {
+    animation:
+        users-filter-open
+        0.18s ease;
+}
+
+@keyframes users-filter-open {
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+.users-filter-divider {
+    height: 1px;
+
+    margin:
+        22px
+        0;
+
+    background: #eef0f4;
+}
+
+.users-advanced-title {
     display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 14px;
+
+    color:
+        var(--admin-text);
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.users-advanced-title svg {
+    color:
+        var(--admin-orange);
+}
+
+.users-advanced-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
+
+    gap: 16px;
+}
+
+/* ======================================================
+   PILLS
+   ====================================================== */
+
+.users-filter-pills {
+    min-height: 42px;
+
+    display: flex;
+
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 7px;
+}
+
+.users-filter-pill {
+    min-height: 33px;
+
+    padding:
+        6px
+        12px;
+
+    color: #5d6677;
+
+    background: #f7f8fa;
+
+    border:
+        1px solid
+        #dfe3e9;
+
+    border-radius: 999px;
+
+    cursor: pointer;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    transition:
+        color 0.18s ease,
+        background 0.18s ease,
+        border-color 0.18s ease;
+}
+
+.users-filter-pill:hover {
+    border-color: #ffc999;
+}
+
+.users-filter-pill.selected {
+    color: #a04400;
+
+    background:
+        var(--admin-orange-soft);
+
+    border-color: #ffc999;
+}
+
+/* ======================================================
+   ROLES VACÍOS
+   ====================================================== */
+
+.users-roles-placeholder {
+    min-height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding:
+        8px
+        11px;
+
+    color: #8a92a1;
+
+    background: #f7f8fa;
+
+    border:
+        1px solid
+        #e2e5ea;
+
+    border-radius: 10px;
+
+    font-size: 10px;
+
+    line-height: 1.45;
+}
+
+.users-filter-empty {
+    color:
+        var(--admin-text-soft);
+
+    font-size: 10px;
+}
+
+/* ======================================================
+   ACCIONES
+   ====================================================== */
+
+.users-filter-actions {
+    display: flex;
+
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1rem;
+
+    gap: 16px;
+
+    margin-top: 20px;
 }
 
-.user-filters-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #020617;
-}
+.users-more-filters {
+    display: inline-flex;
 
-.user-filters-reset {
-    background: #f1f5f9;
-    color: #0f172a;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 0.45rem 0.8rem;
-    font-size: 0.85rem;
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 0;
+
+    color:
+        var(--admin-orange);
+
+    background: transparent;
+
     cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
+
+    font-size: 11px;
+    font-weight: 600;
 }
 
-.user-filters-reset:hover {
-    background: #e2e8f0;
-}
-
-.user-filters-reset:active {
-    transform: scale(0.98);
-}
-
-/* ===== GRID ===== */
-.user-filters-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.9rem;
-}
-
-/* ===== FIELD ===== */
-.uf-field {
+.users-filter-actions-right {
     display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+
+    gap: 9px;
 }
 
-.uf-field label {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #334155;
+.users-filter-reset,
+.users-filter-search {
+    min-height: 38px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding:
+        0
+        16px;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
 }
 
-.uf-field input,
-.uf-field select {
-    padding: 0.55rem 0.65rem;
-    border-radius: 6px;
-    border: 1px solid #cbd5f5;
-    font-size: 0.9rem;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
+.users-filter-reset {
+    color: #5e6676;
+
     background: #ffffff;
+
+    border:
+        1px solid
+        #dce0e7;
 }
 
-.uf-field input:focus,
-.uf-field select:focus {
-    border-color: #0f172a;
-    box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.15);
+.users-filter-reset:hover {
+    background: #f8f9fb;
 }
 
-/* ===== SECTIONS ===== */
-.user-filters-section {
-    margin-top: 1.1rem;
-    padding-top: 1rem;
-    border-top: 1px solid #f1f5f9;
+.users-filter-search {
+    color: #ffffff;
+
+    background:
+        var(--admin-orange);
 }
 
-.user-filters-subtitle {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #0f172a;
-    margin-bottom: 0.75rem;
+.users-filter-search:hover {
+    background:
+        var(--admin-orange-hover);
 }
 
-/* ===== DATES ===== */
-.user-filters-dates {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+.users-filter-reset:focus-visible,
+.users-filter-search:focus-visible,
+.users-more-filters:focus-visible,
+.users-filter-pill:focus-visible {
+    outline:
+        3px solid
+        rgba(255, 115, 0, 0.18);
+
+    outline-offset: 2px;
 }
 
-.uf-date-group {
-    background: #f8fafc;
-    border: 1px solid #eef2ff;
-    border-radius: 10px;
-    padding: 0.85rem;
+/* ======================================================
+   TABLET
+   ====================================================== */
+
+@media (max-width: 850px) {
+    .users-filter-grid,
+    .users-advanced-grid {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+    }
 }
 
-.uf-date-title {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #334155;
-    margin-bottom: 0.6rem;
-}
+/* ======================================================
+   CELULAR
+   ====================================================== */
 
-.uf-date-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-}
+@media (max-width: 600px) {
+    .users-filter-card {
+        padding: 18px;
 
-/* ===== MULTISELECT PILLS ===== */
-.uf-multiselect {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 0.4rem 0;
-}
-
-.uf-multiselect.disabled {
-    opacity: 0.6;
-}
-
-.uf-pill {
-    border: 1px solid #e5e7eb;
-    background: #f8fafc;
-    color: #0f172a;
-    border-radius: 999px;
-    padding: 0.35rem 0.7rem;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-}
-
-.uf-pill:hover {
-    background: #e2e8f0;
-}
-
-.uf-pill:active {
-    transform: scale(0.97);
-}
-
-.uf-pill.selected {
-    background: #020617;
-    color: white;
-    border-color: #020617;
-}
-
-.uf-pill:disabled {
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-/* ===== HINTS ===== */
-.uf-hint {
-    font-size: 0.78rem;
-    color: #64748b;
-    margin-top: 0.25rem;
-}
-
-.uf-hint.warn {
-    color: #991b1b;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 900px) {
-    .user-filters-grid {
-        grid-template-columns: 1fr;
+        border-radius: 16px;
     }
 
-    .user-filters-dates {
-        grid-template-columns: 1fr;
+    .users-filter-grid,
+    .users-advanced-grid {
+        grid-template-columns:
+            1fr;
     }
 
-    .uf-date-row {
-        grid-template-columns: 1fr;
+    .users-filter-actions {
+        align-items: stretch;
+
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+    .users-more-filters {
+        align-self: flex-start;
+    }
+
+    .users-filter-actions-right {
+        width: 100%;
+    }
+
+    .users-filter-reset,
+    .users-filter-search {
+        flex: 1;
     }
 }

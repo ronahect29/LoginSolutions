@@ -1,33 +1,88 @@
-import { api } from "./api";
+import {
+    api,
+} from "./api";
+
+// ======================================================
+// TIPOS
+// ======================================================
 
 export interface AppEntity {
-  id: number;
-  name: string;
-  activo: boolean;
-  description?: string;
+    id_aplicacion: number;
+    nombre: string;
+    codigo: string;
+    activo: boolean;
+    descripcion: string | null;
 }
 
 export interface UpsertAppDto {
-  name: string;
-  activo: boolean;
-  description?: string;
+    nombre: string;
+    codigo: string;
+    activo: boolean;
+    descripcion: string;
 }
 
-export async function getApps(): Promise<AppEntity[]> {
-  const res = await api.get("/admin/apps");
-  return res.data;
+// ======================================================
+// CONSULTAS
+// ======================================================
+
+export async function getApps():
+    Promise<AppEntity[]> {
+    const res =
+        await api.get<AppEntity[]>(
+            "/apps"
+        );
+
+    return res.data;
 }
 
-export async function createApp(data: UpsertAppDto): Promise<AppEntity> {
-  const res = await api.post("/admin/apps", data);
-  return res.data;
+// ======================================================
+// CREACIÓN
+// ======================================================
+
+export async function createApp(
+    data: UpsertAppDto
+): Promise<AppEntity> {
+    const res =
+        await api.post<AppEntity>(
+            "/apps",
+            data
+        );
+
+    return res.data;
 }
 
-export async function updateApp(id: number, data: UpsertAppDto): Promise<AppEntity> {
-  const res = await api.put(`/admin/apps/${id}`, data);
-  return res.data;
+// ======================================================
+// ACTUALIZACIÓN
+// ======================================================
+
+export async function updateApp(
+    id: number,
+    data: UpsertAppDto
+): Promise<AppEntity> {
+    const res =
+        await api.put<AppEntity>(
+            `/apps/${id}`,
+            data
+        );
+
+    return res.data;
 }
 
-export async function deleteApp(id: number): Promise<void> {
-  await api.delete(`/admin/apps/${id}`);
+// ======================================================
+// CAMBIO DE ESTADO
+// ======================================================
+
+export async function changeAppActivo(
+    id: number,
+    activo: boolean
+): Promise<AppEntity> {
+    const res =
+        await api.patch<AppEntity>(
+            `/apps/${id}/activo`,
+            {
+                activo,
+            }
+        );
+
+    return res.data;
 }

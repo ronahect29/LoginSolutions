@@ -1,29 +1,46 @@
-import { useMemo, useState } from "react";
-import "../../styles/FiltroUsuario.css";
-import type { FiltroUsuario } from "../../models/FiltrosUsuario";
+import {
+    ChevronDown,
+    ChevronUp,
+    RotateCcw,
+    Search,
+    SlidersHorizontal,
+} from "lucide-react";
+import {
+    useState,
+} from "react";
+
 import type { FiltroAplicacion } from "../../models/FiltroAplicacion";
 import type { FiltroRol } from "../../models/FiltroRol";
+import type { FiltroUsuario } from "../../models/FiltrosUsuario";
+import "../../styles/FiltroUsuario.css";
 
+interface Props {
+    appsOptions:
+        FiltroAplicacion[];
 
-interface UserFiltersProps {
-    appsOptions: FiltroAplicacion[];
-    rolesOptions: FiltroRol[];
-    onAppsSelectedChange?: (apps: FiltroAplicacion[]) => void;
-    onSearch: (filters: FiltroUsuario) => void;
-    onReset?: () => void;
+    rolesOptions:
+        FiltroRol[];
+
+    onAppsSelectedChange: (
+        apps: FiltroAplicacion[]
+    ) => void | Promise<void>;
+
+    onSearch: (
+        filters: FiltroUsuario
+    ) => void;
+
+    onReset: () => void;
 }
 
-
-const initialFilters: FiltroUsuario = {
+const initialFilters:
+    FiltroUsuario = {
     nombre: "",
     usuario: "",
     activo: null,
-
     creadoDesde: "",
     creadoHasta: "",
     modDesde: "",
     modHasta: "",
-
     aplicaciones: [],
     roles: [],
 };
@@ -34,184 +51,576 @@ export function FiltroUsuarioComponent({
     onAppsSelectedChange,
     onSearch,
     onReset,
-}: UserFiltersProps) {
-    const [filters, setFilters] = useState<FiltroUsuario>(initialFilters);
+}: Props) {
+    const [
+        filters,
+        setFilters,
+    ] =
+        useState<FiltroUsuario>(
+            initialFilters
+        );
 
-    const rolesDisabled = useMemo(() => filters.aplicaciones.length === 0, [filters.aplicaciones]);
+    const [
+        showAdvanced,
+        setShowAdvanced,
+    ] =
+        useState(false);
 
-    function update(partial: Partial<FiltroUsuario>) {
-        const next = { ...filters, ...partial };
+    function updateField<
+        K extends keyof FiltroUsuario,
+    >(
+        field: K,
+        value: FiltroUsuario[K]
+    ) {
+        setFilters(
+            (prev) => ({
+                ...prev,
+                [field]:
+                    value,
+            })
+        );
+    }
 
-        if (partial.aplicaciones && partial.aplicaciones.length === 0) {
-            next.roles = [];
+    function handleAppToggle(
+        app: FiltroAplicacion
+    ) {
+        const exists =
+            filters.aplicaciones.some(
+                (selected) =>
+                    selected.codigo ===
+                    app.codigo
+            );
+
+        const nuevasApps =
+            exists
+                ? filters.aplicaciones.filter(
+                      (selected) =>
+                          selected.codigo !==
+                          app.codigo
+                  )
+                : [
+                      ...filters.aplicaciones,
+                      app,
+                  ];
+
+        setFilters(
+            (prev) => ({
+                ...prev,
+                aplicaciones:
+                    nuevasApps,
+
+                roles: [],
+            })
+        );
+
+        void onAppsSelectedChange(
+            nuevasApps
+        );
+    }
+
+    function handleRoleToggle(
+        role: FiltroRol
+    ) {
+        const exists =
+            filters.roles.some(
+                (selected) =>
+                    selected.codigo ===
+                    role.codigo
+            );
+
+        const nuevosRoles =
+            exists
+                ? filters.roles.filter(
+                      (selected) =>
+                          selected.codigo !==
+                          role.codigo
+                  )
+                : [
+                      ...filters.roles,
+                      role,
+                  ];
+
+        updateField(
+            "roles",
+            nuevosRoles
+        );
+    }
+
+    function handleReset() {
+        setFilters(
+            initialFilters
+        );
+
+        setShowAdvanced(
+            false
+        );
+
+        void onAppsSelectedChange(
+            []
+        );
+
+        onReset();
+    }
+
+    function handleEstadoChange(
+        value: string
+    ) {
+        if (value === "true") {
+            updateField(
+                "activo",
+                true
+            );
+
+            return;
         }
 
-        setFilters(next);
-    }
+        if (value === "false") {
+            updateField(
+                "activo",
+                false
+            );
 
-    function toggleAplicacion(app: FiltroAplicacion) {
-        const exists = filters.aplicaciones.some(a => a.codigo === app.codigo);
-        const nuevasApps = exists
-            ? filters.aplicaciones.filter((a) => a.codigo !== app.codigo)
-            : [...filters.aplicaciones, app];
-        const next: FiltroUsuario = {
-            ...filters, aplicaciones: nuevasApps, roles: []
-        };
-        setFilters(next);
-        onAppsSelectedChange?.(nuevasApps);
-    }
-    function toggleRol(rol: FiltroRol) {
-        if (rolesDisabled) return;
-        const exists = filters.roles.some(r => r.codigo === rol.codigo);
-        update({
-            roles: exists
-                ? filters.roles.filter(r => r.id_rol !== rol.id_rol)
-                : [...filters.roles, rol]
-        });
-    }
-    function handleSearch() {
-        onSearch(filters);
-    }
-    function handleReset() {
-        setFilters(initialFilters);
-        onAppsSelectedChange?.([]);
-        onReset?.();
+            return;
+        }
+
+        updateField(
+            "activo",
+            null
+        );
     }
 
     return (
-        <div className="user-filters-card">
-            <div className="user-filters-header">
-                <h2 className="user-filters-title">Filtros</h2>
-                <button className="user-filters-reset" type="button" onClick={handleReset}>
-                    Limpiar
-                </button>
-                <button className="user-filters-search" type="button" onClick={handleSearch}>Buscar</button>
+        <section className="users-filter-card">
+            <div className="users-filter-header">
+                <div>
+                    <h2>
+                        Buscar usuarios
+                    </h2>
+
+                    <p>
+                        Utiliza uno o
+                        varios filtros
+                        para localizar
+                        usuarios.
+                    </p>
+                </div>
             </div>
 
-            {/* Bloque: texto + estado */}
-            <div className="user-filters-grid">
-                <div className="uf-field">
-                    <label>Nombre</label>
+            {/* ======================================================
+                FILTROS PRINCIPALES
+                ====================================================== */}
+
+            <div className="users-filter-grid">
+                <div className="users-filter-field">
+                    <label
+                        htmlFor="filtro-nombre"
+                    >
+                        Nombre
+                    </label>
+
                     <input
-                        value={filters.nombre}
-                        onChange={(e) => update({ nombre: e.target.value })}
-                        placeholder="Ej: Nombre Apellido"
+                        id="filtro-nombre"
+                        type="text"
+                        value={
+                            filters.nombre
+                        }
+                        placeholder="Buscar por nombre"
+                        onChange={(
+                            event
+                        ) =>
+                            updateField(
+                                "nombre",
+                                event
+                                    .target
+                                    .value
+                            )
+                        }
                     />
                 </div>
 
-                <div className="uf-field">
-                    <label>Usuario (correo)</label>
+                <div className="users-filter-field">
+                    <label
+                        htmlFor="filtro-correo"
+                    >
+                        Correo
+                    </label>
+
                     <input
-                        value={filters.usuario}
-                        onChange={(e) => update({ usuario: e.target.value })}
-                        placeholder="Ej: ejemplo@correo.com"
+                        id="filtro-correo"
+                        type="text"
+                        value={
+                            filters.usuario
+                        }
+                        placeholder="correo@ejemplo.com"
+                        onChange={(
+                            event
+                        ) =>
+                            updateField(
+                                "usuario",
+                                event
+                                    .target
+                                    .value
+                            )
+                        }
                     />
                 </div>
 
-                <div className="uf-field">
-                    <label>Activo</label>
+                <div className="users-filter-field">
+                    <label
+                        htmlFor="filtro-estado"
+                    >
+                        Estado
+                    </label>
+
                     <select
-                        value={filters.activo === null ? "all" : filters.activo ? "true" : "false"}
-                        onChange={(e) => update({ activo: e.target.value === "all" ? null : e.target.value === "true" })}>
-                        <option value="all">Todos</option>
-                        <option value="true">Activos</option>
-                        <option value="false">Inactivos</option>
+                        id="filtro-estado"
+                        value={
+                            filters.activo ===
+                            null
+                                ? ""
+                                : String(
+                                      filters.activo
+                                  )
+                        }
+                        onChange={(
+                            event
+                        ) =>
+                            handleEstadoChange(
+                                event
+                                    .target
+                                    .value
+                            )
+                        }
+                    >
+                        <option value="">
+                            Todos
+                        </option>
+
+                        <option value="true">
+                            Activos
+                        </option>
+
+                        <option value="false">
+                            Inactivos
+                        </option>
                     </select>
                 </div>
             </div>
 
-            {/* Bloque: fechas */}
-            <div className="user-filters-section">
-                <h3 className="user-filters-subtitle">Fechas</h3>
+            {/* ======================================================
+                FILTROS AVANZADOS
+                ====================================================== */}
 
-                <div className="user-filters-dates">
-                    <div className="uf-date-group">
-                        <div className="uf-date-title">Creación</div>
-                        <div className="uf-date-row">
-                            <div className="uf-field">
-                                <label>Desde</label>
-                                <input
-                                    type="date"
-                                    value={filters.creadoDesde}
-                                    onChange={(e) => update({ creadoDesde: e.target.value })}
-                                />
-                            </div>
-                            <div className="uf-field">
-                                <label>Hasta</label>
-                                <input
-                                    type="date"
-                                    value={filters.creadoHasta}
-                                    onChange={(e) => update({ creadoHasta: e.target.value })}
-                                />
-                            </div>
-                        </div>
+            {showAdvanced && (
+                <div className="users-advanced-filters">
+                    <div className="users-filter-divider" />
+
+                    <div className="users-advanced-title">
+                        <SlidersHorizontal
+                            size={16}
+                        />
+
+                        <span>
+                            Filtros avanzados
+                        </span>
                     </div>
 
-                    <div className="uf-date-group">
-                        <div className="uf-date-title">Modificación</div>
-                        <div className="uf-date-row">
-                            <div className="uf-field">
-                                <label>Desde</label>
-                                <input
-                                    type="date"
-                                    value={filters.modDesde}
-                                    onChange={(e) => update({ modDesde: e.target.value })}
-                                />
+                    <div className="users-advanced-grid">
+                        <div className="users-filter-field">
+                            <label>
+                                Aplicaciones
+                            </label>
+
+                            <div className="users-filter-pills">
+                                {appsOptions.length >
+                                0 ? (
+                                    appsOptions.map(
+                                        (
+                                            app
+                                        ) => {
+                                            const selected =
+                                                filters.aplicaciones.some(
+                                                    (
+                                                        current
+                                                    ) =>
+                                                        current.codigo ===
+                                                        app.codigo
+                                                );
+
+                                            return (
+                                                <button
+                                                    type="button"
+                                                    key={
+                                                        app.codigo
+                                                    }
+                                                    className={
+                                                        selected
+                                                            ? "users-filter-pill selected"
+                                                            : "users-filter-pill"
+                                                    }
+                                                    onClick={() =>
+                                                        handleAppToggle(
+                                                            app
+                                                        )
+                                                    }
+                                                >
+                                                    {
+                                                        app.codigo
+                                                    }
+                                                </button>
+                                            );
+                                        }
+                                    )
+                                ) : (
+                                    <span className="users-filter-empty">
+                                        No hay
+                                        aplicaciones
+                                        disponibles.
+                                    </span>
+                                )}
                             </div>
-                            <div className="uf-field">
-                                <label>Hasta</label>
-                                <input
-                                    type="date"
-                                    value={filters.modHasta}
-                                    onChange={(e) => update({ modHasta: e.target.value })}
-                                />
-                            </div>
+                        </div>
+
+                        <div className="users-filter-field">
+                            <label>
+                                Roles
+                            </label>
+
+                            {filters
+                                .aplicaciones
+                                .length ===
+                            0 ? (
+                                <div className="users-roles-placeholder">
+                                    Selecciona una
+                                    aplicación para
+                                    ver sus roles.
+                                </div>
+                            ) : rolesOptions.length >
+                              0 ? (
+                                <div className="users-filter-pills">
+                                    {rolesOptions.map(
+                                        (
+                                            role
+                                        ) => {
+                                            const selected =
+                                                filters.roles.some(
+                                                    (
+                                                        current
+                                                    ) =>
+                                                        current.codigo ===
+                                                        role.codigo
+                                                );
+
+                                            return (
+                                                <button
+                                                    type="button"
+                                                    key={
+                                                        role.codigo
+                                                    }
+                                                    className={
+                                                        selected
+                                                            ? "users-filter-pill selected"
+                                                            : "users-filter-pill"
+                                                    }
+                                                    onClick={() =>
+                                                        handleRoleToggle(
+                                                            role
+                                                        )
+                                                    }
+                                                >
+                                                    {
+                                                        role.codigo
+                                                    }
+                                                </button>
+                                            );
+                                        }
+                                    )}
+                                </div>
+                            ) : (
+                                <div className="users-roles-placeholder">
+                                    No hay roles
+                                    disponibles para
+                                    las aplicaciones
+                                    seleccionadas.
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="users-filter-field">
+                            <label
+                                htmlFor="creado-desde"
+                            >
+                                Creación desde
+                            </label>
+
+                            <input
+                                id="creado-desde"
+                                type="date"
+                                value={
+                                    filters.creadoDesde
+                                }
+                                onChange={(
+                                    event
+                                ) =>
+                                    updateField(
+                                        "creadoDesde",
+                                        event
+                                            .target
+                                            .value
+                                    )
+                                }
+                            />
+                        </div>
+
+                        <div className="users-filter-field">
+                            <label
+                                htmlFor="creado-hasta"
+                            >
+                                Creación hasta
+                            </label>
+
+                            <input
+                                id="creado-hasta"
+                                type="date"
+                                value={
+                                    filters.creadoHasta
+                                }
+                                onChange={(
+                                    event
+                                ) =>
+                                    updateField(
+                                        "creadoHasta",
+                                        event
+                                            .target
+                                            .value
+                                    )
+                                }
+                            />
+                        </div>
+
+                        <div className="users-filter-field">
+                            <label
+                                htmlFor="mod-desde"
+                            >
+                                Modificación desde
+                            </label>
+
+                            <input
+                                id="mod-desde"
+                                type="date"
+                                value={
+                                    filters.modDesde
+                                }
+                                onChange={(
+                                    event
+                                ) =>
+                                    updateField(
+                                        "modDesde",
+                                        event
+                                            .target
+                                            .value
+                                    )
+                                }
+                            />
+                        </div>
+
+                        <div className="users-filter-field">
+                            <label
+                                htmlFor="mod-hasta"
+                            >
+                                Modificación hasta
+                            </label>
+
+                            <input
+                                id="mod-hasta"
+                                type="date"
+                                value={
+                                    filters.modHasta
+                                }
+                                onChange={(
+                                    event
+                                ) =>
+                                    updateField(
+                                        "modHasta",
+                                        event
+                                            .target
+                                            .value
+                                    )
+                                }
+                            />
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
 
-           {/* Bloque: multi-selects */}
-            <div className="user-filters-section">
-                <h3 className="user-filters-subtitle">Asignaciones</h3>
+            {/* ======================================================
+                ACCIONES
+                ====================================================== */}
 
-                <div className="user-filters-grid">
-                    <div className="uf-field">
-                        <label>Aplicaciones (multi)</label>
-                        <div className="uf-multiselect">
-                            {appsOptions?.map(app => {
-                                const selected = filters.aplicaciones.some(a => a.codigo === app.codigo);
-                                return (<button
-                                    key={app.codigo} type="button" className={selected ? "uf-pill selected" : "uf-pill"}
-                                    onClick={() => toggleAplicacion(app)} title={app.nombre}>
-                                    {app.codigo}
-                                </button>)
-                             })
-                            }
-                        </div>
-                        <div className="uf-hint">Selecciona una o varias aplicaciones</div>
-                    </div>
+            <div className="users-filter-actions">
+                <button
+                    type="button"
+                    className="users-more-filters"
+                    onClick={() =>
+                        setShowAdvanced(
+                            (prev) =>
+                                !prev
+                        )
+                    }
+                >
+                    {showAdvanced ? (
+                        <ChevronUp
+                            size={16}
+                        />
+                    ) : (
+                        <ChevronDown
+                            size={16}
+                        />
+                    )}
 
-                    <div className="uf-field">
-                        <label>Roles (multi) (depende de aplicación)</label>
-                        <div className={`uf-multiselect ${rolesDisabled ? "disabled" : ""}`}>
-                            {
-                                rolesOptions?.map(rol => {
-                                    const selected = filters.roles.some(r => r.codigo === rol.codigo);
-                                    return (<button
-                                        key={rol.codigo} type="button" className={selected ? "uf-pill selected" : "uf-pill"}
-                                        onClick={() => toggleRol(rol)} title={rol.nombre}>{rol.codigo}</button>);
-                                })
-                            }
-                        </div>
-                        {rolesDisabled ? (
-                            <div className="uf-hint warn">Primero selecciona al menos una aplicación</div>
-                        ) : (
-                            <div className="uf-hint">Selecciona uno o varios roles</div>
-                        )}
-                    </div>
+                    <span>
+                        {showAdvanced
+                            ? "Ocultar filtros"
+                            : "Más filtros"}
+                    </span>
+                </button>
+
+                <div className="users-filter-actions-right">
+                    <button
+                        type="button"
+                        className="users-filter-reset"
+                        onClick={
+                            handleReset
+                        }
+                    >
+                        <RotateCcw
+                            size={15}
+                        />
+
+                        <span>
+                            Limpiar
+                        </span>
+                    </button>
+
+                    <button
+                        type="button"
+                        className="users-filter-search"
+                        onClick={() =>
+                            onSearch(
+                                filters
+                            )
+                        }
+                    >
+                        <Search
+                            size={15}
+                        />
+
+                        <span>
+                            Buscar
+                        </span>
+                    </button>
                 </div>
             </div>
-        </div >
+        </section>
     );
 }

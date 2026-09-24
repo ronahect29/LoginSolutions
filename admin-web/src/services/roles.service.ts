@@ -1,36 +1,99 @@
-import { api } from "./api";
-import type { AppEntity } from "./apps.service";
+import {
+    api,
+} from "./api";
+
+// ======================================================
+// TIPOS
+// ======================================================
+
+export interface RoleApplication {
+    id_aplicacion: number;
+    nombre: string;
+    codigo: string;
+    activo: boolean;
+}
 
 export interface Role {
-    id: number;
-    name: string;
+    id_rol: number;
+    nombre: string;
+    codigo: string;
+    descripcion: string;
     activo: boolean;
-    aplicacion: AppEntity;
-    description?: string;
+    aplicacion:
+        RoleApplication;
 }
 
 export interface UpsertRoleDto {
-    name: string;
+    nombre: string;
+    codigo: string;
+    descripcion: string;
     activo: boolean;
-    aplicacionId: number;
-    description?: string;
+    id_aplicacion: number;
 }
 
-export async function getRoles(): Promise<Role[]> {
-    const res = await api.get("/admin/roles");
+// ======================================================
+// CONSULTAS
+// ======================================================
+
+export async function getRoles(): Promise<
+    Role[]
+> {
+    const res =
+        await api.get<Role[]>(
+            "/rol/admin"
+        );
+
     return res.data;
 }
 
-export async function createRole(data: UpsertRoleDto): Promise<Role> {
-    const res = await api.post("/admin/roles", data);
+// ======================================================
+// CREACIÓN
+// ======================================================
+
+export async function createRole(
+    data: UpsertRoleDto
+): Promise<Role> {
+    const res =
+        await api.post<Role>(
+            "/rol/admin",
+            data
+        );
+
     return res.data;
 }
 
-export async function updateRole(id: number, data: UpsertRoleDto): Promise<Role> {
-    const res = await api.put(`/admin/roles/${id}`, data);
+// ======================================================
+// ACTUALIZACIÓN
+// ======================================================
+
+export async function updateRole(
+    id: number,
+    data: UpsertRoleDto
+): Promise<Role> {
+    const res =
+        await api.put<Role>(
+            `/rol/admin/${id}`,
+            data
+        );
+
     return res.data;
 }
 
-export async function deleteRole(id: number): Promise<void> {
-    await api.delete(`/admin/roles/${id}`);
+// ======================================================
+// CAMBIO DE ESTADO
+// ======================================================
+
+export async function changeRoleActivo(
+    id: number,
+    activo: boolean
+): Promise<Role> {
+    const res =
+        await api.patch<Role>(
+            `/rol/admin/${id}/activo`,
+            {
+                activo,
+            }
+        );
+
+    return res.data;
 }

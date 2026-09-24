@@ -1,22 +1,69 @@
-import { Response, NextFunction } from "express";
-import { AuthRequest } from "../types/AuthRequest";
-import { JwtPayload } from "jsonwebtoken";
-import { SesionRequest } from "../types/SesionRequest";
+import {
+    type NextFunction,
+    type Response,
+} from "express";
 
-// export function requireRole(roles: string[]) {
-//     return (req: AuthRequest, res: Response, next: NextFunction) => {
-//         if (!req.user) return res.status(401).json({ message: "No autenticado" });
+import {
+    type AuthRequest,
+} from "../types/AuthRequest";
 
-// const hasRole = req.user.roles.some(r => roles.includes(r));
-// if (!hasRole) return res.status(403).json({ message: "No autorizado" });
-//         next();
-//     };
-// }
-export function requireRole(roles: string[]) {
-    return (req: SesionRequest, res: Response, next: NextFunction) => {
-        if (!req.sesion) return res.status(401).json({ message: "No autenticado." });
-        const hasRole = req.sesion.roles.some(r => roles.includes(r));
-        if (!hasRole) return res.status(403).json({ message: "No autorizado" });
+// ======================================================
+// VALIDACIÓN DE ROLES
+// ======================================================
+
+export function requireRole(
+    rolesPermitidos: string[]
+) {
+    return (
+        req: AuthRequest,
+        res: Response,
+        next: NextFunction
+    ) => {
+        // ======================================================
+        // AUTENTICACIÓN
+        // ======================================================
+
+        if (!req.user) {
+            return res.status(401).json({
+                message:
+                    "No autenticado.",
+            });
+        }
+
+        // ======================================================
+        // ROLES DEL USUARIO
+        // ======================================================
+
+        const rolesUsuario =
+            Array.isArray(
+                req.user.roles
+            )
+                ? req.user.roles
+                : [];
+
+        // ======================================================
+        // AUTORIZACIÓN
+        // ======================================================
+
+        const autorizado =
+            rolesUsuario.some(
+                (rol) =>
+                    rolesPermitidos.includes(
+                        rol
+                    )
+            );
+
+        if (!autorizado) {
+            return res.status(403).json({
+                message:
+                    "No autorizado.",
+            });
+        }
+
+        // ======================================================
+        // CONTINUAR
+        // ======================================================
+
         next();
-    }
+    };
 }

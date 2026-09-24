@@ -349,7 +349,7 @@
 }
 
 /* ======================================================
-   CABECERA MENÚ
+   CABECERA DEL MENÚ
    ====================================================== */
 
 .side-menu-header {
@@ -395,6 +395,10 @@
 
     font-size: 14px;
     font-weight: 700;
+
+    box-shadow:
+        0 7px 16px
+        rgba(255, 115, 0, 0.18);
 }
 
 .side-menu-brand-text {
@@ -405,10 +409,15 @@
 }
 
 .side-menu-brand-text strong {
+    overflow: hidden;
+
     color: #ffffff;
 
     font-size: 14px;
     font-weight: 600;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .side-menu-brand-text span {
@@ -418,6 +427,10 @@
 
     font-size: 10px;
 }
+
+/* ======================================================
+   CERRAR MENÚ
+   ====================================================== */
 
 .close-btn {
     width: 38px;
@@ -431,6 +444,7 @@
     padding: 0;
 
     color: #d6dce7;
+
     background: transparent;
 
     border-radius: 9px;
@@ -438,38 +452,44 @@
     cursor: pointer;
 
     transition:
+        color 0.2s ease,
         background 0.2s ease;
 }
 
 .close-btn:hover {
+    color: #ffffff;
+
     background: #1c2739;
 }
 
 /* ======================================================
-   NAVEGACIÓN
+   NAVEGACIÓN DEL MENÚ
    ====================================================== */
 
 .side-menu-nav {
     display: flex;
     flex-direction: column;
 
-    gap: 5px;
+    gap: 6px;
 
     margin-top: 18px;
 }
 
 .menu-link {
-    display: flex;
+    min-height: 44px;
 
+    display: flex;
     align-items: center;
 
-    gap: 10px;
+    gap: 11px;
 
     padding:
-        12px
-        13px;
+        10px
+        12px;
 
     color: #c4ccd9;
+
+    background: transparent;
 
     border:
         1px solid
@@ -485,13 +505,50 @@
     transition:
         color 0.18s ease,
         background 0.18s ease,
-        border-color 0.18s ease;
+        border-color 0.18s ease,
+        transform 0.18s ease;
+}
+
+.menu-link-icon {
+    width: 23px;
+    height: 23px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color: #8f9bad;
+
+    transition:
+        color 0.18s ease,
+        transform 0.18s ease;
+}
+
+.menu-link-label {
+    min-width: 0;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
 }
 
 .menu-link:hover {
     color: #ffffff;
 
     background: #1b2536;
+
+    transform:
+        translateX(2px);
+}
+
+.menu-link:hover
+.menu-link-icon {
+    color: #ffffff;
 }
 
 .menu-link.active {
@@ -504,13 +561,10 @@
         rgba(255, 115, 0, 0.3);
 }
 
+.menu-link.active
 .menu-link-icon {
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    flex-shrink: 0;
+    color:
+        var(--admin-orange);
 }
 
 /* ======================================================
@@ -603,6 +657,19 @@
     .logout-btn span {
         display: none;
     }
+
+    .side-menu {
+        width:
+            min(290px, 88vw);
+
+        padding: 18px;
+    }
+
+    .menu-link {
+        min-height: 46px;
+
+        font-size: 13px;
+    }
 }
 
 /* ======================================================
@@ -612,5 +679,11 @@
 @media (max-width: 380px) {
     .header-brand-text strong {
         font-size: 11px;
+    }
+
+    .side-menu {
+        width: 88vw;
+
+        padding: 16px;
     }
 }

@@ -1,5 +1,11 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { X } from "lucide-react";
+import {
+    AppWindow,
+    LayoutDashboard,
+    ShieldCheck,
+    Users,
+    X,
+} from "lucide-react";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
@@ -10,6 +16,25 @@ interface Props {
     open: boolean;
     items: MenuItem[];
     onClose: () => void;
+}
+
+function getMenuIcon(path: string) {
+    switch (path) {
+        case "/admin/home-admin":
+            return <LayoutDashboard size={18} />;
+
+        case "/admin/usuarios":
+            return <Users size={18} />;
+
+        case "/admin/roles":
+            return <ShieldCheck size={18} />;
+
+        case "/admin/apps":
+            return <AppWindow size={18} />;
+
+        default:
+            return <LayoutDashboard size={18} />;
+    }
 }
 
 export function SideMenu({
@@ -33,7 +58,8 @@ export function SideMenu({
         const overflowAnterior =
             document.body.style.overflow;
 
-        document.body.style.overflow = "hidden";
+        document.body.style.overflow =
+            "hidden";
 
         document.addEventListener(
             "keydown",
@@ -58,16 +84,28 @@ export function SideMenu({
                     <motion.div
                         className="menu-overlay"
                         onClick={onClose}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+                        initial={{
+                            opacity: 0,
+                        }}
+                        animate={{
+                            opacity: 1,
+                        }}
+                        exit={{
+                            opacity: 0,
+                        }}
                     />
 
                     <motion.aside
                         className="side-menu"
-                        initial={{ x: -320 }}
-                        animate={{ x: 0 }}
-                        exit={{ x: -320 }}
+                        initial={{
+                            x: -320,
+                        }}
+                        animate={{
+                            x: 0,
+                        }}
+                        exit={{
+                            x: -320,
+                        }}
                         transition={{
                             duration: 0.24,
                             ease: "easeOut",
@@ -95,37 +133,48 @@ export function SideMenu({
                                 className="close-btn"
                                 onClick={onClose}
                                 aria-label="Cerrar menú"
+                                title="Cerrar menú"
                             >
                                 <X size={20} />
                             </button>
                         </div>
 
                         <nav className="side-menu-nav">
-                            {items.map((item) => (
-                                <NavLink
-                                    key={item.path}
-                                    to={item.path}
-                                    end
-                                    onClick={onClose}
-                                    className={({
-                                        isActive,
-                                    }) =>
-                                        isActive
-                                            ? "menu-link active"
-                                            : "menu-link"
-                                    }
-                                >
-                                    {item.icon && (
+                            {items.map(
+                                (item) => (
+                                    <NavLink
+                                        key={
+                                            item.path
+                                        }
+                                        to={
+                                            item.path
+                                        }
+                                        end
+                                        onClick={
+                                            onClose
+                                        }
+                                        className={({
+                                            isActive,
+                                        }) =>
+                                            isActive
+                                                ? "menu-link active"
+                                                : "menu-link"
+                                        }
+                                    >
                                         <span className="menu-link-icon">
-                                            {item.icon}
+                                            {getMenuIcon(
+                                                item.path
+                                            )}
                                         </span>
-                                    )}
 
-                                    <span>
-                                        {item.label}
-                                    </span>
-                                </NavLink>
-                            ))}
+                                        <span className="menu-link-label">
+                                            {
+                                                item.label
+                                            }
+                                        </span>
+                                    </NavLink>
+                                )
+                            )}
                         </nav>
                     </motion.aside>
                 </>

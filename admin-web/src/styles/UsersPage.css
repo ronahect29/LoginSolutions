@@ -1,0 +1,270 @@
+/* ======================================================
+   PÁGINA DE USUARIOS
+   ====================================================== */
+
+.users-page {
+    width:
+        min(
+            1180px,
+            calc(100% - 40px)
+        );
+
+    margin: 0 auto;
+
+    padding:
+        34px
+        0
+        70px;
+}
+
+/* ======================================================
+   ENCABEZADO
+   ====================================================== */
+
+.users-page-heading {
+    margin-bottom: 26px;
+}
+
+.users-page-kicker {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color:
+        var(--admin-orange);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+}
+
+.users-page-heading-row {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 24px;
+}
+
+.users-page-heading-text {
+    min-width: 0;
+}
+
+.users-page-heading h1 {
+    margin: 0;
+
+    color:
+        var(--admin-text);
+
+    font-size: 34px;
+    font-weight: 700;
+
+    line-height: 1.1;
+
+    letter-spacing: -0.035em;
+}
+
+.users-page-heading p {
+    max-width: 660px;
+
+    margin:
+        9px
+        0
+        0;
+
+    color:
+        var(--admin-text-soft);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+/* ======================================================
+   NUEVO USUARIO
+   ====================================================== */
+
+.users-create-button {
+    min-height: 42px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    gap: 8px;
+
+    padding:
+        0
+        17px;
+
+    color: #ffffff;
+
+    background:
+        var(--admin-orange);
+
+    border-radius: 11px;
+
+    box-shadow:
+        0 8px 18px
+        rgba(255, 115, 0, 0.16);
+
+    cursor: pointer;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.users-create-button:hover {
+    background:
+        var(--admin-orange-hover);
+
+    box-shadow:
+        0 10px 22px
+        rgba(255, 115, 0, 0.2);
+}
+
+.users-create-button:active {
+    transform:
+        scale(0.98);
+}
+
+.users-create-button:focus-visible {
+    outline:
+        3px solid
+        rgba(255, 115, 0, 0.2);
+
+    outline-offset: 3px;
+}
+
+/* ======================================================
+   ENCABEZADO DEL LISTADO
+   ====================================================== */
+
+.users-list-heading {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    margin:
+        28px
+        0
+        13px;
+}
+
+.users-list-heading h2 {
+    margin: 0;
+
+    color:
+        var(--admin-text);
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.users-list-heading p {
+    margin:
+        4px
+        0
+        0;
+
+    color:
+        var(--admin-text-soft);
+
+    font-size: 12px;
+}
+
+/* ======================================================
+   ERROR
+   ====================================================== */
+
+.users-error {
+    margin-top: 16px;
+
+    padding:
+        12px
+        14px;
+
+    color: #991b1b;
+
+    background: #fff1f2;
+
+    border:
+        1px solid
+        #fecdd3;
+
+    border-radius: 11px;
+
+    font-size: 12px;
+
+    line-height: 1.55;
+}
+
+/* ======================================================
+   TABLET
+   ====================================================== */
+
+@media (max-width: 900px) {
+    .users-page {
+        width:
+            calc(100% - 32px);
+    }
+}
+
+/* ======================================================
+   CELULAR
+   ====================================================== */
+
+@media (max-width: 650px) {
+    .users-page {
+        width:
+            calc(100% - 26px);
+
+        padding:
+            22px
+            0
+            45px;
+    }
+
+    .users-page-heading {
+        margin-bottom: 22px;
+    }
+
+    .users-page-heading-row {
+        align-items: stretch;
+
+        flex-direction: column;
+
+        gap: 16px;
+    }
+
+    .users-page-heading h1 {
+        font-size: 29px;
+    }
+
+    .users-page-heading p {
+        font-size: 12px;
+    }
+
+    .users-create-button {
+        align-self: flex-start;
+    }
+
+    .users-list-heading {
+        margin-top: 24px;
+    }
+}

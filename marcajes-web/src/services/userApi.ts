@@ -4,26 +4,51 @@ const baseURL =
     import.meta.env.VITE_USER_API_URL ||
     "/user-service/api";
 
-export const userApi = axios.create({
-    baseURL
-});
+export const userApi =
+    axios.create({
+        baseURL,
+    });
 
-userApi.interceptors.request.use((config) => {
-    const token =
-        localStorage.getItem("token_marcajes");
+// ======================================================
+// REQUEST
+// ======================================================
 
-    if (token && config.headers) {
-        config.headers.Authorization =
-            `Bearer ${token}`;
+userApi.interceptors.request.use(
+    (config) => {
+        const token =
+            localStorage.getItem(
+                "token_marcajes"
+            );
+
+        if (
+            token &&
+            config.headers
+        ) {
+            config.headers.Authorization =
+                `Bearer ${token}`;
+        }
+
+        return config;
     }
+);
 
-    return config;
-});
+// ======================================================
+// RESPONSE
+// ======================================================
 
 userApi.interceptors.response.use(
-    (response) => response,
+    (response) =>
+        response,
+
     (error) => {
-        if (error.response?.status === 401) {
+        const status =
+            error.response
+                ?.status;
+
+        if (
+            status === 401 ||
+            status === 403
+        ) {
             localStorage.removeItem(
                 "token_marcajes"
             );
@@ -34,7 +59,7 @@ userApi.interceptors.response.use(
 
             if (
                 !window.location.pathname.includes(
-                    "login"
+                    "/marcajes/login"
                 )
             ) {
                 window.location.href =
@@ -42,6 +67,8 @@ userApi.interceptors.response.use(
             }
         }
 
-        return Promise.reject(error);
+        return Promise.reject(
+            error
+        );
     }
 );

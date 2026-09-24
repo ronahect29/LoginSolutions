@@ -1,91 +1,413 @@
-import { type FormEvent, useState } from "react";
-import { type UpsertAppDto, type AppEntity } from "../../services/apps.service";
+import {
+    X,
+} from "lucide-react";
+import {
+    type FormEvent,
+    useState,
+} from "react";
+
+import {
+    type AppEntity,
+    type UpsertAppDto,
+} from "../../services/apps.service";
 
 interface Props {
     initial?: AppEntity;
+
     onCancel: () => void;
-    onSave: (data: UpsertAppDto, id?: number) => Promise<void>;
+
+    onSave: (
+        data: UpsertAppDto,
+        id?: number
+    ) => Promise<void>;
 }
 
-export function AppsForm({ initial, onCancel, onSave }: Props) {
-    const [name, setName] = useState(initial?.name ?? "");
-    const [description, setDescription] = useState(initial?.description ?? "");
-    const [isActivo, setIsActivo] = useState(initial?.activo ?? true);
-    const [saving, setSaving] = useState(false);
+export function AppsForm({
+    initial,
+    onCancel,
+    onSave,
+}: Props) {
+    const [
+        nombre,
+        setNombre,
+    ] = useState(
+        initial?.nombre ??
+            ""
+    );
 
-    async function handleSubmit(e: FormEvent) {
-        e.preventDefault();
+    const [
+        codigo,
+        setCodigo,
+    ] = useState(
+        initial?.codigo ??
+            ""
+    );
+
+    const [
+        descripcion,
+        setDescripcion,
+    ] = useState(
+        initial?.descripcion ??
+            ""
+    );
+
+    const [
+        activo,
+        setActivo,
+    ] = useState(
+        initial?.activo ??
+            true
+    );
+
+    const [
+        saving,
+        setSaving,
+    ] =
+        useState(false);
+
+    const [
+        error,
+        setError,
+    ] =
+        useState<
+            string | null
+        >(null);
+
+    // ======================================================
+    // SUBMIT
+    // ======================================================
+
+    async function handleSubmit(
+        event: FormEvent
+    ) {
+        event.preventDefault();
+
+        setError(null);
+
+        if (
+            !nombre.trim()
+        ) {
+            setError(
+                "Ingresa el nombre de la aplicación."
+            );
+
+            return;
+        }
+
+        if (
+            !codigo.trim()
+        ) {
+            setError(
+                "Ingresa el código técnico."
+            );
+
+            return;
+        }
+
+        if (
+            codigo.trim().length >
+            10
+        ) {
+            setError(
+                "El código puede tener un máximo de 10 caracteres."
+            );
+
+            return;
+        }
+
+        if (
+            !descripcion.trim()
+        ) {
+            setError(
+                "Ingresa una descripción."
+            );
+
+            return;
+        }
+
         setSaving(true);
 
-        const payload: UpsertAppDto = {
-            name,
-            description,
-            activo: isActivo,
-        };
+        try {
+            await onSave(
+                {
+                    nombre:
+                        nombre.trim(),
 
-        await onSave(payload, Number(initial?.id));
-        setSaving(false);
+                    codigo:
+                        codigo
+                            .trim()
+                            .toUpperCase(),
+
+                    descripcion:
+                        descripcion.trim(),
+
+                    activo,
+                },
+
+                initial
+                    ?.id_aplicacion
+            );
+        } catch (err) {
+            console.error(
+                "Error guardando aplicación",
+                err
+            );
+
+            const message =
+                (
+                    err as {
+                        response?: {
+                            data?: {
+                                message?: string;
+                            };
+                        };
+                    }
+                ).response?.data
+                    ?.message;
+
+            setError(
+                message ||
+                    "No se pudo guardar la aplicación."
+            );
+        } finally {
+            setSaving(false);
+        }
     }
 
     return (
-        <form
-            onSubmit={handleSubmit}
-            className="border rounded-xl p-4 bg-slate-50 flex flex-col gap-3"
+        <div
+            className="apps-modal-overlay"
+            role="dialog"
+            aria-modal="true"
         >
-            <div className="flex flex-col md:flex-row gap-3">
-                <div className="flex-1 flex flex-col gap-1">
-                    <label className="text-xs font-medium text-slate-600">Nombre</label>
-                    <input
-                        className="border rounded-lg px-3 py-2 text-sm"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                    />
-                </div>
+            <form
+                className="apps-modal"
+                onSubmit={
+                    handleSubmit
+                }
+            >
+                {/* ======================================================
+                    HEADER
+                    ====================================================== */}
 
-                <div className="flex-1 flex flex-col gap-1">
-                    <label className="text-xs font-medium text-slate-600">Descripción</label>
-                    <input
-                        className="border rounded-lg px-3 py-2 text-sm"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        required
-                    />
-                </div>
-            </div>
+                <div className="apps-modal-header">
+                    <div>
+                        <span className="apps-modal-kicker">
+                            Gestión de aplicaciones
+                        </span>
 
-            <div className="flex flex-col md:flex-row gap-3">
-                <div className="flex flex-col gap-1">
-                    <label className="text-xs font-medium text-slate-600">
-                        Estado
-                    </label>
-                    <select
-                        className="border rounded-lg px-3 py-2 text-sm"
-                        value={isActivo ? "1" : "0"}
-                        onChange={(e) => setIsActivo(e.target.value === "1")}
+                        <h2>
+                            {initial
+                                ? "Editar aplicación"
+                                : "Nueva aplicación"}
+                        </h2>
+
+                        <p>
+                            {initial
+                                ? "Actualiza la información de la aplicación registrada."
+                                : "Registra una nueva aplicación que será administrada por la plataforma."}
+                        </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        className="apps-modal-close"
+                        onClick={
+                            onCancel
+                        }
+                        aria-label="Cerrar"
                     >
-                        <option value="1">Activo</option>
-                        <option value="0">Inactivo</option>
-                    </select>
+                        <X
+                            size={
+                                20
+                            }
+                        />
+                    </button>
                 </div>
-            </div>
 
-            <div className="flex justify-end gap-2 mt-2">
-                <button
-                    type="button"
-                    onClick={onCancel}
-                    className="px-3 py-2 rounded-lg border text-sm"
-                >
-                    Cancelar
-                </button>
-                <button
-                    type="submit"
-                    disabled={saving}
-                    className="px-3 py-2 rounded-lg bg-slate-900 text-white text-sm hover:bg-slate-800 disabled:opacity-60"
-                >
-                    {saving ? "Guardando..." : initial ? "Guardar cambios" : "Crear"}
-                </button>
-            </div>
-        </form>
+                {/* ======================================================
+                    BODY
+                    ====================================================== */}
+
+                <div className="apps-modal-body">
+                    {error && (
+                        <div className="apps-form-error">
+                            {error}
+                        </div>
+                    )}
+
+                    <div className="apps-form-grid">
+                        <div className="apps-form-field">
+                            <label htmlFor="app-name">
+                                Nombre de la aplicación
+                            </label>
+
+                            <input
+                                id="app-name"
+                                type="text"
+                                maxLength={
+                                    100
+                                }
+                                value={
+                                    nombre
+                                }
+                                placeholder="Ej. Plataforma de Marcajes"
+                                onChange={(
+                                    event
+                                ) =>
+                                    setNombre(
+                                        event
+                                            .target
+                                            .value
+                                    )
+                                }
+                                required
+                            />
+                        </div>
+
+                        <div className="apps-form-field">
+                            <label htmlFor="app-code">
+                                Código técnico
+                            </label>
+
+                            <input
+                                id="app-code"
+                                type="text"
+                                maxLength={
+                                    10
+                                }
+                                value={
+                                    codigo
+                                }
+                                placeholder="Ej. PMW"
+                                readOnly={
+                                    Boolean(
+                                        initial
+                                    )
+                                }
+                                onChange={(
+                                    event
+                                ) =>
+                                    setCodigo(
+                                        event
+                                            .target
+                                            .value
+                                            .toUpperCase()
+                                    )
+                                }
+                                required
+                            />
+
+                            <small>
+                                {initial
+                                    ? "El código se conserva para evitar afectar las referencias existentes."
+                                    : "Identificador interno utilizado por el sistema. Ejemplo: PMW."}
+                            </small>
+                        </div>
+
+                        <div className="apps-form-field full">
+                            <label htmlFor="app-description">
+                                Descripción
+                            </label>
+
+                            <textarea
+                                id="app-description"
+                                rows={4}
+                                maxLength={
+                                    150
+                                }
+                                value={
+                                    descripcion
+                                }
+                                placeholder="Describe brevemente la finalidad de esta aplicación"
+                                onChange={(
+                                    event
+                                ) =>
+                                    setDescripcion(
+                                        event
+                                            .target
+                                            .value
+                                    )
+                                }
+                                required
+                            />
+
+                            <small>
+                                {
+                                    descripcion.length
+                                }
+                                /150
+                            </small>
+                        </div>
+
+                        <div className="apps-form-field">
+                            <label htmlFor="app-status">
+                                Estado
+                            </label>
+
+                            <select
+                                id="app-status"
+                                value={
+                                    activo
+                                        ? "true"
+                                        : "false"
+                                }
+                                onChange={(
+                                    event
+                                ) =>
+                                    setActivo(
+                                        event
+                                            .target
+                                            .value ===
+                                            "true"
+                                    )
+                                }
+                            >
+                                <option value="true">
+                                    Activa
+                                </option>
+
+                                <option value="false">
+                                    Inactiva
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                {/* ======================================================
+                    FOOTER
+                    ====================================================== */}
+
+                <div className="apps-modal-footer">
+                    <button
+                        type="button"
+                        className="apps-secondary-button"
+                        onClick={
+                            onCancel
+                        }
+                        disabled={
+                            saving
+                        }
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        className="apps-primary-button"
+                        disabled={
+                            saving
+                        }
+                    >
+                        {saving
+                            ? "Guardando..."
+                            : initial
+                              ? "Guardar cambios"
+                              : "Crear aplicación"}
+                    </button>
+                </div>
+            </form>
+        </div>
     );
 }
