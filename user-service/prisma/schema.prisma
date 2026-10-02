@@ -42,27 +42,39 @@ model rol {
 }
 
 model usuario {
-  id_usuario                                                           Int                         @id @default(autoincrement())
-  correo                                                               String                      @db.VarChar(150)
-  nombre                                                               String                      @db.VarChar(75)
-  username                                                             String                      @db.VarChar(50)
-  password                                                             String                      @db.VarChar(255)
-  direccion                                                            String?                     @db.VarChar(150)
-  telefono                                                             String                      @db.VarChar(15)
-  activo                                                               Boolean
-  reintentos                                                           Int?
-  bloqueado_hasta                                                      DateTime?                   @db.DateTime(0)
-  ultimo_inicio                                                        DateTime?                   @db.DateTime(0)
-  fecha_creacion                                                       DateTime?                   @default(now()) @db.DateTime(0)
-  fecha_modificacion                                                   DateTime?                   @db.DateTime(0)
-  creador                                                              Int?
-  modificador                                                          Int?
+  id_usuario         Int       @id @default(autoincrement())
+  correo             String    @db.VarChar(150)
+  nombre             String    @db.VarChar(75)
+  username           String    @db.VarChar(50)
+  password           String    @db.VarChar(255)
+  direccion          String?   @db.VarChar(150)
+  telefono           String    @db.VarChar(15)
+  activo             Boolean
+  reintentos         Int?
+  bloqueado_hasta    DateTime? @db.DateTime(0)
+  ultimo_inicio      DateTime? @db.DateTime(0)
+  fecha_creacion     DateTime? @default(now()) @db.DateTime(0)
+  fecha_modificacion DateTime? @db.DateTime(0)
+
+  fecha_baja   DateTime? @db.DateTime(0)
+  motivo_baja  String?   @db.VarChar(250)
+  baja_usuario Int?
+
+  creador     Int?
+  modificador Int?
+
   configuracion_usuario_rol_configuracion_usuario_rol_usuarioTousuario configuracion_usuario_rol[] @relation("configuracion_usuario_rol_usuarioTousuario")
-  usuario_usuario_creadorTousuario                                     usuario?                    @relation("usuario_creadorTousuario", fields: [creador], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_usuario_creador")
-  other_usuario_usuario_creadorTousuario                               usuario[]                   @relation("usuario_creadorTousuario")
-  usuario_usuario_modificadorTousuario                                 usuario?                    @relation("usuario_modificadorTousuario", fields: [modificador], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_usuario_modificador")
-  other_usuario_usuario_modificadorTousuario                           usuario[]                   @relation("usuario_modificadorTousuario")
+
+  usuario_usuario_creadorTousuario       usuario?  @relation("usuario_creadorTousuario", fields: [creador], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_usuario_creador")
+  other_usuario_usuario_creadorTousuario usuario[] @relation("usuario_creadorTousuario")
+
+  usuario_usuario_modificadorTousuario       usuario?  @relation("usuario_modificadorTousuario", fields: [modificador], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_usuario_modificador")
+  other_usuario_usuario_modificadorTousuario usuario[] @relation("usuario_modificadorTousuario")
+
+  usuario_usuario_baja_usuarioTousuario       usuario?  @relation("usuario_baja_usuarioTousuario", fields: [baja_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_usuario_baja_usuario")
+  other_usuario_usuario_baja_usuarioTousuario usuario[] @relation("usuario_baja_usuarioTousuario")
 
   @@index([creador], map: "fk_usuario_creador")
   @@index([modificador], map: "fk_usuario_modificador")
+  @@index([baja_usuario], map: "idx_usuario_baja_usuario")
 }

@@ -1,7 +1,3 @@
-/* ======================================================
-   CONTENEDOR
-   ====================================================== */
-
 .users-table-card {
     overflow: hidden;
 
@@ -12,7 +8,8 @@
         1px solid
         var(--admin-border);
 
-    border-radius: 18px;
+    border-radius:
+        18px;
 
     box-shadow:
         0 12px 30px
@@ -22,32 +19,33 @@
 .users-table-scroll {
     width: 100%;
 
-    overflow-x: auto;
+    overflow-x:
+        auto;
 
-    scrollbar-width: thin;
+    scrollbar-width:
+        thin;
 
     scrollbar-color:
         #cbd0d9
         transparent;
 }
 
-/* ======================================================
-   TABLA
-   ====================================================== */
-
 .users-table {
     width: 100%;
 
-    min-width: 880px;
+    min-width:
+        1080px;
 
     border-collapse:
         collapse;
 
-    font-size: 11px;
+    font-size:
+        11px;
 }
 
 .users-table thead {
-    background: #fff8f2;
+    background:
+        #fff8f2;
 }
 
 .users-table th {
@@ -55,14 +53,20 @@
         14px
         16px;
 
-    color: #424b5d;
+    color:
+        #424b5d;
 
-    font-size: 10px;
-    font-weight: 700;
+    font-size:
+        10px;
 
-    text-align: left;
+    font-weight:
+        700;
 
-    white-space: nowrap;
+    text-align:
+        left;
+
+    white-space:
+        nowrap;
 }
 
 .users-table td {
@@ -70,192 +74,268 @@
         14px
         16px;
 
-    color: #586174;
+    color:
+        #586174;
 
     border-top:
         1px solid
         #eef0f4;
 
-    vertical-align: middle;
+    vertical-align:
+        middle;
 }
 
 .users-table tbody tr {
     transition:
-        background 0.16s ease;
+        background
+        0.16s ease;
 }
 
 .users-table tbody tr:hover {
-    background: #fcfcfd;
+    background:
+        #fcfcfd;
 }
 
-/* ======================================================
-   ORDENAMIENTO
-   ====================================================== */
-
 .users-sort-button {
-    display: inline-flex;
+    display:
+        inline-flex;
 
-    align-items: center;
+    align-items:
+        center;
 
-    gap: 5px;
+    gap:
+        5px;
 
-    padding: 0;
+    padding:
+        0;
 
-    color: inherit;
+    color:
+        inherit;
 
-    background: transparent;
+    background:
+        transparent;
 
-    cursor: pointer;
+    border:
+        0;
 
-    font-size: inherit;
-    font-weight: inherit;
+    cursor:
+        pointer;
+
+    font-size:
+        inherit;
+
+    font-weight:
+        inherit;
 }
 
 .users-sort-button svg {
-    color: #9aa1ae;
+    color:
+        #9aa1ae;
 }
 
-/* ======================================================
-   USUARIO
-   ====================================================== */
-
 .users-user-cell {
-    min-width: 205px;
+    min-width:
+        205px;
 
-    display: flex;
+    display:
+        flex;
 
-    align-items: center;
+    align-items:
+        center;
 
-    gap: 10px;
+    gap:
+        10px;
 }
 
 .users-user-avatar {
-    width: 35px;
-    height: 35px;
+    width:
+        35px;
 
-    display: grid;
-    place-items: center;
+    height:
+        35px;
 
-    flex-shrink: 0;
+    display:
+        grid;
 
-    color: #a44900;
+    place-items:
+        center;
+
+    flex-shrink:
+        0;
+
+    color:
+        #a44900;
 
     background:
         var(--admin-orange-soft);
 
-    border-radius: 50%;
+    border-radius:
+        50%;
 
-    font-size: 9px;
-    font-weight: 700;
+    font-size:
+        9px;
+
+    font-weight:
+        700;
 }
 
 .users-user-info {
-    min-width: 0;
+    min-width:
+        0;
 
-    display: flex;
-    flex-direction: column;
+    display:
+        flex;
+
+    flex-direction:
+        column;
 }
 
 .users-user-info strong {
-    max-width: 200px;
+    max-width:
+        200px;
 
-    overflow: hidden;
+    overflow:
+        hidden;
 
     color:
         var(--admin-text);
 
-    font-size: 11px;
-    font-weight: 600;
+    font-size:
+        11px;
 
-    white-space: nowrap;
+    font-weight:
+        600;
 
-    text-overflow: ellipsis;
+    white-space:
+        nowrap;
+
+    text-overflow:
+        ellipsis;
 }
 
 .users-user-info span {
-    max-width: 220px;
+    max-width:
+        220px;
 
-    margin-top: 2px;
+    margin-top:
+        2px;
 
-    overflow: hidden;
+    overflow:
+        hidden;
 
-    color: #8b93a3;
+    color:
+        #8b93a3;
 
-    font-size: 10px;
+    font-size:
+        10px;
 
-    white-space: nowrap;
+    white-space:
+        nowrap;
 
-    text-overflow: ellipsis;
+    text-overflow:
+        ellipsis;
 }
 
-/* ======================================================
-   ROLES
-   ====================================================== */
-
 .users-role-list {
-    display: flex;
+    display:
+        flex;
 
-    align-items: center;
-    flex-wrap: wrap;
+    align-items:
+        center;
 
-    gap: 5px;
+    flex-wrap:
+        wrap;
+
+    gap:
+        5px;
 }
 
 .users-role-badge {
-    display: inline-flex;
+    display:
+        inline-flex;
 
     padding:
         5px
         8px;
 
-    color: #49546a;
+    color:
+        #49546a;
 
-    background: #f2f4f7;
+    background:
+        #f2f4f7;
 
     border:
         1px solid
         #eaecf0;
 
-    border-radius: 999px;
+    border-radius:
+        999px;
 
-    font-size: 9px;
-    font-weight: 600;
+    font-size:
+        9px;
+
+    font-weight:
+        600;
 }
 
 .users-no-role {
-    color: #9aa1ae;
+    color:
+        #9aa1ae;
 
-    font-size: 10px;
+    font-size:
+        10px;
 }
 
-/* ======================================================
-   ESTADO
-   ====================================================== */
+.users-status-wrapper {
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    flex-direction:
+        column;
+
+    gap:
+        5px;
+}
 
 .users-status {
-    display: inline-flex;
+    display:
+        inline-flex;
 
-    align-items: center;
+    align-items:
+        center;
 
-    gap: 6px;
+    gap:
+        6px;
 
     padding:
         5px
         8px;
 
-    border-radius: 999px;
+    border-radius:
+        999px;
 
-    font-size: 9px;
-    font-weight: 600;
+    font-size:
+        9px;
+
+    font-weight:
+        600;
 }
 
 .users-status-dot {
-    width: 6px;
-    height: 6px;
+    width:
+        6px;
 
-    flex-shrink: 0;
+    height:
+        6px;
 
-    border-radius: 50%;
+    flex-shrink:
+        0;
+
+    border-radius:
+        50%;
 }
 
 .users-status.active {
@@ -268,88 +348,135 @@
 
 .users-status.active
 .users-status-dot {
-    background: #22c55e;
+    background:
+        #22c55e;
 }
 
 .users-status.inactive {
-    color: #8b4242;
+    color:
+        #8b4242;
 
-    background: #fff1f1;
+    background:
+        #fff1f1;
 }
 
 .users-status.inactive
 .users-status-dot {
-    background: #e05252;
+    background:
+        #e05252;
 }
 
-/* ======================================================
-   FECHAS
-   ====================================================== */
+.users-status-meta {
+    color:
+        #9a6b6b;
+
+    font-size:
+        8px;
+
+    white-space:
+        nowrap;
+}
 
 .users-date-cell {
-    white-space: nowrap;
+    white-space:
+        nowrap;
 }
 
-/* ======================================================
-   ACCIONES
-   ====================================================== */
-
 .users-actions-header {
-    text-align: right !important;
+    text-align:
+        right !important;
 }
 
 .users-row-actions {
-    display: flex;
+    display:
+        flex;
 
-    justify-content: flex-end;
+    justify-content:
+        flex-end;
 
-    gap: 6px;
+    gap:
+        5px;
 
-    white-space: nowrap;
+    white-space:
+        nowrap;
 }
 
 .users-action-button {
-    min-height: 30px;
+    min-height:
+        30px;
 
-    display: inline-flex;
+    display:
+        inline-flex;
 
-    align-items: center;
-    justify-content: center;
+    align-items:
+        center;
 
-    gap: 5px;
+    justify-content:
+        center;
+
+    gap:
+        5px;
 
     padding:
         5px
+        8px;
+
+    border:
+        0;
+
+    border-radius:
+        8px;
+
+    cursor:
+        pointer;
+
+    font-size:
         9px;
 
-    border-radius: 8px;
-
-    cursor: pointer;
-
-    font-size: 9px;
-    font-weight: 600;
+    font-weight:
+        600;
 
     transition:
-        background 0.18s ease,
-        transform 0.18s ease;
+        background
+        0.18s ease,
+        transform
+        0.18s ease;
 }
 
 .users-action-button:hover {
     transform:
-        translateY(-1px);
+        translateY(
+            -1px
+        );
 }
 
 .users-action-button.edit {
-    color: #a54900;
+    color:
+        #a54900;
 
     background:
         var(--admin-orange-soft);
 }
 
-.users-action-button.disable {
-    color: #b13a3a;
+.users-action-button.password {
+    color:
+        #475467;
 
-    background: #fff1f1;
+    background:
+        #f2f4f7;
+}
+
+.users-action-button.password:hover {
+    background:
+        #e9ecf1;
+}
+
+.users-action-button.disable {
+    color:
+        #b13a3a;
+
+    background:
+        #fff1f1;
 }
 
 .users-action-button.enable {
@@ -361,51 +488,55 @@
 }
 
 .users-action-button:disabled {
-    opacity: 0.5;
+    opacity:
+        0.5;
 
-    cursor: not-allowed;
+    cursor:
+        not-allowed;
 
-    transform: none;
+    transform:
+        none;
 }
 
-/* ======================================================
-   ESTADO VACÍO
-   ====================================================== */
-
 .users-table-empty {
-    height: 160px;
+    height:
+        160px;
 
-    text-align: center;
+    text-align:
+        center;
 }
 
 .users-table-empty strong,
 .users-table-empty span {
-    display: block;
+    display:
+        block;
 }
 
 .users-table-empty strong {
     color:
         var(--admin-text);
 
-    font-size: 12px;
+    font-size:
+        12px;
 }
 
 .users-table-empty span {
-    margin-top: 5px;
+    margin-top:
+        5px;
 
     color:
         var(--admin-text-soft);
 
-    font-size: 10px;
+    font-size:
+        10px;
 }
 
-/* ======================================================
-   SKELETON
-   ====================================================== */
-
 .users-skeleton-line {
-    width: 100%;
-    height: 22px;
+    width:
+        100%;
+
+    height:
+        22px;
 
     background:
         linear-gradient(
@@ -418,7 +549,8 @@
     background-size:
         200% 100%;
 
-    border-radius: 7px;
+    border-radius:
+        7px;
 
     animation:
         users-skeleton
@@ -438,19 +570,21 @@
     }
 }
 
-/* ======================================================
-   PAGINACIÓN
-   ====================================================== */
-
 .users-pagination {
-    min-height: 58px;
+    min-height:
+        58px;
 
-    display: flex;
+    display:
+        flex;
 
-    align-items: center;
-    justify-content: space-between;
+    align-items:
+        center;
 
-    gap: 16px;
+    justify-content:
+        space-between;
+
+    gap:
+        16px;
 
     padding:
         12px
@@ -465,92 +599,114 @@
     color:
         var(--admin-text-soft);
 
-    font-size: 10px;
+    font-size:
+        10px;
 }
 
 .users-pagination-controls {
-    display: flex;
+    display:
+        flex;
 
-    align-items: center;
+    align-items:
+        center;
 
-    gap: 10px;
+    gap:
+        10px;
 }
 
 .users-pagination-controls span {
     color:
         var(--admin-text-soft);
 
-    font-size: 10px;
+    font-size:
+        10px;
 }
 
 .users-pagination-controls button {
-    min-height: 31px;
+    min-height:
+        31px;
 
     padding:
         0
         11px;
 
-    color: #555f71;
+    color:
+        #555f71;
 
-    background: #ffffff;
+    background:
+        #ffffff;
 
     border:
         1px solid
         #dfe3e9;
 
-    border-radius: 8px;
+    border-radius:
+        8px;
 
-    cursor: pointer;
+    cursor:
+        pointer;
 
-    font-size: 10px;
-    font-weight: 600;
+    font-size:
+        10px;
+
+    font-weight:
+        600;
 }
 
 .users-pagination-controls button:hover:not(:disabled) {
-    color: #a54900;
+    color:
+        #a54900;
 
-    border-color: #ffc999;
+    border-color:
+        #ffc999;
 
     background:
         var(--admin-orange-soft);
 }
 
 .users-pagination-controls button:disabled {
-    opacity: 0.45;
+    opacity:
+        0.45;
 
-    cursor: not-allowed;
+    cursor:
+        not-allowed;
 }
 
-/* ======================================================
-   TABLET
-   ====================================================== */
-
-@media (max-width: 900px) {
+@media (
+    max-width:
+        900px
+) {
     .users-table {
-        min-width: 820px;
+        min-width:
+            1050px;
     }
 }
 
-/* ======================================================
-   CELULAR
-   ====================================================== */
-
-@media (max-width: 600px) {
+@media (
+    max-width:
+        600px
+) {
     .users-table-card {
-        border-radius: 16px;
+        border-radius:
+            16px;
     }
 
     .users-pagination {
-        align-items: stretch;
+        align-items:
+            stretch;
 
-        flex-direction: column;
+        flex-direction:
+            column;
 
-        gap: 10px;
+        gap:
+            10px;
     }
 
     .users-pagination-controls {
-        width: 100%;
+        width:
+            100%;
 
-        justify-content: space-between;
+        justify-content:
+            space-between;
     }
 }

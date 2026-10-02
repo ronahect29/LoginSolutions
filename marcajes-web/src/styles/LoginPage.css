@@ -1,116 +1,805 @@
-/* --- Paleta general con naranja corporativo --- */
-:root {
-  --primary: #ff7a00;        /* Naranja principal */
-  --primary-hover: #e86b00;  /* Hover más oscuro */
-  --bg-light: #fff7f0;       /* Fondo suave */
-  --text-dark: #2a2a2a;
-  --shadow: 0px 10px 30px rgba(0, 0, 0, 0.12);
+/* =====================================================
+   LOGIN MARCAJES
+   ===================================================== */
+
+.mk-login-page,
+.mk-login-page * {
+    box-sizing: border-box;
 }
 
-/* --- Fondo con gradiente elegante --- */
-.login-container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(
-    135deg,
-    #fff0e6 0%,
-    #ffe7d4 50%,
-    #ffd8b3 100%
-  );
-  padding: 20px;
+
+/* =====================================================
+   PÁGINA
+   ===================================================== */
+
+.mk-login-page {
+    min-height: 100vh;
+
+    position: relative;
+
+    overflow: hidden;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    background:
+        radial-gradient(
+            circle at 15% 15%,
+            rgba(255, 115, 0, 0.11),
+            transparent 27%
+        ),
+        radial-gradient(
+            circle at 90% 85%,
+            rgba(255, 145, 55, 0.12),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #fffaf6 0%,
+            #fff5ed 48%,
+            #ffe7d5 100%
+        );
 }
 
-/* --- Card principal --- */
-.login-card {
-  background: white;
-  width: 100%;
-  max-width: 380px;
-  border-radius: 18px;
-  padding: 32px;
-  box-shadow: var(--shadow);
-  animation: fadeIn 0.6s ease;
+
+/* =====================================================
+   DECORACIÓN DE FONDO
+   ===================================================== */
+
+.mk-login-decoration {
+    position: absolute;
+
+    pointer-events: none;
+
+    border-radius: 50%;
 }
 
-.login-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-dark);
-  text-align: center;
-  margin-bottom: 12px;
+
+.mk-login-decoration-one {
+    width: 330px;
+    height: 330px;
+
+    top: -170px;
+    left: -110px;
+
+    border:
+        1px solid
+        rgba(255, 115, 0, 0.14);
+
+    animation:
+        mk-login-float-one
+        13s ease-in-out
+        infinite alternate;
 }
 
-/* --- Inputs --- */
-.login-field {
-  margin-bottom: 18px;
+
+.mk-login-decoration-two {
+    width: 280px;
+    height: 280px;
+
+    right: -120px;
+    bottom: -140px;
+
+    background:
+        rgba(255, 115, 0, 0.055);
+
+    animation:
+        mk-login-float-two
+        15s ease-in-out
+        infinite alternate;
 }
 
-.login-label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #444;
-  margin-bottom: 4px;
-  display: block;
+
+/* =====================================================
+   TARJETA
+   ===================================================== */
+
+.mk-login-card {
+    width: 100%;
+    max-width: 465px;
+
+    position: relative;
+    z-index: 2;
+
+    margin: 0;
+
+    padding:
+        42px
+        46px
+        30px;
+
+    background:
+        rgba(255, 255, 255, 0.97);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.92);
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 30px 70px
+        rgba(101, 57, 25, 0.15);
+
+    backdrop-filter:
+        blur(12px);
+
+    animation:
+        mk-login-card-in
+        0.65s
+        cubic-bezier(.2,.8,.2,1)
+        both;
 }
 
-.login-input {
-  width: 100%;
-  padding: 10px 14px;
-  border: 1.8px solid #ddd;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  outline: none;
-  transition: 0.2s ease;
+
+/* =====================================================
+   ENCABEZADO
+   ===================================================== */
+
+.mk-login-header {
+    margin-bottom: 32px;
+
+    text-align: left;
 }
 
-.login-input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.25);
+
+.mk-login-brand-badge {
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    margin-bottom: 20px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff7a00,
+            #ef6900
+        );
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 9px 20px
+        rgba(255, 115, 0, 0.19);
 }
 
-/* --- Botón --- */
-.login-button {
-  width: 100%;
-  padding: 12px 0;
-  background: var(--primary);
-  color: white;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.2s ease;
+
+.mk-login-brand-badge svg {
+    width: 21px;
+    height: 21px;
 }
 
-.login-button:hover {
-  background: var(--primary-hover);
+
+.mk-login-kicker {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #ff7300;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
 }
 
-.login-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+
+.mk-login-header h1 {
+    margin: 0;
+
+    color: #172033;
+
+    font-size: 31px;
+    font-weight: 700;
+
+    line-height: 1.15;
+
+    letter-spacing: -0.035em;
 }
 
-/* --- Error box --- */
-.login-error {
-  background: #ffe3dd;
-  border: 1px solid #ffb5ac;
-  color: #a94442;
-  padding: 10px 14px;
-  border-radius: 10px;
-  font-size: 0.82rem;
-  margin-bottom: 15px;
+
+.mk-login-header p {
+    margin:
+        7px
+        0
+        0;
+
+    color: #939aa6;
+
+    font-size: 10px;
 }
 
-/* --- Animación elegante --- */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+
+/* =====================================================
+   CAMPOS
+   ===================================================== */
+
+.mk-login-field {
+    margin-bottom: 19px;
+}
+
+
+.mk-login-field label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #414957;
+
+    font-size: 10px;
+    font-weight: 600;
+}
+
+
+.mk-login-field-heading {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.mk-login-field-heading span {
+    margin-bottom: 7px;
+
+    color: #adb3bc;
+
+    font-size: 8px;
+}
+
+
+/* =====================================================
+   INPUT
+   ===================================================== */
+
+.mk-login-input-wrapper {
+    position: relative;
+}
+
+
+.mk-login-input-icon {
+    width: 17px;
+    height: 17px;
+
+    position: absolute;
+
+    top: 50%;
+    left: 14px;
+
+    color: #9da5b0;
+
+    pointer-events: none;
+
+    transform:
+        translateY(-50%);
+
+    transition:
+        color 0.2s ease;
+}
+
+
+.mk-login-input-icon svg {
+    width: 17px;
+    height: 17px;
+
+    display: block;
+}
+
+
+.mk-login-input-wrapper input {
+    width: 100%;
+    height: 49px;
+
+    padding:
+        0
+        45px;
+
+    color: #222a36;
+
+    background: #ffffff;
+
+    border:
+        1px solid
+        #dfe3e8;
+
+    border-radius: 11px;
+
+    outline: none;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.mk-login-input-wrapper input::placeholder {
+    color: #b5bbc4;
+}
+
+
+.mk-login-input-wrapper:focus-within
+.mk-login-input-icon {
+    color: #ff7300;
+}
+
+
+.mk-login-input-wrapper input:focus {
+    background: #fffdfb;
+
+    border-color: #ff913c;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(255, 115, 0, 0.08);
+}
+
+
+.mk-login-input-wrapper input:disabled {
+    color: #8e96a2;
+
+    background: #f7f8fa;
+
+    cursor: not-allowed;
+}
+
+
+/* =====================================================
+   MOSTRAR CONTRASEÑA
+   ===================================================== */
+
+.mk-login-password-toggle {
+    width: 32px;
+    height: 32px;
+
+    position: absolute;
+
+    top: 50%;
+    right: 9px;
+
+    display: grid;
+    place-items: center;
+
+    padding: 0;
+
+    color: #8a929e;
+
+    background: transparent;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    transform:
+        translateY(-50%);
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.mk-login-password-toggle:hover:not(:disabled) {
+    color: #ff7300;
+
+    background: #fff4ea;
+}
+
+
+.mk-login-password-toggle svg {
+    width: 17px;
+    height: 17px;
+
+    display: block;
+}
+
+
+.mk-login-password-toggle:disabled {
+    cursor: not-allowed;
+
+    opacity: 0.5;
+}
+
+
+/* =====================================================
+   ERROR
+   ===================================================== */
+
+.mk-login-error {
+    margin:
+        -2px
+        0
+        15px;
+
+    padding:
+        10px
+        12px;
+
+    color: #9e3434;
+
+    background: #fff4f4;
+
+    border:
+        1px solid
+        #ffd6d6;
+
+    border-radius: 9px;
+
+    font-size: 9px;
+
+    line-height: 1.5;
+
+    animation:
+        mk-login-error-in
+        0.25s ease;
+}
+
+
+/* =====================================================
+   BOTÓN
+   ===================================================== */
+
+.mk-login-button {
+    width: 100%;
+    height: 49px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 8px;
+
+    padding: 0;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff7a00,
+            #f26900
+        );
+
+    border: 0;
+
+    border-radius: 11px;
+
+    box-shadow:
+        0 10px 23px
+        rgba(255, 115, 0, 0.22);
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        filter 0.18s ease;
+}
+
+
+.mk-login-button:hover:not(:disabled) {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 14px 27px
+        rgba(255, 115, 0, 0.27);
+
+    filter:
+        brightness(1.02);
+}
+
+
+.mk-login-button:active:not(:disabled) {
+    transform:
+        translateY(0);
+}
+
+
+.mk-login-button:disabled {
+    cursor: wait;
+
+    opacity: 0.88;
+}
+
+
+.mk-login-button-content {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+.mk-login-button-content > svg {
+    width: 15px;
+    height: 15px;
+
+    display: block;
+
+    transition:
+        transform
+        0.18s ease;
+}
+
+
+.mk-login-button:hover:not(:disabled)
+.mk-login-button-content > svg {
+    transform:
+        translateX(3px);
+}
+
+
+/* =====================================================
+   LOADING
+   ===================================================== */
+
+.mk-login-spinner {
+    width: 15px;
+    height: 15px;
+
+    display: block;
+
+    border:
+        2px solid
+        rgba(255, 255, 255, 0.35);
+
+    border-top-color: #ffffff;
+
+    border-radius: 50%;
+
+    animation:
+        mk-login-spin
+        0.65s linear
+        infinite;
+}
+
+
+/* =====================================================
+   SEGURIDAD
+   ===================================================== */
+
+.mk-login-security {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    margin-top: 24px;
+
+    color: #a0a7b1;
+
+    font-size: 8px;
+}
+
+
+.mk-login-security svg {
+    width: 13px;
+    height: 13px;
+
+    display: block;
+
+    color: #ff7300;
+}
+
+
+/* =====================================================
+   ANIMACIONES
+   ===================================================== */
+
+@keyframes mk-login-card-in {
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(18px)
+            scale(0.985);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+@keyframes mk-login-float-one {
+    to {
+        transform:
+            translate(
+                60px,
+                35px
+            );
+    }
+}
+
+
+@keyframes mk-login-float-two {
+    to {
+        transform:
+            translate(
+                -50px,
+                -30px
+            );
+    }
+}
+
+
+@keyframes mk-login-spin {
+    to {
+        transform:
+            rotate(360deg);
+    }
+}
+
+
+@keyframes mk-login-error-in {
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* =====================================================
+   TABLET / CELULAR
+   ===================================================== */
+
+@media (max-width: 520px) {
+
+    .mk-login-page {
+        align-items: center;
+
+        padding:
+            18px
+            16px;
+    }
+
+
+    .mk-login-card {
+        max-width: 420px;
+
+        padding:
+            34px
+            27px
+            26px;
+
+        border-radius: 19px;
+    }
+
+
+    .mk-login-brand-badge {
+        width: 39px;
+        height: 39px;
+
+        margin-bottom: 17px;
+    }
+
+
+    .mk-login-header {
+        margin-bottom: 27px;
+    }
+
+
+    .mk-login-header h1 {
+        font-size: 27px;
+    }
+
+
+    .mk-login-input-wrapper input {
+        height: 48px;
+    }
+
+
+    .mk-login-button {
+        height: 48px;
+    }
+
+}
+
+
+/* =====================================================
+   CELULARES PEQUEÑOS
+   ===================================================== */
+
+@media (max-width: 360px) {
+
+    .mk-login-page {
+        padding:
+            12px;
+    }
+
+
+    .mk-login-card {
+        padding:
+            29px
+            21px
+            23px;
+    }
+
+
+    .mk-login-header h1 {
+        font-size: 25px;
+    }
+
+}
+
+
+/* =====================================================
+   PANTALLAS BAJAS
+   ===================================================== */
+
+@media (max-height: 650px) {
+
+    .mk-login-page {
+        align-items: flex-start;
+
+        overflow-y: auto;
+
+        padding-top: 20px;
+
+        padding-bottom: 20px;
+    }
+
+}
+
+
+/* =====================================================
+   ACCESIBILIDAD
+   ===================================================== */
+
+@media (
+    prefers-reduced-motion:
+        reduce
+) {
+
+    .mk-login-page *,
+    .mk-login-page *::before,
+    .mk-login-page *::after {
+        animation-duration:
+            0.01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            0.01ms !important;
+    }
+
 }

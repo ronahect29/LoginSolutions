@@ -1,16 +1,40 @@
-import { useState } from "react";
-import { api } from "../../services/api";
-import type { FiltroAplicacion } from "../../models/FiltroAplicacion";
-import type { FiltroRol, RolConfigUsuario } from "../../models/FiltroRol";
-import { StepUserBasic } from "./wizard/StepUserBasic";
-import { StepUserRoles } from "./wizard/StepUserRoles";
-import { StepUserSummary } from "./wizard/StepUserSummary";
+import {
+    X,
+} from "lucide-react";
+import {
+    useState,
+} from "react";
+
+import type {
+    FiltroAplicacion,
+} from "../../models/FiltroAplicacion";
+import type {
+    FiltroRol,
+    RolConfigUsuario,
+} from "../../models/FiltroRol";
+import {
+    api,
+} from "../../services/api";
 import "./styles/user-wizard.css";
+import {
+    StepUserBasic,
+} from "./wizard/StepUserBasic";
+import {
+    StepUserRoles,
+} from "./wizard/StepUserRoles";
+import {
+    StepUserSummary,
+} from "./wizard/StepUserSummary";
 
 interface Props {
-    appsOptions: FiltroAplicacion[];
-    onClose: () => void;
-    onCreated: () => void;
+    appsOptions:
+        FiltroAplicacion[];
+
+    onClose:
+        () => void;
+
+    onCreated:
+        () => void;
 }
 
 type UserDraft = {
@@ -25,179 +49,570 @@ type UserDraft = {
 const STEP_TITLES = [
     "Información Básica",
     "Configuración de Rol",
-    "Resumen"
+    "Resumen",
 ];
 
-export function UserCreateWizard({ appsOptions, onClose, onCreated }: Props) {
-    const [step, setStep] = useState(1);
+export function UserCreateWizard({
+    appsOptions,
+    onClose,
+    onCreated,
+}: Props) {
+    const [
+        step,
+        setStep,
+    ] = useState(1);
 
-    /* =========================
-       USUARIO
-       ========================= */
-    const [user, setUser] = useState<UserDraft>({
+    const [
+        error,
+        setError,
+    ] = useState<string | null>(
+        null
+    );
+
+    const [
+        saving,
+        setSaving,
+    ] = useState(false);
+
+    const [
+        user,
+        setUser,
+    ] = useState<UserDraft>({
         correo: "",
         nombre: "",
         username: "",
         password: "",
         direccion: "",
-        telefono: ""
+        telefono: "",
     });
 
-    /* =========================
-       APPS (SOLO FILTRO)
-       ========================= */
-    const [selectedApps, setSelectedApps] = useState<FiltroAplicacion[]>([]);
+    const [
+        selectedApps,
+        setSelectedApps,
+    ] = useState<
+        FiltroAplicacion[]
+    >([]);
 
-    /* =========================
-       ROLES
-       ========================= */
-    const [rolesOptions, setRolesOptions] = useState<RolConfigUsuario[]>([]);
-    const [selectedRoles, setSelectedRoles] = useState<RolConfigUsuario[]>([]);
+    const [
+        rolesOptions,
+        setRolesOptions,
+    ] = useState<
+        RolConfigUsuario[]
+    >([]);
 
-    /* =========================
-       ROLES POR APLICACIÓN
-       ========================= */
-    async function fetchRolesForApps(apps: FiltroAplicacion[]) {
-        setSelectedApps(apps);
-        setSelectedRoles([]);
+    const [
+        selectedRoles,
+        setSelectedRoles,
+    ] = useState<
+        RolConfigUsuario[]
+    >([]);
 
-        if (apps.length === 0) {
-            setRolesOptions([]);
+    async function fetchRolesForApps(
+        apps: FiltroAplicacion[]
+    ) {
+        setSelectedApps(
+            apps
+        );
+
+        setSelectedRoles(
+            []
+        );
+
+        if (
+            apps.length === 0
+        ) {
+            setRolesOptions(
+                []
+            );
+
             return;
         }
 
         try {
-            const res = await api.post<FiltroRol[]>(
-                "/rol/findByActivoAndCodigosAplicacionActivo",
-                {
-                    activo: true,
-                    appsCodes: apps.map(a => a.codigo)
-                }
-            );
+            const res =
+                await api.post<
+                    FiltroRol[]
+                >(
+                    "/rol/findByActivoAndCodigosAplicacionActivo",
+                    {
+                        activo: true,
+
+                        appsCodes:
+                            apps.map(
+                                (app) =>
+                                    app.codigo
+                            ),
+                    }
+                );
 
             setRolesOptions(
-                res.data.map(role => ({
-                    id_rol: role.id_rol,
-                    nombre: role.nombre,
-                    codigo: role.codigo,
-                    default: false
-                }))
+                res.data.map(
+                    (role) => ({
+                        id_rol:
+                            role.id_rol,
+
+                        nombre:
+                            role.nombre,
+
+                        codigo:
+                            role.codigo,
+
+                        default:
+                            false,
+                    })
+                )
             );
-        } catch (err) {
-            console.error("Error cargando roles", err);
+        } catch (
+            err
+        ) {
+            console.error(
+                "Error cargando roles",
+                err
+            );
+
+            setError(
+                "No fue posible cargar los roles de las aplicaciones seleccionadas."
+            );
         }
     }
 
-    /* =========================
-       MARCAR ROL POR DEFECTO
-       ========================= */
-    function handleDefaultRoleChange(roleCode: string) {
-        setSelectedRoles(prev =>
-            prev.map(role => ({
-                ...role,
-                default: role.codigo === roleCode
-            }))
+    function handleDefaultRoleChange(
+        roleCode: string
+    ) {
+        setSelectedRoles(
+            (prev) =>
+                prev.map(
+                    (role) => ({
+                        ...role,
+
+                        default:
+                            role.codigo ===
+                            roleCode,
+                    })
+                )
         );
     }
 
-    /* =========================
-       FINALIZAR REGISTRO
-       ========================= */
+    function validarPasoActual():
+        boolean {
+        setError(
+            null
+        );
+
+        if (
+            step === 1
+        ) {
+            if (
+                !user.nombre.trim()
+            ) {
+                setError(
+                    "Ingresa el nombre completo del usuario."
+                );
+
+                return false;
+            }
+
+            if (
+                !user.correo.trim()
+            ) {
+                setError(
+                    "Ingresa el correo electrónico."
+                );
+
+                return false;
+            }
+
+            const correoValido =
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (
+                !correoValido.test(
+                    user.correo.trim()
+                )
+            ) {
+                setError(
+                    "Ingresa un correo electrónico válido."
+                );
+
+                return false;
+            }
+
+            if (
+                !user.username.trim()
+            ) {
+                setError(
+                    "Ingresa un nombre de usuario."
+                );
+
+                return false;
+            }
+
+            if (
+                user.password.length <
+                6
+            ) {
+                setError(
+                    "La contraseña debe tener al menos 6 caracteres."
+                );
+
+                return false;
+            }
+        }
+
+        if (
+            step === 2
+        ) {
+            if (
+                selectedApps.length ===
+                0
+            ) {
+                setError(
+                    "Selecciona al menos una aplicación."
+                );
+
+                return false;
+            }
+
+            if (
+                selectedRoles.length ===
+                0
+            ) {
+                setError(
+                    "Selecciona al menos un rol."
+                );
+
+                return false;
+            }
+
+            if (
+                !selectedRoles.some(
+                    (role) =>
+                        role.default
+                )
+            ) {
+                setError(
+                    "Selecciona un rol principal."
+                );
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function handleNext() {
+        if (
+            !validarPasoActual()
+        ) {
+            return;
+        }
+
+        setStep(
+            (current) =>
+                current + 1
+        );
+
+        setError(
+            null
+        );
+    }
+
+    function handleBack() {
+        setStep(
+            (current) =>
+                current - 1
+        );
+
+        setError(
+            null
+        );
+    }
+
     async function handleFinish() {
-        const ok = window.confirm("¿Confirmas el registro del nuevo usuario?");
-        if (!ok) return;
+        setError(
+            null
+        );
+
+        const ok =
+            window.confirm(
+                "¿Confirmas el registro del nuevo usuario?"
+            );
+
+        if (
+            !ok
+        ) {
+            return;
+        }
 
         try {
-            await api.post("/usuarios/create", {
-                user,
-                roles: selectedRoles.map(r => ({
-                    id_rol: r.id_rol,
-                    codigo: r.codigo,
-                    default: r.default
-                }))
-            });
+            setSaving(
+                true
+            );
+
+            await api.post(
+                "/usuarios/create",
+                {
+                    user: {
+                        ...user,
+
+                        nombre:
+                            user.nombre.trim(),
+
+                        correo:
+                            user.correo.trim(),
+
+                        username:
+                            user.username.trim(),
+
+                        direccion:
+                            user.direccion.trim(),
+
+                        telefono:
+                            user.telefono.trim(),
+                    },
+
+                    roles:
+                        selectedRoles.map(
+                            (role) => ({
+                                id_rol:
+                                    role.id_rol,
+
+                                codigo:
+                                    role.codigo,
+
+                                default:
+                                    role.default,
+                            })
+                        ),
+                }
+            );
 
             onCreated();
-        } catch (err) {
-            console.error("Error creando usuario", err);
-            alert("No se pudo registrar el usuario");
+        } catch (
+            err: any
+        ) {
+            console.error(
+                "Error creando usuario",
+                err
+            );
+
+            setError(
+                err?.response
+                    ?.data
+                    ?.message ??
+                    "No se pudo registrar el usuario."
+            );
+        } finally {
+            setSaving(
+                false
+            );
         }
     }
 
     return (
-        <div className="uw-overlay">
+        <div
+            className="uw-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="uw-title"
+        >
             <div className="uw-card">
-                {/* ================= HEADER ================= */}
                 <div className="uw-header">
-                    <h2 className="uw-title">{STEP_TITLES[step - 1]}</h2>
+                    <div className="uw-header-top">
+                        <div>
+                            <span className="uw-kicker">
+                                Nuevo usuario
+                            </span>
+
+                            <h2
+                                id="uw-title"
+                                className="uw-title"
+                            >
+                                {
+                                    STEP_TITLES[
+                                        step - 1
+                                    ]
+                                }
+                            </h2>
+                        </div>
+
+                        <button
+                            type="button"
+                            className="uw-close"
+                            onClick={
+                                onClose
+                            }
+                            aria-label="Cerrar"
+                        >
+                            <X
+                                size={20}
+                            />
+                        </button>
+                    </div>
 
                     <div className="uw-progress">
-                        {STEP_TITLES.map((title, index) => {
-                            const current = index + 1;
-                            return (
-                                <div
-                                    key={title}
-                                    className={`uw-progress-step ${step === current
-                                            ? "active"
-                                            : step > current
-                                                ? "done"
-                                                : ""
-                                        }`}
-                                >
-                                    {title}
-                                </div>
-                            );
-                        })}
+                        {STEP_TITLES.map(
+                            (
+                                title,
+                                index
+                            ) => {
+                                const current =
+                                    index +
+                                    1;
+
+                                const state =
+                                    step ===
+                                    current
+                                        ? "active"
+                                        : step >
+                                            current
+                                          ? "done"
+                                          : "";
+
+                                return (
+                                    <div
+                                        key={
+                                            title
+                                        }
+                                        className={`uw-progress-step ${state}`}
+                                    >
+                                        <span className="uw-progress-number">
+                                            {
+                                                current
+                                            }
+                                        </span>
+
+                                        <span>
+                                            {
+                                                title
+                                            }
+                                        </span>
+                                    </div>
+                                );
+                            }
+                        )}
                     </div>
                 </div>
 
-                {/* ================= BODY ================= */}
                 <div className="uw-body">
+                    {error && (
+                        <div className="uw-error">
+                            {
+                                error
+                            }
+                        </div>
+                    )}
+
                     {step === 1 && (
                         <StepUserBasic
-                            data={user}
-                            onChange={setUser}
+                            data={
+                                user
+                            }
+                            onChange={
+                                setUser
+                            }
                         />
                     )}
 
                     {step === 2 && (
                         <StepUserRoles
-                            appsOptions={appsOptions}
-                            rolesOptions={rolesOptions}
-                            selectedApps={selectedApps}
-                            selectedRoles={selectedRoles}
-                            onAppsChange={fetchRolesForApps}
-                            onRolesChange={(roles) => {
-                                // si se elimina el rol default, limpiarlo
-                                if (!roles.some(r => r.default) && roles.length > 0) {
-                                    // opcional: forzar uno por defecto
-                                    roles[0].default = true;
+                            appsOptions={
+                                appsOptions
+                            }
+                            rolesOptions={
+                                rolesOptions
+                            }
+                            selectedApps={
+                                selectedApps
+                            }
+                            selectedRoles={
+                                selectedRoles
+                            }
+                            onAppsChange={
+                                fetchRolesForApps
+                            }
+                            onRolesChange={(
+                                roles
+                            ) => {
+                                let next =
+                                    roles;
+
+                                if (
+                                    next.length >
+                                        0 &&
+                                    !next.some(
+                                        (
+                                            role
+                                        ) =>
+                                            role.default
+                                    )
+                                ) {
+                                    next =
+                                        next.map(
+                                            (
+                                                role,
+                                                index
+                                            ) => ({
+                                                ...role,
+
+                                                default:
+                                                    index ===
+                                                    0,
+                                            })
+                                        );
                                 }
-                                setSelectedRoles(roles);
+
+                                setSelectedRoles(
+                                    next
+                                );
                             }}
-                            onDefaultRoleChange={handleDefaultRoleChange}
+                            onDefaultRoleChange={
+                                handleDefaultRoleChange
+                            }
                         />
                     )}
 
                     {step === 3 && (
                         <StepUserSummary
-                            user={user}
-                            roles={selectedRoles}
+                            user={
+                                user
+                            }
+                            apps={
+                                selectedApps
+                            }
+                            roles={
+                                selectedRoles
+                            }
                         />
                     )}
                 </div>
 
-                {/* ================= FOOTER ================= */}
                 <div className="uw-footer">
-                    <button className="uw-btn ghost" onClick={onClose}>
+                    <button
+                        type="button"
+                        className="uw-btn ghost"
+                        onClick={
+                            onClose
+                        }
+                        disabled={
+                            saving
+                        }
+                    >
                         Cancelar
                     </button>
 
                     <div className="uw-footer-right">
                         {step > 1 && (
                             <button
-                                className="uw-btn"
-                                onClick={() => setStep(step - 1)}
+                                type="button"
+                                className="uw-btn secondary"
+                                onClick={
+                                    handleBack
+                                }
+                                disabled={
+                                    saving
+                                }
                             >
                                 Atrás
                             </button>
@@ -205,17 +620,28 @@ export function UserCreateWizard({ appsOptions, onClose, onCreated }: Props) {
 
                         {step < 3 ? (
                             <button
+                                type="button"
                                 className="uw-btn primary"
-                                onClick={() => setStep(step + 1)}
+                                onClick={
+                                    handleNext
+                                }
                             >
                                 Siguiente
                             </button>
                         ) : (
                             <button
+                                type="button"
                                 className="uw-btn primary"
-                                onClick={handleFinish}
+                                onClick={
+                                    handleFinish
+                                }
+                                disabled={
+                                    saving
+                                }
                             >
-                                Finalizar
+                                {saving
+                                    ? "Registrando..."
+                                    : "Crear usuario"}
                             </button>
                         )}
                     </div>

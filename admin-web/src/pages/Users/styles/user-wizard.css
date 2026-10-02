@@ -1,155 +1,1403 @@
-/* ===== OVERLAY ===== */
+/* ======================================================
+   OVERLAY
+   ====================================================== */
+
 .uw-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(2, 6, 23, 0.55);
+    z-index: 1000;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 50;
+
+    padding: 24px;
+
+    background:
+        rgba(17, 24, 39, 0.58);
+
+    backdrop-filter:
+        blur(3px);
 }
 
-/* ===== CARD ===== */
+
+/* ======================================================
+   MODAL
+   ====================================================== */
+
 .uw-card {
-    background: white;
-    border-radius: 16px;
-    width: min(760px, 95%);
-    max-height: 90vh;
+    width:
+        min(
+            820px,
+            100%
+        );
+
+    max-height:
+        calc(100vh - 48px);
+
     display: flex;
     flex-direction: column;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+
+    overflow: hidden;
+
+    background:
+        var(--admin-surface);
+
+    border:
+        1px solid
+        rgba(230, 233, 240, 0.9);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 28px 70px
+        rgba(17, 24, 39, 0.24);
 }
 
-/* ===== HEADER ===== */
+
+/* ======================================================
+   HEADER
+   ====================================================== */
+
 .uw-header {
-    padding: 1.2rem 1.4rem 0.8rem;
-    border-bottom: 1px solid #f1f5f9;
+    padding:
+        24px
+        26px
+        20px;
+
+    border-bottom:
+        1px solid
+        var(--admin-border);
+}
+
+.uw-header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 21px;
+}
+
+.uw-kicker {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color:
+        var(--admin-orange);
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 0.09em;
+
+    text-transform: uppercase;
 }
 
 .uw-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #020617;
-    margin-bottom: 0.6rem;
+    margin: 0;
+
+    color:
+        var(--admin-text);
+
+    font-size: 23px;
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    letter-spacing: -0.025em;
 }
 
-/* ===== PROGRESS ===== */
+.uw-close {
+    width: 38px;
+    height: 38px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    padding: 0;
+
+    color:
+        var(--admin-text-soft);
+
+    background:
+        #f7f8fb;
+
+    border:
+        1px solid
+        var(--admin-border);
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.uw-close:hover {
+    color:
+        var(--admin-text);
+
+    background:
+        #ffffff;
+
+    border-color:
+        #d6dae4;
+}
+
+
+/* ======================================================
+   PROGRESO
+   ====================================================== */
+
 .uw-progress {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
+
+    gap: 10px;
 }
 
 .uw-progress-step {
-    padding: 0.3rem 0.7rem;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    background: #f1f5f9;
-    color: #64748b;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    padding:
+        9px
+        11px;
+
+    color:
+        #8a92a3;
+
+    background:
+        #f7f8fb;
+
+    border:
+        1px solid
+        #edf0f5;
+
+    border-radius: 11px;
+
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.uw-progress-number {
+    width: 23px;
+    height: 23px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color:
+        #7b8495;
+
+    background:
+        #ffffff;
+
+    border:
+        1px solid
+        #e3e7ee;
+
+    border-radius: 50%;
+
+    font-size: 10px;
+    font-weight: 700;
 }
 
 .uw-progress-step.active {
-    background: #020617;
-    color: white;
+    color:
+        var(--admin-navy);
+
+    background:
+        var(--admin-orange-soft);
+
+    border-color:
+        rgba(255, 115, 0, 0.24);
+
+    font-weight: 600;
+}
+
+.uw-progress-step.active
+.uw-progress-number {
+    color: #ffffff;
+
+    background:
+        var(--admin-orange);
+
+    border-color:
+        var(--admin-orange);
 }
 
 .uw-progress-step.done {
-    background: #e2e8f0;
-    color: #0f172a;
+    color:
+        #526073;
+
+    background:
+        #f5f7fa;
 }
 
-/* ===== BODY ===== */
+.uw-progress-step.done
+.uw-progress-number {
+    color: #ffffff;
+
+    background:
+        var(--admin-navy);
+
+    border-color:
+        var(--admin-navy);
+}
+
+
+/* ======================================================
+   BODY
+   ====================================================== */
+
 .uw-body {
-    padding: 1.4rem;
-    overflow-y: auto;
     flex: 1;
+
+    overflow-y: auto;
+
+    padding:
+        25px
+        26px
+        28px;
 }
 
-/* ===== STEP ===== */
-.uw-step h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #020617;
-    margin-bottom: 1rem;
+.uw-step {
+    width: 100%;
 }
 
-/* ===== FOOTER ===== */
-.uw-footer {
-    padding: 0.9rem 1.4rem;
-    border-top: 1px solid #f1f5f9;
+.uw-step-intro {
+    margin-bottom: 22px;
+}
+
+.uw-step-intro h3,
+.uw-step > h3 {
+    margin: 0;
+
+    color:
+        var(--admin-text);
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.uw-step-intro p {
+    margin:
+        5px
+        0
+        0;
+
+    color:
+        var(--admin-text-soft);
+
+    font-size: 12px;
+
+    line-height: 1.55;
+}
+
+
+/* ======================================================
+   ERROR
+   ====================================================== */
+
+.uw-error {
+    margin-bottom: 20px;
+
+    padding:
+        11px
+        13px;
+
+    color: #991b1b;
+
+    background: #fff1f2;
+
+    border:
+        1px solid
+        #fecdd3;
+
+    border-radius: 10px;
+
+    font-size: 11px;
+    font-weight: 500;
+
+    line-height: 1.5;
+}
+
+
+/* ======================================================
+   FORMULARIO
+   ====================================================== */
+
+.uw-form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap:
+        18px
+        20px;
+}
+
+.uf-field {
+    min-width: 0;
+
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.uf-field label {
+    color:
+        var(--admin-text);
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.uf-field label span {
+    margin-left: 3px;
+
+    color:
+        var(--admin-orange);
+}
+
+.uf-field small {
+    color:
+        var(--admin-text-soft);
+
+    font-size: 10px;
+
+    line-height: 1.45;
+}
+
+.uf-input-wrap {
+    min-height: 43px;
+
+    display: flex;
     align-items: center;
-    gap: 0.5rem;
+
+    gap: 10px;
+
+    padding:
+        0
+        12px;
+
+    color:
+        #969eae;
+
+    background:
+        #ffffff;
+
+    border:
+        1px solid
+        var(--admin-border);
+
+    border-radius: 10px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.uf-input-wrap:focus-within {
+    color:
+        var(--admin-orange);
+
+    border-color:
+        rgba(255, 115, 0, 0.72);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(255, 115, 0, 0.09);
+}
+
+.uf-input-wrap input {
+    width: 100%;
+    min-width: 0;
+
+    padding:
+        10px
+        0;
+
+    color:
+        var(--admin-text);
+
+    background:
+        transparent;
+
+    border: 0;
+    outline: 0;
+
+    font-size: 12px;
+}
+
+.uf-input-wrap input::placeholder {
+    color:
+        #a9b0bd;
+}
+
+.uw-required-note {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    margin-top: 19px;
+
+    color:
+        var(--admin-text-soft);
+
+    font-size: 10px;
+}
+
+.uw-required-note span {
+    color:
+        var(--admin-orange);
+
+    font-weight: 700;
+}
+
+
+/* ======================================================
+   APLICACIONES Y ROLES
+   ====================================================== */
+
+.uf-multiselect {
+    min-height: 56px;
+
+    display: flex;
+    align-items: flex-start;
+    align-content: flex-start;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    padding: 10px;
+
+    background:
+        #f8f9fc;
+
+    border:
+        1px solid
+        var(--admin-border);
+
+    border-radius: 11px;
+}
+
+.uf-multiselect.disabled {
+    opacity: 0.55;
+}
+
+.uf-pill {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    padding:
+        7px
+        10px;
+
+    color:
+        #566074;
+
+    background:
+        #ffffff;
+
+    border:
+        1px solid
+        #e1e5ec;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.uf-pill:hover:not(:disabled) {
+    color:
+        var(--admin-orange);
+
+    border-color:
+        rgba(255, 115, 0, 0.4);
+}
+
+.uf-pill.selected {
+    color:
+        var(--admin-orange-hover);
+
+    background:
+        var(--admin-orange-soft);
+
+    border-color:
+        rgba(255, 115, 0, 0.32);
+}
+
+.uf-star {
+    color:
+        #a8afbc;
+
+    font-size: 15px;
+
+    line-height: 1;
+}
+
+.uf-star.filled {
+    color:
+        var(--admin-orange);
+}
+
+.uf-hint {
+    margin-top: 1px;
+
+    color:
+        var(--admin-text-soft);
+
+    font-size: 10px;
+}
+
+.uf-hint.warn {
+    color:
+        #a16207;
+}
+
+
+/* ======================================================
+   RESUMEN
+   ====================================================== */
+
+.uw-summary-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 12px;
+}
+
+.uw-summary-card {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+
+    padding:
+        13px
+        14px;
+
+    background:
+        #f8f9fc;
+
+    border:
+        1px solid
+        var(--admin-border);
+
+    border-radius: 10px;
+}
+
+.uw-summary-wide {
+    grid-column:
+        1 / -1;
+}
+
+.uw-summary-card span {
+    color:
+        var(--admin-text-soft);
+
+    font-size: 9px;
+    font-weight: 600;
+
+    letter-spacing: 0.05em;
+
+    text-transform: uppercase;
+}
+
+.uw-summary-card strong {
+    overflow-wrap:
+        anywhere;
+
+    color:
+        var(--admin-text);
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.uw-summary-section {
+    margin-top: 20px;
+}
+
+.uw-summary-section h4 {
+    margin:
+        0
+        0
+        9px;
+
+    color:
+        var(--admin-text);
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.uw-summary-pills {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 7px;
+}
+
+.uw-summary-pill {
+    padding:
+        6px
+        9px;
+
+    color:
+        #566074;
+
+    background:
+        #f6f7fa;
+
+    border:
+        1px solid
+        var(--admin-border);
+
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.uw-summary-pill.primary {
+    color:
+        var(--admin-orange-hover);
+
+    background:
+        var(--admin-orange-soft);
+
+    border-color:
+        rgba(255, 115, 0, 0.24);
+}
+
+
+/* ======================================================
+   FOOTER
+   ====================================================== */
+
+.uw-footer {
+    min-height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding:
+        13px
+        26px;
+
+    background:
+        #fff;
+
+    border-top:
+        1px solid
+        var(--admin-border);
 }
 
 .uw-footer-right {
     display: flex;
-    gap: 0.5rem;
+    align-items: center;
+
+    gap: 9px;
 }
 
-/* ===== BUTTONS ===== */
 .uw-btn {
-    border-radius: 8px;
-    padding: 0.45rem 0.9rem;
-    font-size: 0.85rem;
-    border: 1px solid #e5e7eb;
-    background: #f8fafc;
+    min-height: 38px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding:
+        0
+        16px;
+
+    border-radius: 9px;
+
     cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    transition:
+        transform 0.15s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.uw-btn:hover {
-    background: #e2e8f0;
+.uw-btn:active:not(:disabled) {
+    transform:
+        scale(0.98);
 }
 
-.uw-btn:active {
-    transform: scale(0.97);
+.uw-btn:disabled {
+    cursor:
+        not-allowed;
+
+    opacity: 0.6;
 }
 
 .uw-btn.primary {
-    background: #020617;
-    color: white;
-    border-color: #020617;
+    color: #ffffff;
+
+    background:
+        var(--admin-navy);
+
+    border:
+        1px solid
+        var(--admin-navy);
+
+    box-shadow:
+        0 7px 15px
+        rgba(17, 24, 39, 0.12);
 }
 
-.uw-btn.primary:hover {
-    background: #0f172a;
+.uw-btn.primary:hover:not(:disabled) {
+    background:
+        var(--admin-navy-light);
+}
+
+.uw-btn.secondary {
+    color:
+        var(--admin-text);
+
+    background:
+        #ffffff;
+
+    border:
+        1px solid
+        var(--admin-border);
+}
+
+.uw-btn.secondary:hover {
+    background:
+        #f7f8fb;
 }
 
 .uw-btn.ghost {
-    background: transparent;
+    color:
+        var(--admin-text-soft);
+
+    background:
+        transparent;
+
+    border:
+        1px solid
+        transparent;
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 640px) {
+.uw-btn.ghost:hover {
+    color:
+        var(--admin-text);
+
+    background:
+        #f7f8fb;
+}
+
+
+/* ======================================================
+   TABLET / CELULAR
+   ====================================================== */
+
+@media (max-width: 700px) {
+    .uw-overlay {
+        padding: 12px;
+    }
+
+    .uw-card {
+        max-height:
+            calc(100vh - 24px);
+
+        border-radius: 16px;
+    }
+
+    .uw-header {
+        padding:
+            20px
+            18px
+            16px;
+    }
+
+    .uw-body {
+        padding:
+            20px
+            18px
+            24px;
+    }
+
     .uw-footer {
-        flex-direction: column;
+        padding:
+            12px
+            18px;
+    }
+
+    .uw-progress {
+        grid-template-columns:
+            1fr;
+    }
+
+    .uw-progress-step:not(.active) {
+        display: none;
+    }
+
+    .uw-form-grid,
+    .uw-summary-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .uw-summary-wide {
+        grid-column:
+            auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .uw-title {
+        font-size: 20px;
+    }
+
+    .uw-footer {
         align-items: stretch;
+
+        flex-direction: column-reverse;
     }
 
     .uw-footer-right {
         width: 100%;
-        justify-content: flex-end;
+    }
+
+    .uw-footer-right
+    .uw-btn {
+        flex: 1;
+    }
+
+    .uw-footer >
+    .uw-btn {
+        width: 100%;
     }
 }
+/* ======================================================
+   CONFIGURACIÓN DE ACCESO
+   ====================================================== */
 
-/* ===== DEFAULT ROLE ===== */
-.uf-pill {
-    position: relative;
+.uw-access-section {
+    margin-top: 26px;
 }
 
-.uf-pill.default {
-    box-shadow: 0 0 0 2px #020617 inset;
+.uw-access-section:first-of-type {
+    margin-top: 0;
 }
 
-.uf-default-toggle {
-    margin-left: 6px;
-    font-size: 0.75rem;
+.uw-access-heading {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+}
+
+.uw-access-heading-icon {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color:
+        var(--admin-orange);
+
+    background:
+        var(--admin-orange-soft);
+
+    border-radius: 9px;
+}
+
+.uw-access-heading h4 {
+    margin: 0;
+
+    color:
+        var(--admin-text);
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.uw-access-heading p {
+    margin:
+        3px
+        0
+        0;
+
+    color:
+        var(--admin-text-soft);
+
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+
+/* ======================================================
+   TARJETAS DE APLICACIÓN
+   ====================================================== */
+
+.uw-choice-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 12px;
+}
+
+.uw-choice-card {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 11px;
+
+    padding: 15px;
+
+    text-align: left;
+
+    color:
+        var(--admin-text);
+
+    background:
+        #ffffff;
+
+    border:
+        1px solid
+        var(--admin-border);
+
+    border-radius: 12px;
+
     cursor: pointer;
-    color: #facc15;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.15s ease;
 }
 
-.uf-default-toggle:hover {
-    transform: scale(1.1);
+.uw-choice-card:hover {
+    border-color:
+        rgba(255, 115, 0, 0.36);
+
+    box-shadow:
+        0 7px 18px
+        rgba(17, 24, 39, 0.06);
+}
+
+.uw-choice-card:active {
+    transform:
+        scale(0.99);
+}
+
+.uw-choice-card.selected {
+    background:
+        var(--admin-orange-soft);
+
+    border-color:
+        rgba(255, 115, 0, 0.48);
+
+    box-shadow:
+        0 0 0 2px
+        rgba(255, 115, 0, 0.06);
+}
+
+.uw-choice-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+.uw-choice-icon {
+    width: 31px;
+    height: 31px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color:
+        var(--admin-orange);
+
+    background:
+        #fff7ef;
+
+    border-radius: 8px;
+}
+
+.uw-choice-check {
+    width: 21px;
+    height: 21px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color: #ffffff;
+
+    background:
+        #ffffff;
+
+    border:
+        1px solid
+        #dce1e9;
+
+    border-radius: 50%;
+}
+
+.uw-choice-check.selected {
+    background:
+        var(--admin-orange);
+
+    border-color:
+        var(--admin-orange);
+}
+
+.uw-choice-content {
+    min-width: 0;
+}
+
+.uw-choice-content strong {
+    display: block;
+
+    color:
+        var(--admin-text);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    line-height: 1.4;
+}
+
+.uw-choice-content p {
+    margin:
+        4px
+        0
+        0;
+
+    color:
+        var(--admin-text-soft);
+
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+.uw-choice-code {
+    width: fit-content;
+
+    padding:
+        4px
+        7px;
+
+    color:
+        #606a7c;
+
+    background:
+        #f3f5f8;
+
+    border:
+        1px solid
+        #e5e8ee;
+
+    border-radius: 6px;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 0.04em;
+}
+
+
+/* ======================================================
+   ROLES
+   ====================================================== */
+
+.uw-role-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 12px;
+}
+
+.uw-role-card {
+    overflow: hidden;
+
+    background:
+        #ffffff;
+
+    border:
+        1px solid
+        var(--admin-border);
+
+    border-radius: 12px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.uw-role-card.selected {
+    border-color:
+        rgba(255, 115, 0, 0.48);
+
+    box-shadow:
+        0 0 0 2px
+        rgba(255, 115, 0, 0.05);
+}
+
+.uw-role-select {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 11px;
+
+    padding: 15px;
+
+    text-align: left;
+
+    color:
+        var(--admin-text);
+
+    background:
+        transparent;
+
+    cursor: pointer;
+}
+
+.uw-role-select:hover {
+    background:
+        #fffdf9;
+}
+
+.uw-role-card.selected
+.uw-role-select {
+    background:
+        var(--admin-orange-soft);
+}
+
+
+/* ======================================================
+   ROL PRINCIPAL
+   ====================================================== */
+
+.uw-default-role {
+    width: 100%;
+
+    min-height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    padding:
+        7px
+        10px;
+
+    color:
+        #7b8495;
+
+    background:
+        #ffffff;
+
+    border-top:
+        1px solid
+        var(--admin-border);
+
+    cursor: pointer;
+
+    font-size: 9px;
+    font-weight: 600;
+}
+
+.uw-default-role:hover {
+    color:
+        var(--admin-orange);
+}
+
+.uw-default-role.active {
+    color:
+        var(--admin-orange-hover);
+
+    background:
+        #fffaf5;
+}
+
+
+/* ======================================================
+   ROLES VACÍOS
+   ====================================================== */
+
+.uw-roles-empty {
+    min-height: 115px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    padding: 20px;
+
+    text-align: center;
+
+    color:
+        #a0a7b5;
+
+    background:
+        #f8f9fb;
+
+    border:
+        1px dashed
+        #dfe3ea;
+
+    border-radius: 12px;
+}
+
+.uw-roles-empty strong {
+    margin-top: 3px;
+
+    color:
+        #5c6678;
+
+    font-size: 11px;
+}
+
+.uw-roles-empty span {
+    max-width: 320px;
+
+    color:
+        var(--admin-text-soft);
+
+    font-size: 9px;
+
+    line-height: 1.5;
+}
+
+
+/* ======================================================
+   AYUDA ROL PRINCIPAL
+   ====================================================== */
+
+.uw-role-help {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    margin-top: 12px;
+
+    padding:
+        9px
+        11px;
+
+    color:
+        #7c5b18;
+
+    background:
+        #fffbea;
+
+    border:
+        1px solid
+        #f4e6ad;
+
+    border-radius: 9px;
+
+    font-size: 9px;
+}
+
+
+/* ======================================================
+   RESPONSIVE
+   ====================================================== */
+
+@media (max-width: 650px) {
+    .uw-choice-grid,
+    .uw-role-grid {
+        grid-template-columns:
+            1fr;
+    }
 }

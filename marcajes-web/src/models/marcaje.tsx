@@ -10,6 +10,74 @@ export interface Marcaje {
         nombre: string;
     };
 }
+
+
+// ======================================================
+// VALIDACIÓN DE UBICACIÓN
+// ======================================================
+
+export type EstadoValidacionUbicacion =
+    | "DENTRO_RANGO"
+    | "FUERA_RANGO"
+    | "SIN_SUCURSAL"
+    | "SUCURSAL_SIN_UBICACION";
+
+
+export interface ValidacionUbicacionMarcaje {
+    estado: EstadoValidacionUbicacion;
+
+    sucursalId: number | null;
+    sucursalNombre: string | null;
+
+    distanciaMetros: number | null;
+    radioPermitidoMetros: number | null;
+
+    fueraRango: boolean | null;
+}
+
+
+export interface MarcajeRegistrado {
+    id_marcaje: number;
+    fecha: string;
+    hora: string;
+    es_entrada: boolean;
+
+    latitud: string | number | null;
+    longitud: string | number | null;
+
+    empleado: number;
+
+    sucursal_referencia: number | null;
+
+    sucursal_latitud_referencia:
+        string | number | null;
+
+    sucursal_longitud_referencia:
+        string | number | null;
+
+    radio_permitido_metros:
+        number | null;
+
+    distancia_sucursal_metros:
+        number | null;
+
+    fuera_rango:
+        boolean | null;
+}
+
+
+export interface ResultadoRegistroMarcaje {
+    marcaje: MarcajeRegistrado;
+
+    validacionUbicacion:
+        ValidacionUbicacionMarcaje;
+}
+
+
+// ======================================================
+// REPORTE
+// ======================================================
+
 export interface MarcajeReporteDto {
     id_marcaje: number;
     fecha: Date;
@@ -29,6 +97,8 @@ export interface MarcajeReporteDto {
     distancia_entrada: number;
     distancia_salida: number;
 }
+
+
 export interface FiltrosMarcajes {
     fechaDesde: string | null;
     fechaHasta: string | null;

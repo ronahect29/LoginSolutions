@@ -1,128 +1,476 @@
-import { useRef, useState, useEffect } from "react";
-import type { FiltrosMarcajes } from "../../../models/marcaje";
-import type { FiltroSucursal } from "../../../models/sucursal";
+import {
+    useEffect,
+    useRef,
+    useState
+} from "react";
+
+import type {
+    FiltrosMarcajes
+} from "../../../models/marcaje";
+
+import type {
+    FiltroSucursal
+} from "../../../models/sucursal";
+
+
 interface Props {
     filters: FiltrosMarcajes;
-    sucursales: FiltroSucursal[];
-    onChange: (value: FiltrosMarcajes) => void;
-    onSearch: () => void;
-    onReset: () => void;
+
+    sucursales:
+        FiltroSucursal[];
+
+    loading:
+        boolean;
+
+    onChange:
+        (
+            value:
+                FiltrosMarcajes
+        ) => void;
+
+    onSearch:
+        () => void;
+
+    onReset:
+        () => void;
 }
+
+
+// ======================================================
+// ICONOS
+// ======================================================
+
+function SearchIcon() {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-hidden="true"
+        >
+            <circle
+                cx="11"
+                cy="11"
+                r="7"
+            />
+
+            <path
+                d="m20 20-4-4"
+            />
+        </svg>
+    );
+}
+
+
+function ResetIcon() {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-hidden="true"
+        >
+            <path
+                d="M3 12a9 9 0 1 0 3-6.7"
+            />
+
+            <path
+                d="M3 4v6h6"
+            />
+        </svg>
+    );
+}
+
+
+// ======================================================
+// COMPONENTE
+// ======================================================
+
 export function FiltroMarcajesComponent({
     filters,
     sucursales,
+    loading,
     onChange,
     onSearch,
-    onReset,
+    onReset
 }: Props) {
+    const [
+        open,
+        setOpen
+    ] = useState(false);
 
-    const [open, setOpen] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
+    const dropdownRef =
+        useRef<HTMLDivElement>(
+            null
+        );
 
-    function toggleSucursal(id: number) {
-        const current = filters.sucursales ?? [];
-        const exists = current.includes(id);
+
+    // ======================================================
+    // SUCURSALES
+    // ======================================================
+
+    function toggleSucursal(
+        id: number
+    ) {
+        const current =
+            filters.sucursales ??
+            [];
+
+        const exists =
+            current.includes(
+                id
+            );
+
+        const next =
+            exists
+                ? current.filter(
+                    (value) =>
+                        value !== id
+                )
+                : [
+                    ...current,
+                    id
+                ];
 
         onChange({
             ...filters,
-            sucursales: exists
-                ? current.filter(x => x !== id)
-                : [...current, id],
+
+            sucursales:
+                next.length > 0
+                    ? next
+                    : null
         });
     }
 
-    // cerrar al hacer click fuera
+
+    function limpiarSucursales() {
+        onChange({
+            ...filters,
+            sucursales: null
+        });
+    }
+
+
+    // ======================================================
+    // CERRAR DROPDOWN
+    // ======================================================
+
     useEffect(() => {
-        function handleClickOutside(e: MouseEvent) {
-            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        function handleClickOutside(
+            event: MouseEvent
+        ) {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(
+                    event.target as Node
+                )
+            ) {
                 setOpen(false);
             }
         }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
+
+        document.addEventListener(
+            "mousedown",
+            handleClickOutside
+        );
+
+        return () =>
+            document.removeEventListener(
+                "mousedown",
+                handleClickOutside
+            );
     }, []);
 
+
+    // ======================================================
+    // TEXTO SUCURSALES
+    // ======================================================
+
+    const cantidadSucursales =
+        filters.sucursales
+            ?.length ?? 0;
+
+
     return (
-        <div className="filtros-card">
+        <div className="repo-filtros">
 
-            <div className="filter-field">
-                <label>Desde</label>
+            {/* ======================================================
+                DESDE
+                ====================================================== */}
+
+            <div className="repo-filtro-campo">
+                <label htmlFor="repo-fecha-desde">
+                    Desde
+                </label>
+
                 <input
+                    id="repo-fecha-desde"
                     type="date"
-                    value={filters.fechaDesde ?? ""}
-                    onChange={e => onChange({ ...filters, fechaDesde: e.target.value || null })}
+                    value={
+                        filters.fechaDesde ??
+                        ""
+                    }
+                    onChange={(
+                        event
+                    ) =>
+                        onChange({
+                            ...filters,
+
+                            fechaDesde:
+                                event
+                                    .target
+                                    .value ||
+                                null
+                        })
+                    }
                 />
             </div>
 
-            <div className="filter-field">
-                <label>Hasta</label>
+
+            {/* ======================================================
+                HASTA
+                ====================================================== */}
+
+            <div className="repo-filtro-campo">
+                <label htmlFor="repo-fecha-hasta">
+                    Hasta
+                </label>
+
                 <input
+                    id="repo-fecha-hasta"
                     type="date"
-                    value={filters.fechaHasta ?? ""}
-                    onChange={e => onChange({ ...filters, fechaHasta: e.target.value || null })}
+                    value={
+                        filters.fechaHasta ??
+                        ""
+                    }
+                    onChange={(
+                        event
+                    ) =>
+                        onChange({
+                            ...filters,
+
+                            fechaHasta:
+                                event
+                                    .target
+                                    .value ||
+                                null
+                        })
+                    }
                 />
             </div>
 
-            <div className="filter-field dropdown-multiselect" ref={dropdownRef}>
-                <label>Sucursales</label>
+
+            {/* ======================================================
+                SUCURSALES
+                ====================================================== */}
+
+            <div
+                className="repo-filtro-campo repo-multiselect"
+                ref={
+                    dropdownRef
+                }
+            >
+                <label>
+                    Sucursales
+                </label>
 
                 <button
                     type="button"
-                    className="dropdown-trigger"
-                    onClick={() => setOpen(o => !o)}
+                    className={`repo-multiselect__trigger ${
+                        open
+                            ? "repo-multiselect__trigger--open"
+                            : ""
+                    }`}
+                    onClick={() =>
+                        setOpen(
+                            (
+                                value
+                            ) =>
+                                !value
+                        )
+                    }
                 >
-                    {filters.sucursales?.length
-                        ? `${filters.sucursales.length} seleccionadas`
-                        : "Seleccionar sucursales"}
-                    <span className={`arrow ${open ? "open" : ""}`}>▾</span>
+                    <span>
+                        {cantidadSucursales >
+                        0
+                            ? `${cantidadSucursales} ${
+                                cantidadSucursales ===
+                                1
+                                    ? "sucursal"
+                                    : "sucursales"
+                            }`
+                            : "Todas las sucursales"}
+                    </span>
+
+                    <span className="repo-multiselect__flecha">
+                        ▾
+                    </span>
                 </button>
 
                 {open && (
-                    <div className="dropdown-menu">
-                        {sucursales.map(s => (
-                            <button
-                                key={s.id_sucursal}
-                                type="button"
-                                className={`pill ${filters.sucursales?.includes(s.id_sucursal) ? "selected" : ""}`}
-                                onClick={() => toggleSucursal(s.id_sucursal)}
-                            >
-                                {s.nombre}
-                            </button>
-                        ))}
+                    <div className="repo-multiselect__menu">
+                        <div className="repo-multiselect__encabezado">
+                            <span>
+                                Seleccionar
+                                sucursales
+                            </span>
+
+                            {cantidadSucursales >
+                                0 && (
+                                <button
+                                    type="button"
+                                    onClick={
+                                        limpiarSucursales
+                                    }
+                                >
+                                    Limpiar
+                                </button>
+                            )}
+                        </div>
+
+                        <div className="repo-multiselect__lista">
+                            {sucursales.map(
+                                (
+                                    sucursal
+                                ) => {
+                                    const seleccionada =
+                                        filters
+                                            .sucursales
+                                            ?.includes(
+                                                sucursal.id_sucursal
+                                            ) ??
+                                        false;
+
+                                    return (
+                                        <button
+                                            key={
+                                                sucursal.id_sucursal
+                                            }
+                                            type="button"
+                                            className={`repo-multiselect__opcion ${
+                                                seleccionada
+                                                    ? "repo-multiselect__opcion--seleccionada"
+                                                    : ""
+                                            }`}
+                                            onClick={() =>
+                                                toggleSucursal(
+                                                    sucursal.id_sucursal
+                                                )
+                                            }
+                                        >
+                                            <span className="repo-multiselect__check">
+                                                {seleccionada
+                                                    ? "✓"
+                                                    : ""}
+                                            </span>
+
+                                            <span>
+                                                {
+                                                    sucursal.nombre
+                                                }
+                                            </span>
+                                        </button>
+                                    );
+                                }
+                            )}
+                        </div>
                     </div>
                 )}
             </div>
 
-            <div className="filter-field">
-                <label>Distancia</label>
+
+            {/* ======================================================
+                DISTANCIA
+                ====================================================== */}
+
+            <div className="repo-filtro-campo">
+                <label htmlFor="repo-distancia">
+                    Ubicación
+                </label>
+
                 <select
+                    id="repo-distancia"
                     value={
-                        filters.fueraDeRango === null
+                        filters.fueraDeRango ===
+                        null
                             ? "all"
-                            : filters.fueraDeRango ? "true" : "false"
+                            : filters.fueraDeRango
+                                ? "true"
+                                : "false"
                     }
-                    onChange={e =>
+                    onChange={(
+                        event
+                    ) =>
                         onChange({
                             ...filters,
+
                             fueraDeRango:
-                                e.target.value === "all"
+                                event
+                                    .target
+                                    .value ===
+                                "all"
                                     ? null
-                                    : e.target.value === "true",
+                                    : event
+                                        .target
+                                        .value ===
+                                    "true"
                         })
                     }
                 >
-                    <option value="all">Todos</option>
-                    <option value="true">Fuera de rango</option>
-                    <option value="false">En rango</option>
+                    <option value="all">
+                        Todas las ubicaciones
+                    </option>
+
+                    <option value="false">
+                        En rango
+                    </option>
+
+                    <option value="true">
+                        Fuera de rango
+                    </option>
                 </select>
             </div>
 
-            {/* botones */}
-            <div className="filtros-actions">
-                <button className="primary" onClick={onSearch}>Buscar</button>
-                <button className="secondary" onClick={onReset}>Limpiar</button>
-            </div>
 
+            {/* ======================================================
+                ACCIONES
+                ====================================================== */}
+
+            <div className="repo-filtros__acciones">
+                <button
+                    type="button"
+                    className="repo-filtros__limpiar"
+                    onClick={
+                        onReset
+                    }
+                    disabled={
+                        loading
+                    }
+                >
+                    <ResetIcon />
+
+                    Limpiar
+                </button>
+
+                <button
+                    type="button"
+                    className="repo-filtros__buscar"
+                    onClick={
+                        onSearch
+                    }
+                    disabled={
+                        loading
+                    }
+                >
+                    <SearchIcon />
+
+                    {loading
+                        ? "Buscando..."
+                        : "Buscar"}
+                </button>
+            </div>
         </div>
     );
 }

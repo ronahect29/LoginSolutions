@@ -1,24 +1,62 @@
-import type { SortState } from "../../models/Sort";
-import type { Usuario, UsuarioSorteableField } from "../../models/usuario";
+import type {
+    SortState
+} from "../../models/Sort";
 
+import type {
+    Usuario,
+    UsuarioSorteableField
+} from "../../models/usuario";
 
 export interface UserTableProps {
-    users: Usuario[];
+    users:
+        Usuario[];
 
-    // loading
-    loading?: boolean;
+    loading?:
+        boolean;
 
-    // ordenamiento
-    sort?: SortState<UsuarioSorteableField>;
-    onSortChange?: (sort: SortState<UsuarioSorteableField>) => void;
+    sort?:
+        SortState<
+            UsuarioSorteableField
+        >;
 
-    // paginacion - para permitir un lazy loading
-    page: number;
-    pageSize: number;
-    total: number;
-    onPageChange?: (page: number) => void;
+    onSortChange?:
+        (
+            sort:
+                SortState<
+                    UsuarioSorteableField
+                >
+        ) => void;
 
-    // acciones o eventos
-    onEdit?: (user: Usuario) => void;
-    onToggleActivo?: (user: Usuario) => void;
+    page:
+        number;
+
+    pageSize:
+        number;
+
+    total:
+        number;
+
+    onPageChange?:
+        (
+            page:
+                number
+        ) => void;
+
+    onEdit?:
+        (
+            user:
+                Usuario
+        ) => void;
+
+    onResetPassword?:
+        (
+            user:
+                Usuario
+        ) => void;
+
+    onToggleActivo?:
+        (
+            user:
+                Usuario
+        ) => void;
 }

@@ -1,3 +1,4 @@
+import type { Prisma } from "@prisma/client";
 export interface Marcaje {
     id_marcaje?: number;
     fecha: Date;
@@ -7,6 +8,43 @@ export interface Marcaje {
     longitud?: number;
     empleado: number;
 }
+
+
+// ======================================================
+// RESULTADO DEL REGISTRO
+// ======================================================
+
+export type EstadoValidacionUbicacion =
+    | "DENTRO_RANGO"
+    | "FUERA_RANGO"
+    | "SIN_SUCURSAL"
+    | "SUCURSAL_SIN_UBICACION";
+
+
+export interface ValidacionUbicacionMarcaje {
+    estado: EstadoValidacionUbicacion;
+
+    sucursalId: number | null;
+    sucursalNombre: string | null;
+
+    distanciaMetros: number | null;
+    radioPermitidoMetros: number | null;
+
+    fueraRango: boolean | null;
+}
+
+
+export interface ResultadoRegistroMarcaje {
+    marcaje: Prisma.marcajeGetPayload<Record<string, never>>;
+
+    validacionUbicacion:
+        ValidacionUbicacionMarcaje;
+}
+
+
+// ======================================================
+// REPORTES
+// ======================================================
 
 export interface MarcajeReporteDto {
     id_marcaje: number;
@@ -36,6 +74,7 @@ export interface MarcajeReporteDto {
     distancia_salida: number;
 }
 
+
 export interface MarcajeReporteRespuestaDto {
     id_marcaje: number;
     fecha: Date;
@@ -55,6 +94,7 @@ export interface MarcajeReporteRespuestaDto {
     distancia_entrada: number;
     distancia_salida: number;
 }
+
 
 export interface BuscarMarcajesDto {
     fechaDesde?: string | null;
