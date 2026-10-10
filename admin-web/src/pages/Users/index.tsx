@@ -42,6 +42,10 @@ import {
 } from "./FiltroUsuarioComponent";
 
 import {
+    UserAccessModal
+} from "./UserAccessModal";
+
+import {
     UserCreateWizard
 } from "./UserCreateWizard";
 
@@ -61,27 +65,37 @@ import {
     UserTable
 } from "./UserTable";
 
+
 const initialFilters:
     FiltroUsuario = {
         nombre:
             "",
+
         usuario:
             "",
+
         activo:
             null,
+
         creadoDesde:
             "",
+
         creadoHasta:
             "",
+
         modDesde:
             "",
+
         modHasta:
             "",
+
         aplicaciones:
             [],
+
         roles:
             []
     };
+
 
 export function UsersPage() {
     type SortState = {
@@ -98,6 +112,7 @@ export function UsersPage() {
             "desc";
     };
 
+
     const [
         sort,
         setSort
@@ -105,42 +120,57 @@ export function UsersPage() {
         useState<SortState>({
             field:
                 "fecha_creacion",
+
             direction:
                 "desc"
         });
+
 
     const [
         users,
         setUsers
     ] =
-        useState<Usuario[]>(
-            []
-        );
+        useState<
+            Usuario[]
+        >([]);
+
 
     const [
         filtersApplied,
         setFiltersApplied
     ] =
-        useState<FiltroUsuario>(
+        useState<
+            FiltroUsuario
+        >(
             initialFilters
         );
+
 
     const [
         page,
         setPage
     ] =
-        useState(1);
+        useState(
+            1
+        );
+
 
     const [
         pageSize
     ] =
-        useState(10);
+        useState(
+            10
+        );
+
 
     const [
         total,
         setTotal
     ] =
-        useState(0);
+        useState(
+            0
+        );
+
 
     const [
         apps,
@@ -150,6 +180,7 @@ export function UsersPage() {
             FiltroAplicacion[]
         >([]);
 
+
     const [
         roles,
         setRoles
@@ -158,11 +189,15 @@ export function UsersPage() {
             FiltroRol[]
         >([]);
 
+
     const [
         loading,
         setLoading
     ] =
-        useState(false);
+        useState(
+            false
+        );
+
 
     const [
         error,
@@ -171,13 +206,19 @@ export function UsersPage() {
         useState<
             string |
             null
-        >(null);
+        >(
+            null
+        );
+
 
     const [
         showCreate,
         setShowCreate
     ] =
-        useState(false);
+        useState(
+            false
+        );
+
 
     const [
         usuarioEditar,
@@ -186,7 +227,22 @@ export function UsersPage() {
         useState<
             Usuario |
             null
-        >(null);
+        >(
+            null
+        );
+
+
+    const [
+        usuarioAccesos,
+        setUsuarioAccesos
+    ] =
+        useState<
+            Usuario |
+            null
+        >(
+            null
+        );
+
 
     const [
         usuarioPassword,
@@ -195,7 +251,10 @@ export function UsersPage() {
         useState<
             Usuario |
             null
-        >(null);
+        >(
+            null
+        );
+
 
     const [
         usuarioEstado,
@@ -204,52 +263,64 @@ export function UsersPage() {
         useState<
             Usuario |
             null
-        >(null);
-
-    useEffect(() => {
-        api.get<
-            FiltroAplicacion[]
         >(
-            "/aplicacion/findByActivo/true"
-        )
-            .then(
-                (
-                    res
-                ) => {
-                    if (
-                        ES_LOCAL
-                    ) {
-                        console.log(
-                            "DATA APPS",
-                            JSON.stringify(
-                                res.data
-                            )
+            null
+        );
+
+
+    useEffect(
+        () => {
+            api.get<
+                FiltroAplicacion[]
+            >(
+                "/aplicacion/findByActivo/true"
+            )
+                .then(
+                    (
+                        res
+                    ) => {
+                        if (
+                            ES_LOCAL
+                        ) {
+                            console.log(
+                                "DATA APPS",
+                                JSON.stringify(
+                                    res.data
+                                )
+                            );
+                        }
+
+
+                        setApps(
+                            res.data
                         );
                     }
-
-                    setApps(
-                        res.data
-                    );
-                }
-            )
-            .catch(
-                (
-                    err
-                ) => {
-                    console.error(
-                        "Error cargando aplicaciones",
+                )
+                .catch(
+                    (
                         err
-                    );
-                }
-            );
-    }, []);
+                    ) => {
+                        console.error(
+                            "Error cargando aplicaciones",
+                            err
+                        );
+                    }
+                );
+        },
+        []
+    );
 
-    useEffect(() => {
-        void fetchUsers(
-            initialFilters,
-            1
-        );
-    }, []);
+
+    useEffect(
+        () => {
+            void fetchUsers(
+                initialFilters,
+                1
+            );
+        },
+        []
+    );
+
 
     async function fetchUsers(
         filters:
@@ -265,9 +336,11 @@ export function UsersPage() {
             true
         );
 
+
         setError(
             null
         );
+
 
         try {
             const res =
@@ -343,13 +416,16 @@ export function UsersPage() {
                     }
                 );
 
+
             setUsers(
                 res.data.data
             );
 
+
             setTotal(
                 res.data.total
             );
+
 
             setPage(
                 res.data.page
@@ -362,6 +438,7 @@ export function UsersPage() {
                 err
             );
 
+
             setError(
                 "No se pudieron cargar los usuarios."
             );
@@ -371,6 +448,7 @@ export function UsersPage() {
             );
         }
     }
+
 
     async function fetchRolesForApps(
         selectedApps:
@@ -386,6 +464,7 @@ export function UsersPage() {
 
             return;
         }
+
 
         try {
             const res =
@@ -407,6 +486,7 @@ export function UsersPage() {
                     }
                 );
 
+
             setRoles(
                 res.data
             );
@@ -418,11 +498,13 @@ export function UsersPage() {
                 err
             );
 
+
             setRoles(
                 []
             );
         }
     }
+
 
     function handleSearch(
         draft:
@@ -432,9 +514,11 @@ export function UsersPage() {
             draft
         );
 
+
         setPage(
             1
         );
+
 
         void fetchUsers(
             draft,
@@ -442,24 +526,29 @@ export function UsersPage() {
         );
     }
 
+
     function handleReset() {
         setFiltersApplied(
             initialFilters
         );
 
+
         setRoles(
             []
         );
 
+
         setPage(
             1
         );
+
 
         void fetchUsers(
             initialFilters,
             1
         );
     }
+
 
     function refrescarListado() {
         void fetchUsers(
@@ -468,6 +557,7 @@ export function UsersPage() {
         );
     }
 
+
     return (
         <section className="users-page">
             <div className="users-page-heading">
@@ -475,16 +565,19 @@ export function UsersPage() {
                     Gestión de usuarios
                 </span>
 
+
                 <div className="users-page-heading-row">
                     <div className="users-page-heading-text">
                         <h1>
                             Usuarios
                         </h1>
 
+
                         <p>
                             Gestiona las cuentas, roles, accesos y estado de los usuarios del sistema.
                         </p>
                     </div>
+
 
                     <button
                         type="button"
@@ -496,8 +589,11 @@ export function UsersPage() {
                         }
                     >
                         <Plus
-                            size={18}
+                            size={
+                                18
+                            }
                         />
+
 
                         <span>
                             Nuevo usuario
@@ -505,6 +601,7 @@ export function UsersPage() {
                     </button>
                 </div>
             </div>
+
 
             <FiltroUsuarioComponent
                 appsOptions={
@@ -524,6 +621,7 @@ export function UsersPage() {
                 }
             />
 
+
             {error && (
                 <div className="users-error">
                     {
@@ -532,11 +630,13 @@ export function UsersPage() {
                 </div>
             )}
 
+
             <div className="users-list-heading">
                 <div>
                     <h2>
                         Usuarios registrados
                     </h2>
+
 
                     <p>
                         {total ===
@@ -546,6 +646,7 @@ export function UsersPage() {
                     </p>
                 </div>
             </div>
+
 
             <UserTable
                 users={
@@ -569,6 +670,9 @@ export function UsersPage() {
                 onEdit={
                     setUsuarioEditar
                 }
+                onManageAccess={
+                    setUsuarioAccesos
+                }
                 onResetPassword={
                     setUsuarioPassword
                 }
@@ -582,6 +686,7 @@ export function UsersPage() {
                         newPage
                     );
 
+
                     void fetchUsers(
                         filtersApplied,
                         newPage
@@ -594,9 +699,11 @@ export function UsersPage() {
                         newSort
                     );
 
+
                     setPage(
                         1
                     );
+
 
                     void fetchUsers(
                         filtersApplied,
@@ -605,6 +712,7 @@ export function UsersPage() {
                     );
                 }}
             />
+
 
             {showCreate && (
                 <UserCreateWizard
@@ -621,9 +729,11 @@ export function UsersPage() {
                             false
                         );
 
+
                         setPage(
                             1
                         );
+
 
                         void fetchUsers(
                             filtersApplied,
@@ -632,6 +742,7 @@ export function UsersPage() {
                     }}
                 />
             )}
+
 
             {usuarioEditar && (
                 <UserEditModal
@@ -648,10 +759,37 @@ export function UsersPage() {
                             null
                         );
 
+
                         refrescarListado();
                     }}
                 />
             )}
+
+
+            {usuarioAccesos && (
+                <UserAccessModal
+                    user={
+                        usuarioAccesos
+                    }
+                    appsOptions={
+                        apps
+                    }
+                    onClose={() =>
+                        setUsuarioAccesos(
+                            null
+                        )
+                    }
+                    onSaved={() => {
+                        setUsuarioAccesos(
+                            null
+                        );
+
+
+                        refrescarListado();
+                    }}
+                />
+            )}
+
 
             {usuarioPassword && (
                 <UserPasswordModal
@@ -668,10 +806,12 @@ export function UsersPage() {
                             null
                         );
 
+
                         refrescarListado();
                     }}
                 />
             )}
+
 
             {usuarioEstado && (
                 <UserStatusModal
@@ -687,6 +827,7 @@ export function UsersPage() {
                         setUsuarioEstado(
                             null
                         );
+
 
                         refrescarListado();
                     }}

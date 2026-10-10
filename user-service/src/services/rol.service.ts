@@ -146,33 +146,84 @@ export const RolService = {
         return data;
     },
 
-    async findRolesByActivoAndCodigosAplicacionActivo(
-        activo: boolean,
-        appsCodes: string[]
-    ): Promise<RolFiltroDto[]> {
-        const data =
-            await prisma.rol.findMany({
-                where: {
-                    activo,
+   async findRolesByActivoAndCodigosAplicacionActivo(
+    activo: boolean,
+    appsCodes: string[]
+): Promise<RolFiltroDto[]> {
+    const data =
+        await prisma.rol.findMany({
+            where: {
+                activo,
 
-                    aplicacion_rol_aplicacionToaplicacion: {
-                        codigo: {
-                            in: appsCodes,
-                        },
-
-                        activo: true,
+                aplicacion_rol_aplicacionToaplicacion: {
+                    codigo: {
+                        in:
+                            appsCodes
                     },
-                },
 
-                select: {
-                    id_rol: true,
-                    nombre: true,
-                    codigo: true,
-                },
-            });
+                    activo:
+                        true
+                }
+            },
 
-        return data;
-    },
+            select: {
+                id_rol:
+                    true,
+
+                nombre:
+                    true,
+
+                codigo:
+                    true,
+
+                aplicacion_rol_aplicacionToaplicacion: {
+                    select: {
+                        id_aplicacion:
+                            true,
+
+                        codigo:
+                            true
+                    }
+                }
+            },
+
+            orderBy: [
+                {
+                    aplicacion:
+                        "asc"
+                },
+                {
+                    nombre:
+                        "asc"
+                }
+            ]
+        });
+
+    return data.map(
+        (
+            rol
+        ) => ({
+            id_rol:
+                rol.id_rol,
+
+            nombre:
+                rol.nombre,
+
+            codigo:
+                rol.codigo,
+
+            id_aplicacion:
+                rol
+                    .aplicacion_rol_aplicacionToaplicacion
+                    .id_aplicacion,
+
+            aplicacion_codigo:
+                rol
+                    .aplicacion_rol_aplicacionToaplicacion
+                    .codigo
+        })
+    );
+},
 
     // ======================================================
     // ADMINISTRACIÓN DE ROLES

@@ -1,17 +1,55 @@
-import type { JSX } from "react";
+import {
+    Navigate
+} from "react-router-dom";
 
-import { useSession } from "../hooks/useSession";
+import type {
+    JSX
+} from "react";
+
+import {
+    useSession
+} from "../hooks/useSession";
+
+import {
+    getHomeByRoles
+} from "../utils/utils";
+
 
 export function PublicRoute({
-    children,
+    children
 }: {
-    children: JSX.Element;
+    children:
+        JSX.Element;
 }) {
-    const { loading } = useSession();
+    const {
+        usuario
+    } =
+        useSession();
 
-    if (loading) {
-        return <div>Cargando sesión...</div>;
+
+    /*
+     * No utilizamos "loading".
+     *
+     * loading cambia también durante el proceso
+     * de autenticación y no debe desmontar el login.
+     */
+    if (
+        usuario
+    ) {
+        const home =
+            getHomeByRoles(
+                usuario.roles
+            );
+
+
+        return (
+            <Navigate
+                to={`/admin/${home}`}
+                replace
+            />
+        );
     }
+
 
     return children;
 }

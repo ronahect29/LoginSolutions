@@ -1,24 +1,46 @@
 import axios from "axios";
 
+
 const baseURL =
     import.meta.env.VITE_API_URL ||
     "http://localhost:4100/marcajes-api/api";
 
+
+// ======================================================
+// CLIENTE PÚBLICO
+//
+// Exclusivo para login.
+// ======================================================
+
+export const publicApi =
+    axios.create({
+        baseURL
+    });
+
+
+// ======================================================
+// CLIENTE PROTEGIDO
+// ======================================================
+
 export const api =
     axios.create({
-        baseURL,
+        baseURL
     });
+
 
 // ======================================================
 // REQUEST
 // ======================================================
 
 api.interceptors.request.use(
-    (config) => {
+    (
+        config
+    ) => {
         const token =
             localStorage.getItem(
                 "token_marcajes"
             );
+
 
         if (
             token &&
@@ -28,44 +50,54 @@ api.interceptors.request.use(
                 `Bearer ${token}`;
         }
 
+
         return config;
     }
 );
+
 
 // ======================================================
 // RESPONSE
 // ======================================================
 
 api.interceptors.response.use(
-    (response) =>
+    (
+        response
+    ) =>
         response,
 
-    (error) => {
+    (
+        error
+    ) => {
         const status =
-            error.response
+            error?.response
                 ?.status;
 
+
+        /*
+         * Este cliente se utiliza únicamente
+         * para operaciones con sesión iniciada.
+         */
         if (
-            status === 401 ||
-            status === 403
+            status ===
+                401 ||
+            status ===
+                403
         ) {
             localStorage.removeItem(
                 "token_marcajes"
             );
 
+
             localStorage.removeItem(
                 "empleado"
             );
 
-            if (
-                !window.location.pathname.includes(
-                    "/marcajes/login"
-                )
-            ) {
-                window.location.href =
-                    "/marcajes/login";
-            }
+
+            window.location.href =
+                "/marcajes/login";
         }
+
 
         return Promise.reject(
             error

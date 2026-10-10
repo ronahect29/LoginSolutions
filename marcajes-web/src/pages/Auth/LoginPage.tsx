@@ -14,6 +14,102 @@ import {
 } from "../../hooks/useSession";
 
 
+interface ErrorLoginBackend {
+    response?: {
+        status?: number;
+
+        data?: {
+            code?: string;
+            message?: string;
+        };
+    };
+
+    message?: string;
+}
+
+
+function obtenerMensajeLogin(
+    error: unknown
+): string {
+    const errorHttp =
+        error as ErrorLoginBackend;
+
+    const codigo =
+        errorHttp
+            ?.response
+            ?.data
+            ?.code;
+
+    const mensajeBackend =
+        errorHttp
+            ?.response
+            ?.data
+            ?.message;
+
+    const status =
+        errorHttp
+            ?.response
+            ?.status;
+
+
+    switch (codigo) {
+        case "INVALID_CREDENTIALS":
+            return "Correo o contraseña incorrectos.";
+
+        case "USER_INACTIVE":
+            return "Tu cuenta se encuentra inactiva. Contacta al administrador del sistema.";
+
+        case "APP_ACCESS_DENIED":
+            return "Tu cuenta no tiene acceso a la Plataforma de Marcajes.";
+
+        case "APP_UNAVAILABLE":
+            return "La Plataforma de Marcajes se encuentra temporalmente deshabilitada.";
+
+        case "PLATFORM_PROFILE_MISSING":
+            return "Tu acceso a Marcajes no está completamente configurado. Contacta al administrador.";
+
+        case "PLATFORM_PROFILE_INACTIVE":
+            return "Tu perfil de Marcajes se encuentra inactivo. Contacta al administrador.";
+
+        case "AUTH_SERVICE_UNAVAILABLE":
+            return "El servicio de autenticación no se encuentra disponible. Intenta nuevamente.";
+
+        case "MISSING_FIELDS":
+            return "Ingresa tu correo y contraseña.";
+    }
+
+
+    if (
+        typeof mensajeBackend ===
+            "string" &&
+        mensajeBackend.trim()
+    ) {
+        return mensajeBackend;
+    }
+
+
+    if (status === 401) {
+        return "Correo o contraseña incorrectos.";
+    }
+
+
+    if (status === 403) {
+        return "No tienes acceso a la Plataforma de Marcajes.";
+    }
+
+
+    if (
+        status &&
+        status >= 500
+    ) {
+        return "No fue posible iniciar sesión. Intenta nuevamente.";
+    }
+
+
+    return "No fue posible iniciar sesión. Intenta nuevamente.";
+}
+
+
 export function LoginPage() {
     const {
         login,
@@ -24,10 +120,6 @@ export function LoginPage() {
     const navigate =
         useNavigate();
 
-
-    // ======================================================
-    // DATOS DEL FORMULARIO
-    // ======================================================
 
     const [
         email,
@@ -57,21 +149,19 @@ export function LoginPage() {
         useState("");
 
 
-    // ======================================================
-    // LOGIN
-    // ======================================================
-
     async function handleSubmit(
-        event:
-            FormEvent<HTMLFormElement>
+        event: FormEvent<HTMLFormElement>
     ) {
         event.preventDefault();
 
         setError("");
 
+        const correo =
+            email.trim();
+
 
         if (
-            !email.trim() ||
+            !correo ||
             !password
         ) {
             setError(
@@ -82,9 +172,26 @@ export function LoginPage() {
         }
 
 
+        const correoValido =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+        if (
+            !correoValido.test(
+                correo
+            )
+        ) {
+            setError(
+                "Ingresa un correo electrónico válido."
+            );
+
+            return;
+        }
+
+
         try {
             await login(
-                email.trim(),
+                correo,
                 password,
                 import.meta.env
                     .VITE_APP_NAME ||
@@ -96,59 +203,48 @@ export function LoginPage() {
                 "/colaborador"
             );
         } catch (
-            err:
-                any
+            errorPeticion: unknown
         ) {
+            const mensaje =
+                obtenerMensajeLogin(
+                    errorPeticion
+                );
+
+
             console.error(
-                "Login error:",
-                err
+                "Login Marcajes:",
+                errorPeticion
             );
 
 
-            const mensaje =
-                err?.response
-                    ?.data
-                    ?.message;
+            console.log(
+                "Mensaje mostrado al usuario:",
+                mensaje
+            );
 
 
             setError(
-                mensaje ||
-                "Credenciales inválidas o no tienes acceso a esta plataforma."
+                mensaje
             );
         }
     }
 
 
-    // ======================================================
-    // UI
-    // ======================================================
-
     return (
         <main className="mk-login-page">
-
-            {/* ==============================================
-                DECORACIÓN DE FONDO
-                ============================================== */}
 
             <div className="mk-login-decoration mk-login-decoration-one" />
 
             <div className="mk-login-decoration mk-login-decoration-two" />
 
 
-            {/* ==============================================
-                TARJETA
-                ============================================== */}
-
             <form
                 className="mk-login-card"
                 onSubmit={
                     handleSubmit
                 }
+                noValidate
             >
-
-                {/* ==========================================
-                    ENCABEZADO
-                    ========================================== */}
 
                 <header className="mk-login-header">
 
@@ -197,10 +293,6 @@ export function LoginPage() {
                 </header>
 
 
-                {/* ==========================================
-                    CORREO
-                    ========================================== */}
-
                 <div className="mk-login-field">
 
                     <label htmlFor="marcajes-email">
@@ -243,34 +335,28 @@ export function LoginPage() {
                         <input
                             id="marcajes-email"
                             type="email"
-                            value={
-                                email
-                            }
+                            value={email}
                             placeholder="correo@empresa.com"
                             autoComplete="username"
+                            spellCheck={false}
+                            disabled={loading}
                             onChange={(
                                 event
-                            ) =>
+                            ) => {
                                 setEmail(
-                                    event
-                                        .target
-                                        .value
-                                )
-                            }
-                            disabled={
-                                loading
-                            }
-                            required
+                                    event.target.value
+                                );
+
+                                if (error) {
+                                    setError("");
+                                }
+                            }}
                         />
 
                     </div>
 
                 </div>
 
-
-                {/* ==========================================
-                    CONTRASEÑA
-                    ========================================== */}
 
                 <div className="mk-login-field">
 
@@ -326,24 +412,21 @@ export function LoginPage() {
                                     ? "text"
                                     : "password"
                             }
-                            value={
-                                password
-                            }
+                            value={password}
                             placeholder="Ingresa tu contraseña"
                             autoComplete="current-password"
+                            disabled={loading}
                             onChange={(
                                 event
-                            ) =>
+                            ) => {
                                 setPassword(
-                                    event
-                                        .target
-                                        .value
-                                )
-                            }
-                            disabled={
-                                loading
-                            }
-                            required
+                                    event.target.value
+                                );
+
+                                if (error) {
+                                    setError("");
+                                }
+                            }}
                         />
 
 
@@ -356,15 +439,11 @@ export function LoginPage() {
                             }
                             onClick={() =>
                                 setMostrarPassword(
-                                    (
-                                        actual
-                                    ) =>
+                                    actual =>
                                         !actual
                                 )
                             }
-                            disabled={
-                                loading
-                            }
+                            disabled={loading}
                             aria-label={
                                 mostrarPassword
                                     ? "Ocultar contraseña"
@@ -423,20 +502,16 @@ export function LoginPage() {
                 </div>
 
 
-                {/* ==========================================
-                    ERROR
-                    ========================================== */}
-
-                {error && (
-                    <div className="mk-login-error">
+                {error !== "" && (
+                    <div
+                        className="mk-login-error"
+                        role="alert"
+                        aria-live="polite"
+                    >
                         {error}
                     </div>
                 )}
 
-
-                {/* ==========================================
-                    BOTÓN
-                    ========================================== */}
 
                 <button
                     type="submit"
@@ -445,9 +520,7 @@ export function LoginPage() {
                             ? "mk-login-button loading"
                             : "mk-login-button"
                     }
-                    disabled={
-                        loading
-                    }
+                    disabled={loading}
                 >
 
                     {!loading ? (
@@ -482,10 +555,6 @@ export function LoginPage() {
 
                 </button>
 
-
-                {/* ==========================================
-                    SEGURIDAD
-                    ========================================== */}
 
                 <div className="mk-login-security">
 

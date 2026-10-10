@@ -1,0 +1,172 @@
+/* ======================================================
+   MODAL DE ROLES Y ACCESOS
+   ====================================================== */
+
+.user-access-modal {
+    width:
+        min(
+            880px,
+            100%
+        );
+}
+
+
+/* ======================================================
+   ICONO
+   ====================================================== */
+
+.user-action-icon.access {
+    color:
+        #175cd3;
+
+    background:
+        #eff8ff;
+}
+
+
+/* ======================================================
+   AVISO
+   ====================================================== */
+
+.user-access-notice {
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    gap:
+        9px;
+
+    padding:
+        11px
+        13px;
+
+    color:
+        #475467;
+
+    background:
+        #f8fafc;
+
+    border:
+        1px solid
+        #e4e7ec;
+
+    border-radius:
+        10px;
+
+    font-size:
+        9px;
+
+    line-height:
+        1.55;
+}
+
+
+.user-access-notice svg {
+    flex-shrink:
+        0;
+
+    margin-top:
+        1px;
+
+    color:
+        #175cd3;
+}
+
+
+/* ======================================================
+   CONTENIDO DEL WIZARD REUTILIZADO
+   ====================================================== */
+
+.user-access-modal
+.uw-step {
+    gap:
+        20px;
+}
+
+
+.user-access-modal
+.uw-step-intro {
+    display:
+        none;
+}
+
+
+.user-access-modal
+.uw-access-section {
+    padding:
+        16px;
+
+    background:
+        #ffffff;
+
+    border:
+        1px solid
+        #e8ebf0;
+
+    border-radius:
+        13px;
+}
+
+
+.user-access-modal
+.uw-choice-grid,
+.user-access-modal
+.uw-role-grid {
+    margin-top:
+        14px;
+}
+
+
+/* ======================================================
+   CARGA DE ROLES
+   ====================================================== */
+
+.user-access-loading-roles {
+    padding:
+        8px
+        12px;
+
+    color:
+        #667085;
+
+    background:
+        #f8fafc;
+
+    border-radius:
+        8px;
+
+    font-size:
+        9px;
+
+    text-align:
+        center;
+}
+
+
+/* ======================================================
+   RESPONSIVE
+   ====================================================== */
+
+@media (
+    max-width:
+        720px
+) {
+    .user-access-modal {
+        max-height:
+            calc(
+                100dvh -
+                24px
+            );
+    }
+
+
+    .user-access-modal
+    .uw-choice-grid,
+    .user-access-modal
+    .uw-role-grid {
+        grid-template-columns:
+            1fr;
+    }
+}

@@ -1,45 +1,86 @@
 import {
-    ConfiguracionUsuarioRolService,
+    ConfiguracionUsuarioRolService
 } from "./configuracionUsuarioRol.service";
+
 import {
-    UsuarioService,
+    UsuarioService
 } from "./usuario.service";
+
 import {
-    comparePassword,
+    comparePassword
 } from "../utils/hash";
+
 import {
-    signToken,
+    signToken
 } from "../utils/jwt";
+
 import {
-    prisma,
+    prisma
 } from "../prisma";
+
 import {
-    type UsuarioSesionDto,
+    type UsuarioSesionDto
 } from "../models/Usuario";
+
 import {
-    type JwtPayload,
+    type JwtPayload
 } from "../types";
+
+
+function obtenerNombreAplicacion(
+    codigo:
+        string
+): string {
+    switch (
+        codigo
+            .trim()
+            .toUpperCase()
+    ) {
+        case "PAW":
+            return "Plataforma de Administración";
+
+        case "PMW":
+            return "Plataforma de Marcajes";
+
+        default:
+            return "esta plataforma";
+    }
+}
+
 
 // ======================================================
 // LOGIN
 // ======================================================
 
 export async function login(
-    data: any
+    data:
+        any
 ) {
-    const {
-        correo,
-        password,
-        app,
-    } = data;
+    const correo =
+        typeof data?.correo ===
+            "string"
+            ? data.correo
+                .trim()
+                .toLowerCase()
+            : "";
 
-    console.log(
-        "sesionService login data:",
-        data
-    );
+    const password =
+        typeof data?.password ===
+            "string"
+            ? data.password
+            : "";
+
+    const app =
+        typeof data?.app ===
+            "string"
+            ? data.app
+                .trim()
+                .toUpperCase()
+            : "";
+
 
     // ======================================================
-    // VALIDACIÓN DE DATOS
+    // VALIDACIÓN DE CAMPOS
     // ======================================================
 
     if (
@@ -47,126 +88,180 @@ export async function login(
         !password ||
         !app
     ) {
-        console.log(
-            "sesionService - Datos incompletos"
-        );
-
         return {
-            status: 400,
+            status:
+                400,
+
             body: {
+                code:
+                    "MISSING_FIELDS",
+
                 message:
-                    "Datos incompletos",
-            },
+                    "Ingresa tu correo y contraseña."
+            }
         };
     }
+
 
     // ======================================================
     // APLICACIÓN
     // ======================================================
 
     const aplicacion =
-        await prisma.aplicacion.findFirst({
-            where: {
-                codigo:
-                    String(
-                        app
-                    ).toUpperCase(),
+        await prisma.aplicacion
+            .findFirst({
+                where: {
+                    codigo:
+                        app,
 
-                activo: true,
-            },
+                    activo:
+                        true
+                },
 
-            select: {
-                id_aplicacion: true,
-                nombre: true,
-                codigo: true,
-                activo: true,
-            },
-        });
+                select: {
+                    id_aplicacion:
+                        true,
+
+                    nombre:
+                        true,
+
+                    codigo:
+                        true,
+
+                    activo:
+                        true
+                }
+            });
+
 
     if (!aplicacion) {
         console.log(
-            "sesionService - Aplicación deshabilitada o inexistente:",
+            "sesionService - Aplicación no disponible:",
             app
         );
 
         return {
-            status: 403,
+            status:
+                403,
 
             body: {
+                code:
+                    "APP_UNAVAILABLE",
+
                 message:
-                    "La aplicación se encuentra deshabilitada o no está disponible.",
-            },
+                    `${obtenerNombreAplicacion(
+                        app
+                    )} se encuentra temporalmente deshabilitada o no está disponible.`
+            }
         };
     }
+
 
     // ======================================================
     // USUARIO
+    //
+    // IMPORTANTE:
+    // Se consulta sin filtrar por activo para poder distinguir
+    // una cuenta inactiva DESPUÉS de validar la contraseña.
     // ======================================================
 
     const usuario =
-        await UsuarioService
-            .findByCorreoAndActivo(
-                correo,
-                true
-            );
+        await prisma.usuario
+            .findFirst({
+                where: {
+                    correo
+                }
+            });
 
+
+    /*
+     * Por seguridad no indicamos si el correo existe.
+     * Correo inexistente y contraseña incorrecta deben
+     * producir exactamente la misma respuesta.
+     */
     if (!usuario) {
         console.log(
-            "sesionService - Usuario no encontrado"
+            "sesionService - Intento con credenciales inválidas"
         );
 
         return {
-            status: 404,
+            status:
+                401,
 
             body: {
+                code:
+                    "INVALID_CREDENTIALS",
+
                 message:
-                    "Usuario no encontrado",
-            },
+                    "Correo o contraseña incorrectos."
+            }
         };
     }
+
 
     // ======================================================
     // CONTRASEÑA
     // ======================================================
 
-    const ok =
+    const passwordCorrecto =
         await comparePassword(
             password,
             usuario.password
         );
 
-    if (!ok) {
+
+    if (
+        !passwordCorrecto
+    ) {
         console.log(
-            "sesionService - Credenciales inválidas"
+            "sesionService - Intento con credenciales inválidas"
         );
 
         return {
-            status: 401,
+            status:
+                401,
 
             body: {
+                code:
+                    "INVALID_CREDENTIALS",
+
                 message:
-                    "Credenciales inválidas",
-            },
+                    "Correo o contraseña incorrectos."
+            }
         };
     }
 
-    if (!usuario.activo) {
-        console.log(
-            "sesionService - Usuario inactivo"
-        );
-
-        return {
-            status: 403,
-
-            body: {
-                message:
-                    "Usuario inactivo",
-            },
-        };
-    }
 
     // ======================================================
-    // ROLES
+    // ESTADO DEL USUARIO
+    // ======================================================
+
+    if (
+        usuario.activo !==
+        true
+    ) {
+        console.log(
+            "sesionService - Usuario inactivo:",
+            usuario.id_usuario
+        );
+
+        return {
+            status:
+                403,
+
+            body: {
+                code:
+                    "USER_INACTIVE",
+
+                message:
+                    "Tu cuenta se encuentra inactiva. Contacta al administrador del sistema."
+            }
+        };
+    }
+
+
+    // ======================================================
+    // ROLES PARA LA APLICACIÓN SOLICITADA
     // ======================================================
 
     const roles =
@@ -176,26 +271,47 @@ export async function login(
                 aplicacion.codigo
             );
 
+
     if (
         roles.length ===
         0
     ) {
+        console.log(
+            "sesionService - Usuario sin acceso:",
+            usuario.id_usuario,
+            aplicacion.codigo
+        );
+
         return {
-            status: 403,
+            status:
+                403,
 
             body: {
+                code:
+                    "APP_ACCESS_DENIED",
+
                 message:
-                    "Usuario no tiene roles activos asignados para la aplicación.",
-            },
+                    `Tu cuenta no tiene acceso a la ${obtenerNombreAplicacion(
+                        aplicacion.codigo
+                    )}.`
+            }
         };
     }
+
+
+    // ======================================================
+    // ROLES DEL TOKEN
+    // ======================================================
 
     const rolesToken:
         string[] =
         roles.map(
-            (role) =>
+            (
+                role
+            ) =>
                 role.codigo
         );
+
 
     // ======================================================
     // TOKEN
@@ -206,17 +322,19 @@ export async function login(
             id_usuario:
                 usuario.id_usuario,
 
-            correo,
+            correo:
+                usuario.correo,
 
             app:
                 aplicacion.codigo,
 
             roles:
-                rolesToken,
+                rolesToken
         });
 
+
     // ======================================================
-    // RESPUESTA
+    // RESPUESTA DEL USUARIO
     // ======================================================
 
     const usuarioResponse = {
@@ -235,26 +353,39 @@ export async function login(
         activo:
             usuario.activo,
 
-        roles,
+        roles
     } as UsuarioSesionDto;
 
+
     console.log(
-        "USUARIO LOGUEADO:",
-        usuarioResponse
+        "sesionService - Inicio de sesión correcto:",
+        {
+            id_usuario:
+                usuario.id_usuario,
+
+            app:
+                aplicacion.codigo,
+
+            roles:
+                rolesToken
+        }
     );
 
+
     return {
-        status: 200,
+        status:
+            200,
 
         body: {
             accessToken:
                 token,
 
             empleado:
-                usuarioResponse,
-        },
+                usuarioResponse
+        }
     };
 }
+
 
 // ======================================================
 // VALIDACIÓN DE SESIÓN ACTIVA
@@ -262,84 +393,125 @@ export async function login(
 
 export async function validateSession(
     payload:
-        JwtPayload | undefined
+        JwtPayload |
+        undefined
 ) {
-    // ======================================================
-    // TOKEN
-    // ======================================================
-
     if (!payload) {
         return {
-            status: 401,
+            status:
+                401,
 
             body: {
-                valid: false,
+                valid:
+                    false,
+
+                code:
+                    "INVALID_SESSION",
 
                 message:
-                    "Sesión inválida.",
-            },
+                    "La sesión no es válida."
+            }
         };
     }
+
 
     // ======================================================
     // USUARIO
     // ======================================================
 
     const usuario =
-        await UsuarioService.findOne(
-            payload.id_usuario
-        );
+        await UsuarioService
+            .findOne(
+                payload.id_usuario
+            );
 
-    if (
-        !usuario ||
-        !usuario.activo
-    ) {
+
+    if (!usuario) {
         return {
-            status: 401,
+            status:
+                401,
 
             body: {
-                valid: false,
+                valid:
+                    false,
+
+                code:
+                    "INVALID_SESSION",
 
                 message:
-                    "El usuario se encuentra inactivo.",
-            },
+                    "La sesión no es válida."
+            }
         };
     }
+
+
+    if (
+        usuario.activo !==
+        true
+    ) {
+        return {
+            status:
+                401,
+
+            body: {
+                valid:
+                    false,
+
+                code:
+                    "USER_INACTIVE",
+
+                message:
+                    "Tu cuenta se encuentra inactiva."
+            }
+        };
+    }
+
 
     // ======================================================
     // APLICACIÓN
     // ======================================================
 
     const aplicacion =
-        await prisma.aplicacion.findFirst({
-            where: {
-                codigo:
-                    payload.app,
+        await prisma.aplicacion
+            .findFirst({
+                where: {
+                    codigo:
+                        payload.app,
 
-                activo: true,
-            },
+                    activo:
+                        true
+                },
 
-            select: {
-                id_aplicacion:
-                    true,
+                select: {
+                    id_aplicacion:
+                        true,
 
-                codigo:
-                    true,
-            },
-        });
+                    codigo:
+                        true
+                }
+            });
+
 
     if (!aplicacion) {
         return {
-            status: 403,
+            status:
+                403,
 
             body: {
-                valid: false,
+                valid:
+                    false,
+
+                code:
+                    "APP_UNAVAILABLE",
 
                 message:
-                    "La aplicación se encuentra deshabilitada.",
-            },
+                    `${obtenerNombreAplicacion(
+                        payload.app
+                    )} se encuentra temporalmente deshabilitada.`
+            }
         };
     }
+
 
     // ======================================================
     // ROLES ACTIVOS
@@ -352,67 +524,89 @@ export async function validateSession(
                 payload.app
             );
 
+
     const rolesActivos =
         new Set(
             roles.map(
-                (role) =>
+                (
+                    role
+                ) =>
                     role.codigo
             )
         );
 
+
     const tieneRolActivo =
         payload.roles.some(
-            (codigo) =>
+            (
+                codigo
+            ) =>
                 rolesActivos.has(
                     codigo
                 )
         );
 
-    if (!tieneRolActivo) {
+
+    if (
+        !tieneRolActivo
+    ) {
         return {
-            status: 403,
+            status:
+                403,
 
             body: {
-                valid: false,
+                valid:
+                    false,
+
+                code:
+                    "APP_ACCESS_REVOKED",
 
                 message:
-                    "El usuario ya no posee acceso activo a esta aplicación.",
-            },
+                    `Ya no tienes acceso a la ${obtenerNombreAplicacion(
+                        payload.app
+                    )}. Inicia sesión nuevamente o contacta al administrador.`
+            }
         };
     }
+
 
     // ======================================================
     // SESIÓN VÁLIDA
     // ======================================================
 
     return {
-        status: 200,
+        status:
+            200,
 
         body: {
-            valid: true,
+            valid:
+                true,
 
             app:
                 payload.app,
 
             id_usuario:
-                payload.id_usuario,
-        },
+                payload.id_usuario
+        }
     };
 }
+
 
 // ======================================================
 // LOGOUT
 // ======================================================
 
 export async function logout(
-    _data: any
+    _data:
+        any
 ) {
     return {
-        status: 200,
+        status:
+            200,
 
         body: {
             message:
-                "Logout exitoso.",
-        },
+                "Logout exitoso."
+        }
     };
 }

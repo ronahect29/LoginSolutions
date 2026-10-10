@@ -1,30 +1,116 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_USER_SERVICE_URL || "https://login.solutions.local/user-service/api";
 
-export const api = axios.create({
-  baseURL
-});
+const baseURL =
+    import.meta.env.VITE_USER_SERVICE_URL ||
+    "https://login.solutions.local/user-service/api";
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token_admin");
-  if (token && config.headers) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-api.interceptors.response.use(
-  response => response,
-  error => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem("token_admin");
-      localStorage.removeItem("usuario_admin");
 
-      // if (!window.location.pathname.includes("login")) {
-      //   window.location.href = "/login"
-      // }
-      window.dispatchEvent(new Event("session-expired"));
+// ======================================================
+// CLIENTE PÚBLICO
+//
+// Se utiliza para login.
+// NO tiene interceptores de sesión.
+// ======================================================
+
+export const publicApi =
+    axios.create({
+        baseURL
+    });
+
+
+// ======================================================
+// CLIENTE PROTEGIDO
+//
+// Se utiliza después de iniciar sesión.
+// ======================================================
+
+export const api =
+    axios.create({
+        baseURL
+    });
+
+
+// ======================================================
+// REQUEST
+// ======================================================
+
+api.interceptors.request.use(
+    (
+        config
+    ) => {
+        const token =
+            localStorage.getItem(
+                "token_admin"
+            );
+
+
+        if (
+            token &&
+            config.headers
+        ) {
+            config.headers.Authorization =
+                `Bearer ${token}`;
+        }
+
+
+        return config;
     }
-    return Promise.reject(error);
-  }
+);
+
+
+// ======================================================
+// RESPONSE
+// ======================================================
+
+api.interceptors.response.use(
+    (
+        response
+    ) =>
+        response,
+
+    (
+        error
+    ) => {
+        const status =
+            error?.response
+                ?.status;
+
+
+        /*
+         * Este cliente solamente se utiliza una vez
+         * autenticado el usuario.
+         *
+         * Por lo tanto, un 401 indica que la sesión
+         * dejó de ser válida.
+         */
+        if (
+            status ===
+            401
+        ) {
+            localStorage.removeItem(
+                "token_admin"
+            );
+
+            localStorage.removeItem(
+                "usuario_admin"
+            );
+
+            localStorage.removeItem(
+                "usuario"
+            );
+
+
+            window.dispatchEvent(
+                new Event(
+                    "session-expired"
+                )
+            );
+        }
+
+
+        return Promise.reject(
+            error
+        );
+    }
 );

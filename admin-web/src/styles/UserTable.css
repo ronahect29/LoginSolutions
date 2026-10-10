@@ -458,6 +458,23 @@
         var(--admin-orange-soft);
 }
 
+.users-action-button.access {
+    color:
+        #175cd3;
+
+    background:
+        #eff8ff;
+}
+
+
+.users-action-button.access:hover:not(:disabled) {
+    color:
+        #1849a9;
+
+    background:
+        #dbeeff;
+}
+
 .users-action-button.password {
     color:
         #475467;

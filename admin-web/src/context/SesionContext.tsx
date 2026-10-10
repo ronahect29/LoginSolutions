@@ -3,189 +3,338 @@ import {
     type ReactNode,
     useContext,
     useEffect,
-    useState,
+    useState
 } from "react";
-import { useNavigate } from "react-router-dom";
 
-import type { Rol } from "../models/rol";
-import type { AuthUsuario } from "../models/usuario";
-import { api } from "../services/api";
+import {
+    useNavigate
+} from "react-router-dom";
+
+import type {
+    Rol
+} from "../models/rol";
+
+import type {
+    AuthUsuario
+} from "../models/usuario";
+
+import {
+    publicApi
+} from "../services/api";
+
 import {
     ES_LOCAL,
-    isTokenExpired,
+    isTokenExpired
 } from "../utils/utils";
 
+
 interface SessionContextValue {
-    usuario: AuthUsuario | null;
-    token: string | null;
-    loading: boolean;
+    usuario:
+        AuthUsuario |
+        null;
+
+    token:
+        string |
+        null;
+
+    loading:
+        boolean;
 
     login: (
-        correo: string,
-        password: string,
-        app: string
-    ) => Promise<AuthUsuario>;
+        correo:
+            string,
 
-    logout: () => void;
+        password:
+            string,
+
+        app:
+            string
+    ) =>
+        Promise<AuthUsuario>;
+
+    logout:
+        () => void;
 }
+
 
 const SessionContext =
     createContext<
-        SessionContextValue | undefined
-    >(undefined);
+        SessionContextValue |
+        undefined
+    >(
+        undefined
+    );
 
-const TOKEN_KEY = "token_admin";
-const USUARIO_KEY = "usuario_admin";
-const LEGACY_USUARIO_KEY = "usuario";
+
+const TOKEN_KEY =
+    "token_admin";
+
+const USUARIO_KEY =
+    "usuario_admin";
+
+const LEGACY_USUARIO_KEY =
+    "usuario";
+
 
 export function SessionProvider({
-    children,
+    children
 }: {
-    children: ReactNode;
+    children:
+        ReactNode;
 }) {
-    const navigate = useNavigate();
+    const navigate =
+        useNavigate();
 
-    const [usuario, setUsuario] =
-        useState<AuthUsuario | null>(null);
 
-    const [token, setToken] =
-        useState<string | null>(null);
+    const [
+        usuario,
+        setUsuario
+    ] =
+        useState<
+            AuthUsuario |
+            null
+        >(
+            null
+        );
 
-    const [loading, setLoading] =
-        useState<boolean>(true);
+
+    const [
+        token,
+        setToken
+    ] =
+        useState<
+            string |
+            null
+        >(
+            null
+        );
+
+
+    const [
+        loading,
+        setLoading
+    ] =
+        useState<boolean>(
+            true
+        );
+
 
     function limpiarSesionLocal() {
-        localStorage.removeItem(TOKEN_KEY);
-        localStorage.removeItem(USUARIO_KEY);
+        localStorage.removeItem(
+            TOKEN_KEY
+        );
+
+        localStorage.removeItem(
+            USUARIO_KEY
+        );
+
         localStorage.removeItem(
             LEGACY_USUARIO_KEY
         );
     }
 
+
     function logout() {
-        setUsuario(null);
-        setToken(null);
+        setUsuario(
+            null
+        );
+
+        setToken(
+            null
+        );
+
 
         limpiarSesionLocal();
     }
 
-    useEffect(() => {
-        function onSessionExpired() {
-            logout();
 
-            navigate(
-                "/admin/login",
-                {
-                    replace: true,
-                }
-            );
-        }
+    // ======================================================
+    // SESIÓN EXPIRADA
+    // ======================================================
 
-        window.addEventListener(
-            "session-expired",
-            onSessionExpired
-        );
+    useEffect(
+        () => {
+            function onSessionExpired() {
+                logout();
 
-        return () => {
-            window.removeEventListener(
+
+                navigate(
+                    "/admin/login",
+                    {
+                        replace:
+                            true
+                    }
+                );
+            }
+
+
+            window.addEventListener(
                 "session-expired",
                 onSessionExpired
             );
-        };
-    }, [navigate]);
 
-    useEffect(() => {
-        const storedToken =
-            localStorage.getItem(
-                TOKEN_KEY
-            );
 
-        const storedUsuario =
-            localStorage.getItem(
-                USUARIO_KEY
-            ) ??
-            localStorage.getItem(
-                LEGACY_USUARIO_KEY
-            );
+            return () => {
+                window.removeEventListener(
+                    "session-expired",
+                    onSessionExpired
+                );
+            };
+        },
+        [
+            navigate
+        ]
+    );
 
-        if (
-            storedToken &&
-            storedUsuario &&
-            storedUsuario !== "undefined" &&
-            !isTokenExpired(storedToken)
-        ) {
-            try {
-                const usuarioGuardado =
-                    JSON.parse(
-                        storedUsuario
-                    ) as AuthUsuario;
 
-                setToken(storedToken);
+    // ======================================================
+    // RESTAURAR SESIÓN
+    // ======================================================
 
-                setUsuario(
-                    usuarioGuardado
+    useEffect(
+        () => {
+            const storedToken =
+                localStorage.getItem(
+                    TOKEN_KEY
                 );
 
-                localStorage.setItem(
-                    USUARIO_KEY,
-                    JSON.stringify(
-                        usuarioGuardado
-                    )
-                );
 
-                localStorage.removeItem(
+            const storedUsuario =
+                localStorage.getItem(
+                    USUARIO_KEY
+                ) ??
+                localStorage.getItem(
                     LEGACY_USUARIO_KEY
                 );
-            } catch (error) {
-                console.error(
-                    "Error al restaurar la sesión:",
-                    error
-                );
 
+
+            if (
+                storedToken &&
+                storedUsuario &&
+                storedUsuario !==
+                    "undefined" &&
+                !isTokenExpired(
+                    storedToken
+                )
+            ) {
+                try {
+                    const usuarioGuardado =
+                        JSON.parse(
+                            storedUsuario
+                        ) as AuthUsuario;
+
+
+                    setToken(
+                        storedToken
+                    );
+
+
+                    setUsuario(
+                        usuarioGuardado
+                    );
+
+
+                    localStorage.setItem(
+                        USUARIO_KEY,
+                        JSON.stringify(
+                            usuarioGuardado
+                        )
+                    );
+
+
+                    localStorage.removeItem(
+                        LEGACY_USUARIO_KEY
+                    );
+                } catch (
+                    error
+                ) {
+                    console.error(
+                        "Error al restaurar la sesión:",
+                        error
+                    );
+
+
+                    limpiarSesionLocal();
+                }
+            } else if (
+                storedToken ||
+                storedUsuario
+            ) {
                 limpiarSesionLocal();
             }
-        } else if (
-            storedToken ||
-            storedUsuario
-        ) {
-            limpiarSesionLocal();
-        }
 
-        setLoading(false);
-    }, []);
+
+            setLoading(
+                false
+            );
+        },
+        []
+    );
+
+
+    // ======================================================
+    // LOGIN
+    // ======================================================
 
     async function login(
-        correo: string,
-        password: string,
-        app: string
-    ) {
-        setLoading(true);
+        correo:
+            string,
+
+        password:
+            string,
+
+        app:
+            string
+    ): Promise<AuthUsuario> {
+        setLoading(
+            true
+        );
+
 
         try {
+            /*
+             * IMPORTANTE:
+             *
+             * Login utiliza publicApi.
+             *
+             * De esta forma un 401 o 403 del login
+             * NO dispara el interceptor de sesión.
+             */
             const res =
-                await api.post(
+                await publicApi.post(
                     "/session/login",
                     {
                         correo,
                         password,
-                        app,
+                        app
                     }
                 );
 
+
             const accessToken =
-                res.data.accessToken;
+                res.data
+                    .accessToken;
+
 
             const employ =
-                res.data.empleado;
+                res.data
+                    .empleado;
 
-            if (ES_LOCAL) {
+
+            if (
+                ES_LOCAL
+            ) {
                 console.log(
-                    "SesionContext: res.data",
-                    JSON.stringify(
-                        res.data
-                    )
+                    "SesionContext - Login correcto:",
+                    {
+                        id_usuario:
+                            employ.id_usuario,
+
+                        app
+                    }
                 );
             }
+
 
             const usuarioNormalize:
                 AuthUsuario = {
@@ -204,19 +353,25 @@ export function SessionProvider({
                 roles:
                     mapRoles(
                         employ.roles
-                    ),
+                    )
             };
 
-            setToken(accessToken);
+
+            setToken(
+                accessToken
+            );
+
 
             setUsuario(
                 usuarioNormalize
             );
 
+
             localStorage.setItem(
                 TOKEN_KEY,
                 accessToken
             );
+
 
             localStorage.setItem(
                 USUARIO_KEY,
@@ -225,24 +380,43 @@ export function SessionProvider({
                 )
             );
 
+
             localStorage.removeItem(
                 LEGACY_USUARIO_KEY
             );
 
+
             return usuarioNormalize;
-        } catch (error) {
-            if (ES_LOCAL) {
+        } catch (
+            error
+        ) {
+            /*
+             * NO modificamos el error.
+             *
+             * LoginPage necesita recibir el AxiosError
+             * original con:
+             *
+             * response.status
+             * response.data.code
+             * response.data.message
+             */
+            if (
+                ES_LOCAL
+            ) {
                 console.log(
-                    "ERROR SESION CONTEXT:",
-                    error
+                    "SesionContext - Login rechazado"
                 );
             }
 
+
             throw error;
         } finally {
-            setLoading(false);
+            setLoading(
+                false
+            );
         }
     }
+
 
     const value:
         SessionContextValue = {
@@ -250,21 +424,30 @@ export function SessionProvider({
         token,
         loading,
         login,
-        logout,
+        logout
     };
+
 
     return (
         <SessionContext.Provider
-            value={value}
+            value={
+                value
+            }
         >
-            {children}
+            {
+                children
+            }
         </SessionContext.Provider>
     );
 }
 
+
 export function useSessionContext() {
     const ctx =
-        useContext(SessionContext);
+        useContext(
+            SessionContext
+        );
+
 
     if (!ctx) {
         throw new Error(
@@ -272,42 +455,49 @@ export function useSessionContext() {
         );
     }
 
+
     return ctx;
 }
 
+
 function mapRoles(
-    rawRoles: any[]
+    rawRoles:
+        any[]
 ): Rol[] {
-    return rawRoles.map((r) => ({
-        id_rol:
-            r.id_rol ??
-            r.id ??
-            0,
+    return rawRoles.map(
+        (
+            rol
+        ) => ({
+            id_rol:
+                rol.id_rol ??
+                rol.id ??
+                0,
 
-        nombre:
-            r.nombre ??
-            "",
+            nombre:
+                rol.nombre ??
+                "",
 
-        codigo:
-            r.codigo,
+            codigo:
+                rol.codigo,
 
-        descripcion:
-            r.descripcion ??
-            "",
+            descripcion:
+                rol.descripcion ??
+                "",
 
-        activo:
-            r.activo ??
-            true,
+            activo:
+                rol.activo ??
+                true,
 
-        en_uso:
-            r.en_uso ??
-            true,
+            en_uso:
+                rol.en_uso ??
+                true,
 
-        por_defecto:
-            r.por_defecto ??
-            true,
+            por_defecto:
+                rol.por_defecto ??
+                true,
 
-        aplicacion:
-            r.aplicacion,
-    }));
+            aplicacion:
+                rol.aplicacion
+        })
+    );
 }

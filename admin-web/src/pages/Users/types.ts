@@ -7,6 +7,7 @@ import type {
     UsuarioSorteableField
 } from "../../models/usuario";
 
+
 export interface UserTableProps {
     users:
         Usuario[];
@@ -43,6 +44,12 @@ export interface UserTableProps {
         ) => void;
 
     onEdit?:
+        (
+            user:
+                Usuario
+        ) => void;
+
+    onManageAccess?:
         (
             user:
                 Usuario

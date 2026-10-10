@@ -4,6 +4,7 @@ import {
     ArrowUpDown,
     KeyRound,
     Pencil,
+    ShieldCheck,
     UserCheck,
     UserX
 } from "lucide-react";
@@ -18,16 +19,21 @@ import type {
     UserTableProps
 } from "./types";
 
+
 function getInitials(
-    nombre: string
+    nombre:
+        string
 ): string {
     const parts =
         nombre
             .trim()
-            .split(/\s+/)
+            .split(
+                /\s+/
+            )
             .filter(
                 Boolean
             );
+
 
     if (
         parts.length ===
@@ -35,6 +41,7 @@ function getInitials(
     ) {
         return "US";
     }
+
 
     if (
         parts.length ===
@@ -48,21 +55,27 @@ function getInitials(
             .toUpperCase();
     }
 
+
     return `${parts[0][0]}${parts[1][0]}`
         .toUpperCase();
 }
 
+
 function formatDate(
-    value?: string | null
+    value?:
+        string |
+        null
 ): string {
     if (!value) {
         return "—";
     }
 
+
     const date =
         new Date(
             value
         );
+
 
     if (
         Number.isNaN(
@@ -72,13 +85,16 @@ function formatDate(
         return value;
     }
 
+
     return new Intl.DateTimeFormat(
         "es-GT",
         {
             day:
                 "2-digit",
+
             month:
                 "2-digit",
+
             year:
                 "numeric"
         }
@@ -86,6 +102,7 @@ function formatDate(
         date
     );
 }
+
 
 export function UserTable({
     users,
@@ -97,6 +114,7 @@ export function UserTable({
     total,
     onPageChange,
     onEdit,
+    onManageAccess,
     onResetPassword,
     onToggleActivo
 }: UserTableProps) {
@@ -109,8 +127,10 @@ export function UserTable({
             )
         );
 
+
     const registroDesde =
-        total === 0
+        total ===
+            0
             ? 0
             : (
                 page -
@@ -119,12 +139,14 @@ export function UserTable({
                 pageSize +
               1;
 
+
     const registroHasta =
         Math.min(
             page *
                 pageSize,
             total
         );
+
 
     function handleSort(
         field:
@@ -136,6 +158,7 @@ export function UserTable({
             return;
         }
 
+
         const direction =
             sort?.field ===
                 field &&
@@ -144,11 +167,13 @@ export function UserTable({
                 ? "desc"
                 : "asc";
 
+
         onSortChange({
             field,
             direction
         });
     }
+
 
     function renderSortIcon(
         field:
@@ -161,10 +186,13 @@ export function UserTable({
         ) {
             return (
                 <ArrowUpDown
-                    size={13}
+                    size={
+                        13
+                    }
                 />
             );
         }
+
 
         if (
             sort.direction ===
@@ -172,17 +200,23 @@ export function UserTable({
         ) {
             return (
                 <ArrowUp
-                    size={13}
+                    size={
+                        13
+                    }
                 />
             );
         }
 
+
         return (
             <ArrowDown
-                size={13}
+                size={
+                    13
+                }
             />
         );
     }
+
 
     return (
         <div className="users-table-card">
@@ -204,15 +238,18 @@ export function UserTable({
                                         Usuario
                                     </span>
 
+
                                     {renderSortIcon(
                                         "nombre"
                                     )}
                                 </button>
                             </th>
 
+
                             <th>
                                 Roles
                             </th>
+
 
                             <th>
                                 <button
@@ -228,11 +265,13 @@ export function UserTable({
                                         Estado
                                     </span>
 
+
                                     {renderSortIcon(
                                         "activo"
                                     )}
                                 </button>
                             </th>
+
 
                             <th>
                                 <button
@@ -248,11 +287,13 @@ export function UserTable({
                                         Creación
                                     </span>
 
+
                                     {renderSortIcon(
                                         "fecha_creacion"
                                     )}
                                 </button>
                             </th>
+
 
                             <th>
                                 <button
@@ -268,17 +309,20 @@ export function UserTable({
                                         Modificación
                                     </span>
 
+
                                     {renderSortIcon(
                                         "fecha_modificacion"
                                     )}
                                 </button>
                             </th>
 
+
                             <th className="users-actions-header">
                                 Acciones
                             </th>
                         </tr>
                     </thead>
+
 
                     <tbody>
                         {loading &&
@@ -309,6 +353,7 @@ export function UserTable({
                                 )
                             )}
 
+
                         {!loading &&
                             users.length ===
                                 0 && (
@@ -323,12 +368,14 @@ export function UserTable({
                                             No se encontraron usuarios
                                         </strong>
 
+
                                         <span>
                                             Prueba cambiando o limpiando los filtros de búsqueda.
                                         </span>
                                     </td>
                                 </tr>
                             )}
+
 
                         {!loading &&
                             users.map(
@@ -348,12 +395,14 @@ export function UserTable({
                                                     )}
                                                 </div>
 
+
                                                 <div className="users-user-info">
                                                     <strong>
                                                         {
                                                             user.nombre
                                                         }
                                                     </strong>
+
 
                                                     <span>
                                                         {
@@ -363,6 +412,7 @@ export function UserTable({
                                                 </div>
                                             </div>
                                         </td>
+
 
                                         <td>
                                             <div className="users-role-list">
@@ -393,6 +443,7 @@ export function UserTable({
                                             </div>
                                         </td>
 
+
                                         <td>
                                             <div className="users-status-wrapper">
                                                 <span
@@ -404,10 +455,12 @@ export function UserTable({
                                                 >
                                                     <span className="users-status-dot" />
 
+
                                                     {user.activo
                                                         ? "Activo"
                                                         : "Inactivo"}
                                                 </span>
+
 
                                                 {!user.activo &&
                                                     user.fechaBaja && (
@@ -427,17 +480,20 @@ export function UserTable({
                                             </div>
                                         </td>
 
+
                                         <td className="users-date-cell">
                                             {formatDate(
                                                 user.fechaCreacion
                                             )}
                                         </td>
 
+
                                         <td className="users-date-cell">
                                             {formatDate(
                                                 user.fechaModificacion
                                             )}
                                         </td>
+
 
                                         <td>
                                             <div className="users-row-actions">
@@ -452,16 +508,52 @@ export function UserTable({
                                                     disabled={
                                                         loading
                                                     }
-                                                    title="Editar usuario"
+                                                    title="Editar información del usuario"
                                                 >
                                                     <Pencil
-                                                        size={14}
+                                                        size={
+                                                            14
+                                                        }
                                                     />
+
 
                                                     <span>
                                                         Editar
                                                     </span>
                                                 </button>
+
+
+                                                <button
+                                                    type="button"
+                                                    className="users-action-button access"
+                                                    onClick={() =>
+                                                        onManageAccess?.(
+                                                            user
+                                                        )
+                                                    }
+                                                    disabled={
+                                                        loading ||
+                                                        user.activo !==
+                                                            true
+                                                    }
+                                                    title={
+                                                        user.activo
+                                                            ? "Gestionar roles y accesos"
+                                                            : "Reactiva el usuario para gestionar sus accesos"
+                                                    }
+                                                >
+                                                    <ShieldCheck
+                                                        size={
+                                                            14
+                                                        }
+                                                    />
+
+
+                                                    <span>
+                                                        Accesos
+                                                    </span>
+                                                </button>
+
 
                                                 <button
                                                     type="button"
@@ -477,13 +569,17 @@ export function UserTable({
                                                     title="Restablecer contraseña"
                                                 >
                                                     <KeyRound
-                                                        size={14}
+                                                        size={
+                                                            14
+                                                        }
                                                     />
+
 
                                                     <span>
                                                         Contraseña
                                                     </span>
                                                 </button>
+
 
                                                 <button
                                                     type="button"
@@ -508,13 +604,18 @@ export function UserTable({
                                                 >
                                                     {user.activo ? (
                                                         <UserX
-                                                            size={14}
+                                                            size={
+                                                                14
+                                                            }
                                                         />
                                                     ) : (
                                                         <UserCheck
-                                                            size={14}
+                                                            size={
+                                                                14
+                                                            }
                                                         />
                                                     )}
+
 
                                                     <span>
                                                         {user.activo
@@ -531,12 +632,15 @@ export function UserTable({
                 </table>
             </div>
 
+
             <div className="users-pagination">
                 <div className="users-pagination-summary">
-                    {total === 0
+                    {total ===
+                    0
                         ? "Sin registros"
                         : `Mostrando ${registroDesde}-${registroHasta} de ${total}`}
                 </div>
+
 
                 <div className="users-pagination-controls">
                     <button
@@ -556,10 +660,12 @@ export function UserTable({
                         Anterior
                     </button>
 
+
                     <span>
                         Página {page} de{" "}
                         {totalPages}
                     </span>
+
 
                     <button
                         type="button"

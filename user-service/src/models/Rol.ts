@@ -1,4 +1,6 @@
-import { AplicacionDto } from "./Aplicacion";
+import {
+    AplicacionDto
+} from "./Aplicacion";
 
 export interface RolDto {
     id_rol: number;
@@ -6,14 +8,19 @@ export interface RolDto {
     descripcion: string;
     codigo: string;
     activo: boolean;
-    aplicacion?: AplicacionDto
+    aplicacion?: AplicacionDto;
     por_defecto?: boolean;
 }
+
 export interface RolFiltroDto {
     id_rol: number;
-    nombre: string,
-    codigo: string
+    nombre: string;
+    codigo: string;
+
+    id_aplicacion?: number;
+    aplicacion_codigo?: string;
 }
+
 export interface RolConfigUsuario {
     id_rol: number;
     nombre: string;
